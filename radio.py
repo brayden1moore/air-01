@@ -57,7 +57,7 @@ def display_info(logo_path, show_name):
     logo_path = f'logos/{logo_path}'
 
     try:
-        logo = Image.open(logo_path).resize((100, 100))
+        logo = Image.open(logo_path).resize((200, 200)).rotate(90)
         image.paste(logo, (70, 20))
     except Exception as e:
         print(f"Failed to load logo: {e}")
@@ -94,6 +94,7 @@ def toggle_stream(button):
             for program in programs:
                 if int(program['startTime']) < epoch_time:
                     show_name = program['programTitle']
+            print(show_name)
     except Exception as e:
         print(f"Error fetching info: {e}")
 
@@ -114,7 +115,7 @@ def toggle_stream(button):
 button_x = Button(5)
 button_y = Button(6)
 button_a = Button(16)
-button_b = Button(20)
+button_b = Button(26)
 
 button_x.when_pressed = lambda: toggle_stream('X')
 button_y.when_pressed = lambda: toggle_stream('Y')
