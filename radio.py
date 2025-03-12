@@ -111,7 +111,7 @@ def toggle_stream(button):
 
 
 button_x = Button(5)
-button_y = Button(6)
+button_y = Button(24)
 button_a = Button(16)
 button_b = Button(26)
 
