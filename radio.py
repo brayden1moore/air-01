@@ -92,14 +92,15 @@ def toggle_stream(button):
             info = requests.get(info_url).json()
             programs = info['data']['attributes']['schedule']
             for program in programs:
+                print(epoch_time)
                 if int(program['startTime']) < epoch_time:
                     show_name = program['programTitle']
             print(program['programTitle'])
         
-        display_info(logo_path, show_name)
-
     except Exception as e:
         print(f"Error fetching info: {e}")
+
+    display_info(logo_path, show_name)
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
@@ -112,6 +113,7 @@ def toggle_stream(button):
             "--volume=40",
             stream_url
         ])
+
 
 button_x = Button(5)
 button_y = Button(6)
@@ -129,4 +131,9 @@ try:
 except KeyboardInterrupt:
     if mpv_process:
         mpv_process.terminate()
-    disp.fill(0)
+
+    WIDTH = disp.width
+    HEIGHT = disp.height
+    img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
+    draw = ImageDraw.Draw(img)
+    disp.display(img)
