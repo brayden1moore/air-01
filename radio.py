@@ -84,7 +84,7 @@ def toggle_stream(button):
         print(info)
         result_idx = 0 if button == 'A' else 1
         show_name = info['results'][result_idx].get('broadcast_title', show_name)
-        print(info['results'][result_idx].get('broadcast_title', show_name))
+        print(info['results'][result_idx]['now']['broadcast_title'])
 
     elif button == 'X':
         today = date.today().isoformat()
