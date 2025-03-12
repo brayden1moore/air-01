@@ -83,6 +83,7 @@ def toggle_stream(button):
         info = requests.get(stream_info['info']).json()
         result_idx = 0 if button == 'A' else 1
         show_name = info['results'][result_idx].get('broadcast_title', show_name)
+        print(show_name)
 
     elif button == 'X':
         today = date.today().isoformat()
