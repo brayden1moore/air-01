@@ -92,7 +92,12 @@ def toggle_stream(name):
         info = requests.get(stream_info['info']).json()
         result_idx = 0 if name == 'NTS 1' else 1
         show_info = info['results'][result_idx]['now']
-        descriptions.append(show_info['embeds']['details']['description'])
+
+        genres = []
+        for g in show_info['embeds']['details']['genres']:
+            genres.append(g['value']) 
+        
+        descriptions.append(', '.join(genres))
         show_names.append(show_info['broadcast_title'])
 
     elif name == 'KQED':
