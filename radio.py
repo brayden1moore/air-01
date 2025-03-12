@@ -22,16 +22,16 @@ streams = {
         'logo': 'hydefm.png'
     },
     'A': {
-        'name': 'NTS 1',
-        'stream': 'https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp&device=800913353.1735584982',
-        'info': 'https://www.nts.live/api/v2/live',
-        'logo': 'nts1.png'
-    },
-    'B': {
         'name': 'NTS 2',
         'stream': 'https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp&device=800913353.1735584982',
         'info': 'https://www.nts.live/api/v2/live',
         'logo': 'nts2.png'
+    },
+    'B': {
+        'name': 'NTS 1',
+        'stream': 'https://stream-relay-geo.ntslive.net/stream1?client=NTSWebApp&device=800913353.1735584982',
+        'info': 'https://www.nts.live/api/v2/live',
+        'logo': 'nts1.png'
     },
 }
 
