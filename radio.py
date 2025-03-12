@@ -57,14 +57,13 @@ def display_info(logo_path, show_name):
     logo_path = f'logos/{logo_path}'
 
     try:
-        logo = Image.open(logo_path).resize((150, 100)).rotate(90)
+        logo = Image.open(logo_path).resize((100, 100))
         image.paste(logo, (70, 20))
     except Exception as e:
         print(f"Failed to load logo: {e}")
 
     font = ImageFont.load_default()
     draw.text((10, 150), show_name, font=font, fill=(255, 255, 255))
-
     disp.display(image)
 
 def toggle_stream(button):
@@ -76,30 +75,25 @@ def toggle_stream(button):
     name = stream_info['name']
     show_name = ''
 
-    try:
-        if button == 'Y':
-            info = requests.get(stream_info['info']).json()
-            show_name = info.get('name', name)
+    if button == 'Y':
+        info = requests.get(stream_info['info']).json()
+        show_name = info.get('name', name)
 
-        elif button in ['A', 'B']:
-            info = requests.get(stream_info['info']).json()
-            result_idx = 0 if button == 'A' else 1
-            show_name = info['results'][result_idx].get('broadcast_title', show_name)
+    elif button in ['A', 'B']:
+        info = requests.get(stream_info['info']).json()
+        result_idx = 0 if button == 'A' else 1
+        show_name = info['results'][result_idx].get('broadcast_title', show_name)
 
-        elif button == 'X':
-            today = date.today().isoformat()
-            epoch_time = int(time.time())
-            info_url = stream_info['info'] + today
-            info = requests.get(info_url).json()
-            programs = info['data']['attributes']['schedule']
-            for program in programs:
-                print(epoch_time)
-                if int(program['startTime']) < epoch_time:
-                    show_name = program['programTitle']
-            print(program['programTitle'])
-        
-    except Exception as e:
-        print(f"Error fetching info: {e}")
+    elif button == 'X':
+        today = date.today().isoformat()
+        epoch_time = int(time.time())
+        info_url = stream_info['info'] + today
+        info = requests.get(info_url).json()
+        programs = info['data']['attributes']['schedule']
+        for program in programs:
+            if int(program['startTime']) < epoch_time:
+                show_name = program['programTitle']
+        print(program['programTitle'])
 
     display_info(logo_path, show_name)
 
