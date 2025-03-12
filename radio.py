@@ -85,6 +85,7 @@ def toggle_stream(button):
         show_name = info['results'][result_idx]['now']['broadcast_title']
 
     elif button == 'X':
+        show_name = name
         today = date.today().isoformat()
         epoch_time = int(time.time())
         info_url = stream_info['info'] + today
@@ -94,6 +95,7 @@ def toggle_stream(button):
             if int(program['startTime']) < epoch_time:
                 show_name = program['programTitle']
         print(program['programTitle'])
+        print(show_name)
 
     display_info(logo_path, show_name)
 
