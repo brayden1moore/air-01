@@ -74,6 +74,7 @@ def toggle_stream(button):
     stream_url = stream_info['stream']
     logo_path = stream_info['logo']
     name = stream_info['name']
+    show_name = ''
 
     try:
         if button == 'Y':
