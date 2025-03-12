@@ -1,4 +1,4 @@
-import ST7789 as ST7789
+import st7789
 from PIL import Image, ImageDraw, ImageFont
 from gpiozero import Button
 from subprocess import Popen
