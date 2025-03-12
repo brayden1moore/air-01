@@ -54,17 +54,18 @@ mpv_process = None
 def display_info(logo_path, show_name):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
-    logo_path = f'logos/{logo_path}'
 
-    try:
-        logo = Image.open(logo_path).resize((150, 150))
-        image.paste(logo, (70, 20))
-    except Exception as e:
-        print(f"Failed to load logo: {e}")
+    logo = Image.open(logo_path).resize((150, 150))
+    image.paste(logo, (70, 20))
 
+    temp_image = Image.new('RGB', (240, 120), color=(0, 0, 0))
+    temp_draw = ImageDraw.Draw(temp_image)
     font = ImageFont.load_default()
-    draw.text((10, 180), show_name, font=font, fill=(255, 255, 255))
-    disp.display(image)
+
+    temp_draw.text((10, 10), show_name, font=font, fill=(255, 255, 255))
+
+    rotated_image = temp_image.rotate(90, expand=True)
+    image.paste(rotated_image, (0, 120))
 
 def toggle_stream(button):
     global mpv_process
