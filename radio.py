@@ -98,6 +98,8 @@ def toggle_stream(name):
             genres.append(g['value']) 
         
         descriptions.append(', '.join(genres))
+        if not genres:
+            descriptions.append(show_info['embeds']['details']['description'])
         show_names.append(show_info['broadcast_title'])
 
     elif name == 'KQED':
