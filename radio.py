@@ -81,10 +81,8 @@ def toggle_stream(button):
 
     elif button in ['A', 'B']:
         info = requests.get(stream_info['info']).json()
-        print(info)
         result_idx = 0 if button == 'A' else 1
-        show_name = info['results'][result_idx].get('broadcast_title', show_name)
-        print(info['results'][result_idx]['now']['broadcast_title'])
+        show_name = info['results'][result_idx]['now']['broadcast_title']
 
     elif button == 'X':
         today = date.today().isoformat()
@@ -95,7 +93,7 @@ def toggle_stream(button):
         for program in programs:
             if int(program['startTime']) < epoch_time:
                 show_name = program['programTitle']
-        print(program['programTitle'])
+        show_name = show_name
 
     display_info(logo_path, show_name)
 
