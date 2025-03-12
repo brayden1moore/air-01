@@ -126,10 +126,10 @@ button_a.when_pressed = lambda: toggle_stream('NTS 2')
 button_y.when_pressed = lambda: toggle_stream('HydeFM')
 button_x.when_pressed = lambda: toggle_stream('KQED')
 
-button_x.when_held = shutdown()
-button_y.when_held = shutdown()
-button_a.when_held = shutdown()
-button_b.when_held = shutdown()
+#button_x.when_held = shutdown()
+#button_y.when_held = shutdown()
+#button_a.when_held = shutdown()
+#button_b.when_held = shutdown()
 
 try:
     while True:
