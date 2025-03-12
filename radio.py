@@ -80,7 +80,7 @@ def toggle_stream(button):
 
     elif button in ['A', 'B']:
         info = requests.get(stream_info['info']).json()
-        result_idx = 0 if button == 'A' else 1
+        result_idx = 1 if button == 'A' else 0
         show_names.append(info['results'][result_idx]['now']['broadcast_title'])
 
     elif button == 'X':
