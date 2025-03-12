@@ -73,19 +73,18 @@ def toggle_stream(button):
     stream_url = stream_info['stream']
     logo_path = stream_info['logo']
     name = stream_info['name']
-    show_name = ''
+    show_names = []
 
     if button == 'Y':
         info = requests.get(stream_info['info']).json()
-        show_name = info.get('name', name)
+        show_names.append(info.get('name', name))
 
     elif button in ['A', 'B']:
         info = requests.get(stream_info['info']).json()
         result_idx = 0 if button == 'A' else 1
-        show_name = info['results'][result_idx]['now']['broadcast_title']
+        show_names.append(info['results'][result_idx]['now']['broadcast_title'])
 
     elif button == 'X':
-        show_name = name
         today = date.today().isoformat()
         epoch_time = int(time.time())
         info_url = stream_info['info'] + today
@@ -94,10 +93,9 @@ def toggle_stream(button):
         for program in programs:
             if int(program['startTime']) < epoch_time:
                 show_name = program['programTitle']
-        print(program['programTitle'])
-        print(show_name)
+        show_names.append(program['programTitle'])
 
-    display_info(logo_path, show_name)
+    display_info(logo_path, show_names[0])
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
