@@ -110,10 +110,10 @@ def toggle_stream(button):
         ])
 
 
-button_x = Button(5)
+button_x = Button(16)
 button_y = Button(24)
-button_a = Button(16)
-button_b = Button(26)
+button_a = Button(5)
+button_b = Button(6)
 
 button_x.when_pressed = lambda: toggle_stream('X')
 button_y.when_pressed = lambda: toggle_stream('Y')
