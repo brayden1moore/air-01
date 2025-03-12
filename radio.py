@@ -57,7 +57,7 @@ def display_info(logo_path, show_name):
     logo_path = f'logos/{logo_path}'
 
     try:
-        logo = Image.open(logo_path).resize((200, 200)).rotate(90)
+        logo = Image.open(logo_path).resize((150, 100)).rotate(90)
         image.paste(logo, (70, 20))
     except Exception as e:
         print(f"Failed to load logo: {e}")
@@ -73,12 +73,12 @@ def toggle_stream(button):
     stream_info = streams[button]
     stream_url = stream_info['stream']
     logo_path = stream_info['logo']
-    show_name = stream_info['name']
+    name = stream_info['name']
 
     try:
         if button == 'Y':
             info = requests.get(stream_info['info']).json()
-            show_name = info.get('name', show_name)
+            show_name = info.get('name', name)
 
         elif button in ['A', 'B']:
             info = requests.get(stream_info['info']).json()
@@ -95,6 +95,9 @@ def toggle_stream(button):
                 if int(program['startTime']) < epoch_time:
                     show_name = program['programTitle']
             print(program['programTitle'])
+        
+        display_info(logo_path, show_name)
+
     except Exception as e:
         print(f"Error fetching info: {e}")
 
@@ -109,8 +112,6 @@ def toggle_stream(button):
             "--volume=40",
             stream_url
         ])
-
-    display_info(logo_path, show_name)
 
 button_x = Button(5)
 button_y = Button(6)
