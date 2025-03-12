@@ -51,7 +51,7 @@ disp.begin()
 
 mpv_process = None
 
-def display_info(logo_path, show_name):
+def display_info(logo_path, show_name, description):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
     logo_path = f'logos/{logo_path}'
@@ -62,7 +62,8 @@ def display_info(logo_path, show_name):
     image.paste(logo, (70, 20))
 
     font = ImageFont.load_default()
-    draw.text((10, 200), show_name, font=font, fill=(255, 255, 255))
+    draw.text((10, 180), show_name, font=font, fill=(255, 255, 255))
+    draw.text((10, 210), description, font=font, fill=(255, 255, 255))
     
     disp.display(image.rotate(90))
 
@@ -73,11 +74,15 @@ def toggle_stream(name):
     stream_url = stream_info['stream']
     logo_path = stream_info['logo']
     show_names = []
+    descriptions = []
 
     if name == 'HydeFM':
         info = requests.get(stream_info['info']).json()
         status = info['online']
         show_title = info.get('name', name)
+        listeners = f"{info['listeners']} listeners."
+        descriptions.append(listeners)
+
         if status == False:
             show_names.append('OFFLINE')
         else:
@@ -85,8 +90,10 @@ def toggle_stream(name):
 
     elif 'NTS' in name:
         info = requests.get(stream_info['info']).json()
-        result_idx = 1 if name == 'NTS 1' else 0
-        show_names.append(info['results'][result_idx]['now']['broadcast_title'])
+        result_idx = 0 if name == 'NTS 1' else 1
+        show_info = info['results'][result_idx]['now']
+        descriptions.append(show_info['embeds']['description'])
+        show_names.append(show_info['broadcast_title'])
 
     elif name == 'KQED':
         today = date.today().isoformat()
@@ -94,12 +101,16 @@ def toggle_stream(name):
         info_url = stream_info['info'] + today
         info = requests.get(info_url).json()
         programs = info['data']['attributes']['schedule']
+        show_name = 'KQED'
+        description = 'No description.'
         for program in programs:
             if int(program['startTime']) < epoch_time:
                 show_name = program['programTitle']
-        show_names.append(program['programTitle'])
+                description = program['programDescription']
+        show_names.append(show_name)
+        descriptions.append(description) 
 
-    display_info(logo_path, show_names[0])
+    display_info(logo_path, show_names[0], descriptions[0])
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
