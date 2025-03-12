@@ -57,7 +57,7 @@ def display_info(logo_path, show_name):
     logo_path = f'logos/{logo_path}'
 
     try:
-        logo = Image.open(logo_path).resize((100, 100))
+        logo = Image.open(logo_path).resize((150, 150))
         image.paste(logo, (70, 20))
     except Exception as e:
         print(f"Failed to load logo: {e}")
