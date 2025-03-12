@@ -1,7 +1,7 @@
 import st7789
 from PIL import Image, ImageDraw, ImageFont
 from gpiozero import Button
-from subprocess import Popen
+from subprocess import Popen, run
 import requests
 from datetime import date
 import time
@@ -9,27 +9,27 @@ import signal
 from io import BytesIO
 
 streams = {
-    'X': {
+    'KQED': {
         'name': 'KQED',
         'stream': 'https://streams.kqed.org/kqedradio?onsite=true',
         'info': 'https://media-api.kqed.org/radio-schedules/',
         'logo': 'kqed.png'
     },
-    'Y': {
+    'HydeFM': {
         'name': 'HydeFM',
         'stream': 'https://media.evenings.co/s/DReMy100B',
         'info': 'https://api.evenings.co/v1/streams/hydefm/public',
         'logo': 'hydefm.png'
     },
-    'A': {
+    'NTS 2': {
         'name': 'NTS 2',
         'stream': 'https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp&device=800913353.1735584982',
         'info': 'https://www.nts.live/api/v2/live',
         'logo': 'nts2.png'
     },
-    'B': {
+    'NTS 1': {
         'name': 'NTS 1',
-        'stream': 'https://stream-relay-geo.ntslive.net/stream1?client=NTSWebApp&device=800913353.1735584982',
+        'stream': 'https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp&device=800913353.1735584982',
         'info': 'https://www.nts.live/api/v2/live',
         'logo': 'nts1.png'
     },
@@ -63,27 +63,32 @@ def display_info(logo_path, show_name):
 
     font = ImageFont.load_default()
     draw.text((10, 200), show_name, font=font, fill=(255, 255, 255))
+    
     disp.display(image.rotate(90))
 
-def toggle_stream(button):
+def toggle_stream(name):
     global mpv_process
 
-    stream_info = streams[button]
+    stream_info = streams[name]
     stream_url = stream_info['stream']
     logo_path = stream_info['logo']
-    name = stream_info['name']
     show_names = []
 
-    if button == 'Y':
+    if name == 'HydeFM':
         info = requests.get(stream_info['info']).json()
-        show_names.append(info.get('name', name))
+        status = info['online']
+        show_title = info.get('name', name)
+        if status == False:
+            show_names.append('OFFLINE')
+        else:
+            show_names.append(show_title)
 
-    elif button in ['A', 'B']:
+    elif 'NTS' in name:
         info = requests.get(stream_info['info']).json()
-        result_idx = 1 if button == 'A' else 0
+        result_idx = 1 if name == 'NTS 1' else 0
         show_names.append(info['results'][result_idx]['now']['broadcast_title'])
 
-    elif button == 'X':
+    elif name == 'KQED':
         today = date.today().isoformat()
         epoch_time = int(time.time())
         info_url = stream_info['info'] + today
@@ -104,20 +109,27 @@ def toggle_stream(button):
             "mpv",
             "--ao=alsa",
             "--audio-device=alsa/hw:1,0",
-            "--volume=40",
+            "--volume=50",
             stream_url
         ])
 
+def shutdown():
+    run(['sudo', 'shutdown', 'now'])
 
-button_x = Button(16)
-button_y = Button(24)
-button_a = Button(5)
-button_b = Button(6)
+button_x = Button(16, hold_time=5)
+button_y = Button(24, hold_time=5)
+button_a = Button(5, hold_time=5)
+button_b = Button(6, hold_time=5)
 
-button_x.when_pressed = lambda: toggle_stream('X')
-button_y.when_pressed = lambda: toggle_stream('Y')
-button_a.when_pressed = lambda: toggle_stream('A')
-button_b.when_pressed = lambda: toggle_stream('B')
+button_b.when_pressed = lambda: toggle_stream('NTS 1')
+button_a.when_pressed = lambda: toggle_stream('NTS 2')
+button_y.when_pressed = lambda: toggle_stream('HydeFM')
+button_x.when_pressed = lambda: toggle_stream('KQED')
+
+button_x.when_held = shutdown()
+button_y.when_held = shutdown()
+button_a.when_held = shutdown()
+button_b.when_held = shutdown()
 
 try:
     while True:
