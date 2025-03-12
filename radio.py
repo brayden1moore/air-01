@@ -63,8 +63,8 @@ def display_info(logo_path, show_name):
         print(f"Failed to load logo: {e}")
 
     font = ImageFont.load_default()
-    draw.text((10, 180), show_name, font=font, fill=(255, 255, 255))
-    disp.display(image)
+    draw.text((10, 200), show_name, font=font, fill=(255, 255, 255))
+    disp.display(image.rotate(-90))
 
 def toggle_stream(button):
     global mpv_process
