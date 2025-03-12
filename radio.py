@@ -93,7 +93,7 @@ def toggle_stream(button):
         for program in programs:
             if int(program['startTime']) < epoch_time:
                 show_name = program['programTitle']
-        show_name = show_name
+        print(program['programTitle'])
 
     display_info(logo_path, show_name)
 
