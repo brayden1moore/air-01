@@ -36,7 +36,7 @@ streams = {
 }
 
 # Setup Display
-disp = ST7789.ST7789(
+disp = st7789.ST7789(
     height=240,
     width=240,
     rotation=90,
@@ -54,6 +54,7 @@ mpv_process = None
 def display_info(logo_path, show_name):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
+    logo_path = f'logos/{logo_path}'
 
     try:
         logo = Image.open(logo_path).resize((100, 100))
