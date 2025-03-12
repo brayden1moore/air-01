@@ -62,7 +62,7 @@ def display_info(logo_path, show_name, description):
     image.paste(logo, (70, 20))
 
     font = ImageFont.load_default()
-    draw.text((10, 180), show_name, font=font, fill=(255, 255, 255))
+    draw.text((10, 200), show_name, font=font, fill=(255, 255, 255))
     draw.text((10, 210), description, font=font, fill=(255, 255, 255))
     
     disp.display(image.rotate(90))
