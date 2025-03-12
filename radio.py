@@ -94,7 +94,7 @@ def toggle_stream(button):
             for program in programs:
                 if int(program['startTime']) < epoch_time:
                     show_name = program['programTitle']
-            print(show_name)
+            print(program['programTitle'])
     except Exception as e:
         print(f"Error fetching info: {e}")
 
