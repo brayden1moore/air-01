@@ -58,7 +58,7 @@ def display_info(logo_path, show_name):
 
     border = Image.new('RGB', (152, 152), color=(255, 255, 255))
     logo = Image.open(logo_path).resize((150, 150))
-    image.paste(border, (70, 20))
+    image.paste(border, (71, 21))
     image.paste(logo, (70, 20))
 
     font = ImageFont.load_default()
