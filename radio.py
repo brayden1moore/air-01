@@ -63,7 +63,7 @@ def display_info(logo_path, show_name):
         print(f"Failed to load logo: {e}")
 
     font = ImageFont.load_default()
-    draw.text((10, 150), show_name, font=font, fill=(255, 255, 255))
+    draw.text((10, 180), show_name, font=font, fill=(255, 255, 255))
     disp.display(image)
 
 def toggle_stream(button):
