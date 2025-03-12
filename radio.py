@@ -52,6 +52,7 @@ disp.begin()
 mpv_process = None
 
 def display_info(logo_path, show_name):
+    logo_path = f'logos/{logo_path}'
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
