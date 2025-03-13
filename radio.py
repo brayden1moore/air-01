@@ -71,7 +71,7 @@ for button, name in button_mappings.items():
         image.paste(border, (240-57-3, 3))
         image.paste(logo, (240-55-5, 5))
 
-disp.display(image.rotate(180))
+#disp.display(image.rotate(180))
 
 mpv_process = None
 stream = None
