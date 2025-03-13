@@ -117,7 +117,7 @@ def display_info(name, play_status):
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
-    image.paste(icon, (19,55))
+    image.paste(icon, (19,70))
 
     font = ImageFont.load_default()
     draw.text((19, 200), show_names[0], font=font, fill=(255, 255, 255))
