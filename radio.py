@@ -113,7 +113,7 @@ def display_info(name, play_status):
 
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((30, 30))
-    image.paste(icon, (-21,19))
+    image.paste(icon, (240-21,19))
 
     font = ImageFont.load_default()
     draw.text((19, 200), show_names[0], font=font, fill=(255, 255, 255))
