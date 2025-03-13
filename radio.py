@@ -159,7 +159,7 @@ def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
 def periodic_update():
-    if stream:
+    if mpv_process:
         display_info(stream, 'play')
     threading.Timer(5, periodic_update).start()
 
