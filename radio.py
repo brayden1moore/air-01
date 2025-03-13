@@ -108,12 +108,12 @@ def display_info(name, play_status):
 
     border = Image.new('RGB', (152, 152), color=(255, 255, 255))
     logo = Image.open(logo_path).resize((150, 150))
-    image.paste(border, (19, 19))
-    image.paste(logo, (20, 20))
+    image.paste(border, (69, 19))
+    image.paste(logo, (70, 20))
 
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((30, 30))
-    image.paste(icon, (240-21-30,19))
+    image.paste(icon, (19,19))
 
     font = ImageFont.load_default()
     draw.text((19, 200), show_names[0], font=font, fill=(255, 255, 255))
