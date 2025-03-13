@@ -123,9 +123,8 @@ def toggle_stream(name):
     stream_info = streams[name]
     stream_url = stream_info['stream']
     display_info(name)
-    stream = name
 
-    if mpv_process:
+    if stream==name:
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
     else:
@@ -136,6 +135,8 @@ def toggle_stream(name):
             "--volume=50",
             stream_url
         ])
+
+    stream = name 
 
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
