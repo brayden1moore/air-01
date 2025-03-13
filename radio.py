@@ -55,21 +55,21 @@ disp = st7789.ST7789(
 )
 
 disp.begin()
-image = Image.new('RGB', (240, 240), color=(0, 0, 0))
-draw = ImageDraw.Draw(image)
+#image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+#draw = ImageDraw.Draw(image)
 
-for button, name in button_mappings.items():
-    logo_path = streams[name]['logo']
-    logo_path = f'logos/{logo_path}'
-    border = Image.new('RGB', (57, 57), color=(255, 255, 255))
-    logo = Image.open(logo_path).resize((55, 55))
-
-    if button=='A':
-        image.paste(border, (3, 3))
-        image.paste(logo, (5, 5))
-    elif button=='B':
-        image.paste(border, (240-57-3, 3))
-        image.paste(logo, (240-55-5, 5))
+#for button, name in button_mappings.items():
+#    logo_path = streams[name]['logo']
+#    logo_path = f'logos/{logo_path}'
+#    border = Image.new('RGB', (57, 57), color=(255, 255, 255))
+#    logo = Image.open(logo_path).resize((55, 55))
+#
+#    if button=='A':
+#        image.paste(border, (3, 3))
+#        image.paste(logo, (5, 5))
+#    elif button=='B':
+#        image.paste(border, (240-57-3, 3))
+#        image.paste(logo, (240-55-5, 5))
 
 #disp.display(image.rotate(180))
 
