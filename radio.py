@@ -7,6 +7,7 @@ from datetime import date
 import time
 import signal
 from io import BytesIO
+import threading
 
 streams = {
     'KQED': {
@@ -35,7 +36,6 @@ streams = {
     },
 }
 
-# Setup Display
 disp = st7789.ST7789(
     height=240,
     width=240,
@@ -50,28 +50,11 @@ disp = st7789.ST7789(
 disp.begin()
 
 mpv_process = None
+stream = None
 
-def display_info(logo_path, show_name, description):
-    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
-    draw = ImageDraw.Draw(image)
-    logo_path = f'logos/{logo_path}'
-
-    border = Image.new('RGB', (152, 152), color=(255, 255, 255))
-    logo = Image.open(logo_path).resize((150, 150))
-    image.paste(border, (69, 19))
-    image.paste(logo, (70, 20))
-
-    font = ImageFont.load_default()
-    draw.text((10, 200), show_name, font=font, fill=(255, 255, 255))
-    draw.text((10, 210), description, font=font, fill=(255, 255, 255))
-    
-    disp.display(image.rotate(90))
-
-def toggle_stream(name):
-    global mpv_process
+def display_info(name):
 
     stream_info = streams[name]
-    stream_url = stream_info['stream']
     logo_path = stream_info['logo']
     show_names = []
     descriptions = []
@@ -119,7 +102,28 @@ def toggle_stream(name):
         show_names.append(show_name)
         descriptions.append(description) 
 
-    display_info(logo_path, show_names[0], descriptions[0])
+    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    logo_path = f'logos/{logo_path}'
+
+    border = Image.new('RGB', (152, 152), color=(255, 255, 255))
+    logo = Image.open(logo_path).resize((150, 150))
+    image.paste(border, (69, 19))
+    image.paste(logo, (70, 20))
+
+    font = ImageFont.load_default()
+    draw.text((10, 200), show_names[0], font=font, fill=(255, 255, 255))
+    draw.text((10, 210), descriptions[0], font=font, fill=(255, 255, 255))
+    
+    disp.display(image.rotate(90))
+
+def toggle_stream(name):
+    global mpv_process, stream
+
+    stream_info = streams[name]
+    stream_url = stream_info['stream']
+    display_info(name)
+    stream = name
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
@@ -136,6 +140,11 @@ def toggle_stream(name):
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
+def periodic_update():
+    if stream:
+        display_info(stream)
+    threading.Timer(5, periodic_update).start()
+
 button_x = Button(16, hold_time=5)
 button_y = Button(24, hold_time=5)
 button_a = Button(5, hold_time=5)
@@ -146,10 +155,7 @@ button_a.when_pressed = lambda: toggle_stream('NTS 2')
 button_y.when_pressed = lambda: toggle_stream('HydeFM')
 button_x.when_pressed = lambda: toggle_stream('KQED')
 
-#button_x.when_held = shutdown()
-#button_y.when_held = shutdown()
-#button_a.when_held = shutdown()
-#button_b.when_held = shutdown()
+periodic_update()
 
 try:
     while True:
