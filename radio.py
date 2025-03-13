@@ -52,6 +52,12 @@ disp.begin()
 mpv_process = None
 stream = None
 
+def s(number):
+    if number == 1:
+        return ''
+    else:
+        return 's'
+
 def display_info(name, play_status):
 
     stream_info = streams[name]
@@ -63,7 +69,8 @@ def display_info(name, play_status):
         info = requests.get(stream_info['info']).json()
         status = info['online']
         show_title = info.get('name', name)
-        listeners = f"{info['listeners']} listeners."
+        num_listeners = info['listeners']
+        listeners = f"{num_listeners} listener{s(num_listeners)}."
         descriptions.append(listeners)
 
         if status == False:
