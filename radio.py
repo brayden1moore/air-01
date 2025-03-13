@@ -116,8 +116,8 @@ def display_info(name, play_status):
     image.paste(icon, (19,19))
 
     font = ImageFont.load_default()
-    draw.text((10, 200), show_names[0], font=font, fill=(255, 255, 255))
-    draw.text((10, 210), descriptions[0], font=font, fill=(255, 255, 255))
+    draw.text((19, 200), show_names[0], font=font, fill=(255, 255, 255))
+    draw.text((19, 210), descriptions[0], font=font, fill=(255, 255, 255))
     
     disp.display(image.rotate(90))
 
