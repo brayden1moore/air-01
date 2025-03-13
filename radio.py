@@ -124,10 +124,21 @@ def toggle_stream(name):
     stream_url = stream_info['stream']
     display_info(name)
 
-    if (stream==name) and mpv_process:
+    if mpv_process: # if stream is playing, stop it
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
-    else:
+
+        if stream != name: # if the button pressed is a new stream, play it
+            mpv_process = Popen([ 
+                "mpv",
+                "--ao=alsa",
+                "--audio-device=alsa/hw:1,0",
+                "--volume=50",
+                stream_url
+            ])
+            stream = name
+
+    else: # otherwise play the one pressed
         mpv_process = Popen([
             "mpv",
             "--ao=alsa",
@@ -135,9 +146,8 @@ def toggle_stream(name):
             "--volume=50",
             stream_url
         ])
-
-    stream = name 
-
+        stream = name
+        
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
