@@ -52,7 +52,7 @@ disp.begin()
 mpv_process = None
 stream = None
 
-def display_info(name):
+def display_info(name, play_status):
 
     stream_info = streams[name]
     logo_path = stream_info['logo']
@@ -111,6 +111,10 @@ def display_info(name):
     image.paste(border, (69, 19))
     image.paste(logo, (70, 20))
 
+    icon_path = f'assets/{play_status}.png'
+    icon = Image.open(icon_path).resize((30, 30))
+    image.paste(icon, (19,19))
+
     font = ImageFont.load_default()
     draw.text((10, 200), show_names[0], font=font, fill=(255, 255, 255))
     draw.text((10, 210), descriptions[0], font=font, fill=(255, 255, 255))
@@ -122,11 +126,12 @@ def toggle_stream(name):
 
     stream_info = streams[name]
     stream_url = stream_info['stream']
-    display_info(name)
 
     if mpv_process: # if stream is playing, stop it
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
+
+        display_info(name, 'pause')
 
         if stream != name: # if the button pressed is a new stream, play it
             mpv_process = Popen([ 
@@ -137,6 +142,7 @@ def toggle_stream(name):
                 stream_url
             ])
             stream = name
+            display_info(name, 'play')
 
     else: # otherwise play the one pressed
         mpv_process = Popen([
@@ -147,13 +153,14 @@ def toggle_stream(name):
             stream_url
         ])
         stream = name
+        display_info(name, 'play')
         
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
 def periodic_update():
     if stream:
-        display_info(stream)
+        display_info(stream, 'play')
     threading.Timer(5, periodic_update).start()
 
 button_x = Button(16, hold_time=5)
