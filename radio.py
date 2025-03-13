@@ -124,7 +124,7 @@ def toggle_stream(name):
     stream_url = stream_info['stream']
     display_info(name)
 
-    if stream==name:
+    if (stream==name) and mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
     else:
