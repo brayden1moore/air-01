@@ -133,7 +133,7 @@ def display_info(name, play_status):
     draw.text((19, 195), show_names[0], font=font, fill=(255, 255, 255))
     draw.text((19, 205), descriptions[0], font=font, fill=(255, 255, 255))
     
-    disp.display(image.rotate(90))
+    disp.display(image.rotate(180))
 
 def toggle_stream(name):
     global mpv_process, stream
