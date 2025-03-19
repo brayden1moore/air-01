@@ -133,8 +133,8 @@ def display_info(name, play_status):
         show_names.append(show_name)
         descriptions.append(description) 
 
-    show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"') for i in show_names]
-    descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"') for i in descriptions]
+    show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
+    descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
 
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
