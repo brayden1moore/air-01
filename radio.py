@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 from gpiozero import Button
 from subprocess import Popen, run
 import requests
-from datetime import date
+from datetime import date, datetime, timezone
 import time
 import signal
 from io import BytesIO
@@ -34,6 +34,18 @@ streams = {
         'info': 'https://www.nts.live/api/v2/live',
         'logo': 'nts1.png'
     },
+    'Dublab': {
+        'name': 'Dublab',
+        'stream': 'https://dublab.out.airtime.pro/dublab_a',
+        'info': 'https://www.dublab.com/.netlify/functions/schedule?tz=America%2FLos_Angeles',
+        'logo': 'dublab.jpeg'
+    },
+    'Lower Grand Radio': {
+        'name': 'Lower Grand Radio',
+        'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
+        'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
+
+    }
 }
 
 button_mappings = {
@@ -88,6 +100,7 @@ def display_info(name, play_status):
     logo_path = stream_info['logo']
     show_names = []
     descriptions = []
+    logo_urls = []
 
     if name == 'HydeFM':
         info = requests.get(stream_info['info']).json()
@@ -133,14 +146,35 @@ def display_info(name, play_status):
         show_names.append(show_name)
         descriptions.append(description) 
 
+    elif name == 'Dublab':
+        now = datetime.now(timezone.utc)
+        info_url = stream_info['info']
+        info = requests.get(info_url).json()
+        show_name = 'Dublab'
+        description = 'No description.'
+        for program in info:
+            if datetime.fromisoformat(program['startTime']) < now:
+                show_name = program['eventTitleMedia']['artist'] if program['eventTitleMedia']['artist'] else "Dublab"                
+                description = program['eventTitleMedia']['eventName']
+                logo_url = program['attachments']
+        show_names.append(show_name)
+        descriptions.append(description) 
+        logo_urls.append(logo_url)
+
     show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
     descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
 
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
-    logo_path = f'logos/{logo_path}'
+
+    if len(logo_urls)>0:
+        response = requests.get(logo_urls[0])
+        logo = Image.open(BytesIO(response.content))
+    else:
+        logo_path = f'logos/{logo_path}'
+        logo = Image.open(logo_path).resize((150, 150))
+
     border = Image.new('RGB', (152, 152), color=(255, 255, 255))
-    logo = Image.open(logo_path).resize((150, 150))
     image.paste(border, (69, 19))
     image.paste(logo, (70, 20))
 
@@ -208,7 +242,7 @@ button_b = Button(6, hold_time=5)
 button_b.when_pressed = lambda: toggle_stream('NTS 1')
 button_a.when_pressed = lambda: toggle_stream('NTS 2')
 button_y.when_pressed = lambda: toggle_stream('HydeFM')
-button_x.when_pressed = lambda: toggle_stream('KQED')
+button_x.when_pressed = lambda: toggle_stream('Dublab')
 
 periodic_update()
 
