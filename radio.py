@@ -63,8 +63,8 @@ disp = st7789.ST7789(
 
 disp.begin()
 
-def display_dancers():
-    dancers = Image.open('assets/dancers.gif').resize((240, 240))
+def display_scud():
+    dancers = Image.open('assets/scudhouse.gif').resize((240, 240))
     while True:  
         for frame in ImageSequence.Iterator(dancers):
             frame = frame.convert('RGB')  
@@ -82,7 +82,7 @@ def s(number):
 def display_info(name, play_status):
 
     if stream == None:
-        display_dancers()
+        display_scud()
     else:
 
         stream_info = streams[name]
@@ -243,10 +243,6 @@ def periodic_update():
     global mpv_process
     if mpv_process and mpv_process.poll() is None:
         display_info(stream, 'play')
-    elif stream == None:
-        mpv_process = None
-        display_dancers()
-
     threading.Timer(5, periodic_update).start()
 
 button_x = Button(16, hold_time=5)
