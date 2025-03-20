@@ -67,13 +67,12 @@ mpv_process = None
 stream = None
 
 def display_scud():
-    gif = Image.open('assets/scudhouse.gif').resize((240, 240))
-    while stream == None:  
-        for frame in ImageSequence.Iterator(gif):
-            frame = frame.convert('RGB')  
-            disp.display(frame)
+    gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
+    for frame in ImageSequence.Iterator(gif):
+        frame = frame.convert('RGB')  
+        disp.display(frame)
 
-#display_scud()
+display_scud()
 
 def s(number):
     if number == 1:
@@ -190,7 +189,6 @@ def toggle_stream(name):
         if mpv_process: # if stream is playing, stop it
             mpv_process.send_signal(signal.SIGTERM)
             mpv_process = None
-
             display_info(name, 'pause')
 
             if stream != name: # if the button pressed is a new stream, play it
