@@ -247,8 +247,8 @@ button_y = Button(24, hold_time=5)
 button_a = Button(5, hold_time=5)
 button_b = Button(6, hold_time=5)
 
-button_b.when_pressed = lambda: play_random()
-button_a.when_pressed = lambda: toggle_stream(stream)
+button_b.when_pressed = lambda: toggle_stream(stream)
+button_a.when_pressed = lambda: play_random()
 button_y.when_pressed = lambda: seek_stream(-1)
 button_x.when_pressed = lambda: seek_stream(1)
 
