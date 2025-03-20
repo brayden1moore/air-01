@@ -65,7 +65,7 @@ disp.begin()
 
 def display_dancers():
     image = Image.new('RGB', (240, 240), color=(255, 255, 255))
-    dancers = Image.open('assets/dancer.gif').resize((240, 240))
+    dancers = Image.open('assets/dancers.gif').resize((240, 240))
     image.paste(dancers, (0,0))
     disp.display(image)
 
