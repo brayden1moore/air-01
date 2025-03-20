@@ -169,7 +169,7 @@ def display_info(name, play_status):
 
     if len(logo_urls)>0:
         response = requests.get(logo_urls[0])
-        logo = Image.open(BytesIO(response.content))
+        logo = Image.open(BytesIO(response.content)).resize((150, 150))
     else:
         logo_path = f'logos/{logo_path}'
         logo = Image.open(logo_path).resize((150, 150))
