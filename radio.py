@@ -233,10 +233,13 @@ def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
 def periodic_update():
-    if mpv_process:
+    global mpv_process
+    if mpv_process and mpv_process.poll() is None:
         display_info(stream, 'play')
     else:
+        mpv_process = None  
         display_dancers()
+
     threading.Timer(5, periodic_update).start()
 
 button_x = Button(16, hold_time=5)
