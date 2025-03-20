@@ -79,6 +79,7 @@ def s(number):
         return 's'
 
 def display_info(name, play_status):
+
     stream_info = streams[name]
     logo_path = stream_info['logo']
     show_names = []
@@ -233,13 +234,8 @@ def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
 def periodic_update():
-    global mpv_process
-    if mpv_process and mpv_process.poll() is None:
+    if mpv_process:
         display_info(stream, 'play')
-    else:
-        mpv_process = None  
-        display_dancers()
-
     threading.Timer(5, periodic_update).start()
 
 button_x = Button(16, hold_time=5)
@@ -260,3 +256,9 @@ try:
 except KeyboardInterrupt:
     if mpv_process:
         mpv_process.terminate()
+
+    WIDTH = disp.width
+    HEIGHT = disp.height
+    img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
+    draw = ImageDraw.Draw(img)
+    disp.display(img)
