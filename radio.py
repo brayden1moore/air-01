@@ -1,5 +1,5 @@
 import st7789
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageSequence
 from gpiozero import Button
 from subprocess import Popen, run
 import requests
@@ -64,10 +64,11 @@ disp = st7789.ST7789(
 disp.begin()
 
 def display_dancers():
-    image = Image.new('RGB', (240, 240), color=(255, 255, 255))
     dancers = Image.open('assets/dancers.gif').resize((240, 240))
-    image.paste(dancers, (0,0))
-    disp.display(image)
+    while True:  
+        for frame in ImageSequence.Iterator(dancers):
+            frame = frame.convert('RGB')  
+            disp.display(frame)
 
 mpv_process = None
 stream = None
@@ -242,7 +243,7 @@ def periodic_update():
     global mpv_process
     if mpv_process and mpv_process.poll() is None:
         display_info(stream, 'play')
-    else:
+    elif stream == None:
         mpv_process = None
         display_dancers()
 
