@@ -62,10 +62,12 @@ disp = st7789.ST7789(
 )
 
 disp.begin()
-image = Image.new('RGB', (240, 240), color=(255, 255, 255))
-dancers = Image.open('assets/dancer.gif').resize((240, 240))
-image.paste(dancers, (0,0))
-disp.display(image)
+
+def display_dancers():
+    image = Image.new('RGB', (240, 240), color=(255, 255, 255))
+    dancers = Image.open('assets/dancer.gif').resize((240, 240))
+    image.paste(dancers, (0,0))
+    disp.display(image)
 
 mpv_process = None
 stream = None
@@ -78,100 +80,104 @@ def s(number):
 
 def display_info(name, play_status):
 
-    stream_info = streams[name]
-    logo_path = stream_info['logo']
-    show_names = []
-    descriptions = []
-    logo_urls = []
-
-    if name == 'HydeFM':
-        info = requests.get(stream_info['info']).json()
-        status = info['online']
-        show_title = info.get('name', name)
-        num_listeners = info['listeners']
-        listeners = f"{num_listeners} listener{s(num_listeners)}."
-        descriptions.append(listeners)
-
-        if status == False:
-            show_names.append('OFFLINE')
-        else:
-            show_names.append(show_title)
-
-    elif 'NTS' in name:
-        info = requests.get(stream_info['info']).json()
-        result_idx = 0 if name == 'NTS 1' else 1
-        show_info = info['results'][result_idx]['now']
-
-        genres = []
-        for g in show_info['embeds']['details']['genres']:
-            genres.append(g['value']) 
-        
-        if len(genres)==0:
-            descriptions.append(show_info['embeds']['details']['description'])
-        else:
-            descriptions.append(', '.join(genres))
-
-        show_names.append(show_info['broadcast_title'])
-
-    elif name == 'KQED':
-        today = date.today().isoformat()
-        epoch_time = int(time.time())
-        info_url = stream_info['info'] + today
-        info = requests.get(info_url).json()
-        programs = info['data']['attributes']['schedule']
-        show_name = 'KQED'
-        description = 'No description.'
-        for program in programs:
-            if int(program['startTime']) < epoch_time:
-                show_name = program['programTitle']
-                description = program['programDescription']
-        show_names.append(show_name)
-        descriptions.append(description) 
-
-    elif name == 'Dublab':
-        now = datetime.now(timezone.utc)
-        info_url = stream_info['info']
-        info = requests.get(info_url).json()
-        show_name = 'Dublab'
-        description = 'No description.'
-        for program in info:
-            if datetime.fromisoformat(program['startTime']) < now:
-                show_name = program['eventTitleMeta']['artist'] if program['eventTitleMeta']['artist'] else "Dublab"                
-                description = program['eventTitleMeta']['eventName']
-                logo_url = program['attachments']
-        show_names.append(show_name)
-        descriptions.append(description) 
-        logo_urls.append(logo_url)
-
-    show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
-    descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
-
-    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
-    draw = ImageDraw.Draw(image)
-
-    if len(logo_urls)>0:
-        response = requests.get(logo_urls[0])
-        logo = Image.open(BytesIO(response.content)).resize((150, 150))
+    if stream == None:
+        display_dancers()
     else:
-        logo_path = f'logos/{logo_path}'
-        logo = Image.open(logo_path).resize((150, 150))
 
-    border = Image.new('RGB', (152, 152), color=(255, 255, 255))
-    image.paste(border, (69, 19))
-    image.paste(logo, (70, 20))
+        stream_info = streams[name]
+        logo_path = stream_info['logo']
+        show_names = []
+        descriptions = []
+        logo_urls = []
 
-    icon_path = f'assets/{play_status}.png'
-    icon = Image.open(icon_path).resize((30, 30))
-    image.paste(icon, (19,19))
+        if name == 'HydeFM':
+            info = requests.get(stream_info['info']).json()
+            status = info['online']
+            show_title = info.get('name', name)
+            num_listeners = info['listeners']
+            listeners = f"{num_listeners} listener{s(num_listeners)}."
+            descriptions.append(listeners)
 
-    icon_path = f'assets/flower.png'
-    icon = Image.open(icon_path).resize((30, 110))
-    image.paste(icon, (19,65))
+            if status == False:
+                show_names.append('OFFLINE')
+            else:
+                show_names.append(show_title)
 
-    font = ImageFont.load_default()
-    draw.text((19, 195), show_names[0], font=font, fill=(255, 255, 255))
-    draw.text((19, 205), descriptions[0], font=font, fill=(255, 255, 255))
-    
+        elif 'NTS' in name:
+            info = requests.get(stream_info['info']).json()
+            result_idx = 0 if name == 'NTS 1' else 1
+            show_info = info['results'][result_idx]['now']
+
+            genres = []
+            for g in show_info['embeds']['details']['genres']:
+                genres.append(g['value']) 
+            
+            if len(genres)==0:
+                descriptions.append(show_info['embeds']['details']['description'])
+            else:
+                descriptions.append(', '.join(genres))
+
+            show_names.append(show_info['broadcast_title'])
+
+        elif name == 'KQED':
+            today = date.today().isoformat()
+            epoch_time = int(time.time())
+            info_url = stream_info['info'] + today
+            info = requests.get(info_url).json()
+            programs = info['data']['attributes']['schedule']
+            show_name = 'KQED'
+            description = 'No description.'
+            for program in programs:
+                if int(program['startTime']) < epoch_time:
+                    show_name = program['programTitle']
+                    description = program['programDescription']
+            show_names.append(show_name)
+            descriptions.append(description) 
+
+        elif name == 'Dublab':
+            now = datetime.now(timezone.utc)
+            info_url = stream_info['info']
+            info = requests.get(info_url).json()
+            show_name = 'Dublab'
+            description = 'No description.'
+            for program in info:
+                if datetime.fromisoformat(program['startTime']) < now:
+                    show_name = program['eventTitleMeta']['artist'] if program['eventTitleMeta']['artist'] else "Dublab"                
+                    description = program['eventTitleMeta']['eventName']
+                    logo_url = program['attachments']
+            show_names.append(show_name)
+            descriptions.append(description) 
+            logo_urls.append(logo_url)
+
+        show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
+        descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
+
+        image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+        draw = ImageDraw.Draw(image)
+
+        if len(logo_urls)>0:
+            response = requests.get(logo_urls[0])
+            logo = Image.open(BytesIO(response.content)).resize((150, 150))
+        else:
+            logo_path = f'logos/{logo_path}'
+            logo = Image.open(logo_path).resize((150, 150))
+
+        border = Image.new('RGB', (152, 152), color=(255, 255, 255))
+        image.paste(border, (69, 19))
+        image.paste(logo, (70, 20))
+
+        icon_path = f'assets/{play_status}.png'
+        icon = Image.open(icon_path).resize((30, 30))
+        image.paste(icon, (19,19))
+
+        icon_path = f'assets/flower.png'
+        icon = Image.open(icon_path).resize((30, 110))
+        image.paste(icon, (19,65))
+
+        font = ImageFont.load_default()
+        draw.text((19, 195), show_names[0], font=font, fill=(255, 255, 255))
+        draw.text((19, 205), descriptions[0], font=font, fill=(255, 255, 255))
+        
     disp.display(image.rotate(90))
 
 def toggle_stream(name):
