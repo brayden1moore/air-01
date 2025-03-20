@@ -257,9 +257,3 @@ try:
 except KeyboardInterrupt:
     if mpv_process:
         mpv_process.terminate()
-
-    WIDTH = disp.width
-    HEIGHT = disp.height
-    img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
-    draw = ImageDraw.Draw(img)
-    disp.display(img)
