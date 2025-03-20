@@ -62,6 +62,7 @@ disp = st7789.ST7789(
 )
 
 disp.begin()
+
 mpv_process = None
 stream = None
 
@@ -72,7 +73,7 @@ def display_scud():
             frame = frame.convert('RGB')  
             disp.display(frame)
 
-display_scud()
+#display_scud()
 
 def s(number):
     if number == 1:
