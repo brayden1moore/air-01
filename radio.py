@@ -41,12 +41,11 @@ streams = {
         'info': 'https://www.dublab.com/.netlify/functions/schedule?tz=America%2FLos_Angeles',
         'logo': 'dublab.jpeg'
     },
-    'Lower Grand Radio': {
-        'name': 'Lower Grand Radio',
-        'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
-        'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
-
-    }
+    #'Lower Grand Radio': {
+    #    'name': 'Lower Grand Radio',
+    #    'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
+    #    'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
+    #}
 }
 
 
