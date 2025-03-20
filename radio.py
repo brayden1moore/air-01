@@ -154,8 +154,8 @@ def display_info(name, play_status):
         description = 'No description.'
         for program in info:
             if datetime.fromisoformat(program['startTime']) < now:
-                show_name = program['eventTitleMedia']['artist'] if program['eventTitleMedia']['artist'] else "Dublab"                
-                description = program['eventTitleMedia']['eventName']
+                show_name = program['eventTitleMeta']['artist'] if program['eventTitleMeta']['artist'] else "Dublab"                
+                description = program['eventTitleMeta']['eventName']
                 logo_url = program['attachments']
         show_names.append(show_name)
         descriptions.append(description) 
