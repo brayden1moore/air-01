@@ -80,14 +80,15 @@ def display_scud():
     draw.text((170, 220), 'next', font=font, fill=(0, 0, 0))
     disp.display(image)
 
-
 display_scud()
+
 
 def s(number):
     if number == 1:
         return ''
     else:
         return 's'
+
 
 def display_info(name, play_status):
 
@@ -187,6 +188,7 @@ def display_info(name, play_status):
     
     disp.display(image)
 
+
 def toggle_stream(name):
     global mpv_process, stream
 
@@ -241,8 +243,10 @@ def seek_stream(direction):
             else:
                 toggle_stream(stream_list[-1])
 
+
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
+
 
 def periodic_update():
     global mpv_process
@@ -265,7 +269,7 @@ periodic_update()
 
 try:
     while True:
-        time.sleep(1)
+        time.sleep(0.5)
 except KeyboardInterrupt:
     if mpv_process:
         mpv_process.terminate()
