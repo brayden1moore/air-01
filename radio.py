@@ -67,25 +67,19 @@ mpv_process = None
 stream = None
 
 def display_scud():
-    gif = Image.open('assets/scudhouse.gif').resize((240, 240))
-    frames = list(ImageSequence.Iterator(gif)) 
-    durations = [frame.info.get("duration", 100) / 1000 for frame in frames] 
-
+    gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
+    frame = ImageSequence.Iterator(gif)[0].convert('RGB')
     font = ImageFont.load_default()
 
-    while True:
-        for frame, duration in zip(frames, durations):
-            image = Image.new('RGB', (240, 240))
-            image.paste(frame.convert('RGB'), (0, 0))
+    image = Image.new('RGB', (240, 240))
+    image.paste(frame, (0, 0))
+    draw = ImageDraw.Draw(image)
+    draw.text((35, 10), 'play/pause', font=font, fill=(0, 0, 0))
+    draw.text((165, 10), 'random', font=font, fill=(0, 0, 0))
+    draw.text((37, 220), 'previous', font=font, fill=(0, 0, 0))
+    draw.text((170, 220), 'next', font=font, fill=(0, 0, 0))
+    disp.display(image)
 
-            draw = ImageDraw.Draw(image)
-            draw.text((35, 10), 'play/pause', font=font, fill=(0, 0, 0))
-            draw.text((165, 10), 'random', font=font, fill=(0, 0, 0))
-            draw.text((37, 220), 'previous', font=font, fill=(0, 0, 0))
-            draw.text((170, 220), 'next', font=font, fill=(0, 0, 0))
-
-            disp.display(image) 
-            time.sleep(duration)
 
 display_scud()
 
