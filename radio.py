@@ -74,9 +74,9 @@ def display_scud():
     image = Image.new('RGB', (240, 240))
     image.paste(frame, (0, 0))
     draw = ImageDraw.Draw(image)
-    draw.text((40, 10), 'play/pause', font=font, fill=(0, 0, 0))
-    draw.text((170, 10), 'random', font=font, fill=(0, 0, 0))
-    draw.text((40, 220), 'previous', font=font, fill=(0, 0, 0))
+    draw.text((35, 10), 'play/pause', font=font, fill=(0, 0, 0))
+    draw.text((165, 10), 'random', font=font, fill=(0, 0, 0))
+    draw.text((37, 220), 'previous', font=font, fill=(0, 0, 0))
     draw.text((170, 220), 'next', font=font, fill=(0, 0, 0))
 
     disp.display(image)
