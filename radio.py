@@ -48,6 +48,7 @@ streams = {
     #}
 }
 
+stream_list = sorted(list(streams.keys()))
 
 disp = st7789.ST7789(
     height=240,
@@ -208,17 +209,15 @@ def toggle_stream(name):
             display_info(name, 'play')
 
 def play_random():
-    available_streams = [i for i in list(streams.keys()) if i != stream]
+    available_streams = [i for i in stream_list if i != stream]
     chosen = random.choice(available_streams)
     toggle_stream(chosen)
-
 
 def seek_stream(direction):
     if stream == None:
         play_random()
     
     else:
-        stream_list = list(streams.keys())
         idx = stream_list.index(stream)
         try:
             toggle_stream(stream_list[idx + direction])
