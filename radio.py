@@ -62,18 +62,17 @@ disp = st7789.ST7789(
 )
 
 disp.begin()
+mpv_process = None
+stream = None
 
 def display_scud():
     gif = Image.open('assets/scudhouse.gif').resize((240, 240))
-    while True:  
+    while stream == None:  
         for frame in ImageSequence.Iterator(gif):
             frame = frame.convert('RGB')  
             disp.display(frame)
 
 display_scud()
-
-mpv_process = None
-stream = None
 
 def s(number):
     if number == 1:
