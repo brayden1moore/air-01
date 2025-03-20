@@ -68,9 +68,16 @@ stream = None
 
 def display_scud():
     gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
-    for frame in ImageSequence.Iterator(gif):
-        frame = frame.convert('RGB')  
-        disp.display(frame)
+    frame = ImageSequence.Iterator(gif)[0].convert('RGB')
+    font = ImageFont.load_default()
+
+    image = Image.new('RGB', (240, 240))
+    image.paste(frame, (70, 20))
+    draw = ImageDraw.Draw(image)
+    draw.text((19, 195), 'play/pause', font=font, fill=(0, 0, 0))
+
+    disp.display(image)
+
 
 display_scud()
 
