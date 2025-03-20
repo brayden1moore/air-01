@@ -62,7 +62,9 @@ disp = st7789.ST7789(
 )
 
 disp.begin()
-image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+image = Image.new('RGB', (240, 240), color=(255, 255, 255))
+dancers = Image.open('assets/dancer.gif').resize((240, 240))
+image.paste(dancers, (0,0))
 disp.display(image)
 
 mpv_process = None
