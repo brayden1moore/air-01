@@ -64,11 +64,13 @@ disp = st7789.ST7789(
 disp.begin()
 
 def display_scud():
-    dancers = Image.open('assets/scudhouse.gif').resize((240, 240))
+    gif = Image.open('assets/scudhouse.gif').resize((240, 240))
     while True:  
-        for frame in ImageSequence.Iterator(dancers):
+        for frame in ImageSequence.Iterator(gif):
             frame = frame.convert('RGB')  
             disp.display(frame)
+
+display_scud()
 
 mpv_process = None
 stream = None
@@ -239,9 +241,6 @@ def periodic_update():
     global mpv_process
     if mpv_process and mpv_process.poll() is None:
         display_info(stream, 'play')
-    elif stream == None:
-        mpv_process = None
-        display_scud()
 
     threading.Timer(5, periodic_update).start()
 
