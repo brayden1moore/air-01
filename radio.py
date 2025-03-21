@@ -45,7 +45,13 @@ streams = {
     #    'name': 'Lower Grand Radio',
     #    'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
     #    'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
-    #}
+    #},
+    'Fault Radio': {
+        'name': 'Fault Radio',
+        'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio&parent=www.faultradio.com',
+        'info': '',
+        'logo': 'fault.png'
+    }
 }
 
 stream_list = sorted(list(streams.keys()))
@@ -208,6 +214,7 @@ def toggle_stream(name):
                     "--ao=alsa",
                     "--audio-device=alsa/hw:1,0",
                     "--volume=50",
+                    "--no-video",
                     stream_url
                 ])
                 stream = name
@@ -219,6 +226,7 @@ def toggle_stream(name):
                 "--ao=alsa",
                 "--audio-device=alsa/hw:1,0",
                 "--volume=50",
+                "--no-video",
                 stream_url
             ])
             stream = name
