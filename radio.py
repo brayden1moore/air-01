@@ -48,7 +48,7 @@ streams = {
     #},
     'Fault Radio': {
         'name': 'Fault Radio',
-        'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio&parent=www.faultradio.com',
+        'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio',
         'info': '',
         'logo': 'fault.png'
     }
