@@ -189,8 +189,12 @@ def display_info(name, play_status):
     image.paste(icon, (19,65))
 
     font = ImageFont.load_default()
-    draw.text((19, 195), show_names[0], font=font, fill=(255, 255, 255))
-    draw.text((19, 205), descriptions[0], font=font, fill=(255, 255, 255))
+    try:
+        draw.text((19, 195), show_names[0], font=font, fill=(255, 255, 255))
+        draw.text((19, 205), descriptions[0], font=font, fill=(255, 255, 255))
+    except:
+        draw.text((19, 195), name, font=font, fill=(255, 255, 255))
+        draw.text((19, 205), "No description.", font=font, fill=(255, 255, 255))
     
     disp.display(image)
 
