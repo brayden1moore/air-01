@@ -122,12 +122,16 @@ disp.begin()
 mpv_process = None
 stream = None
 screen_on = True
+current_image = None
 last_input_time = time.time()
 
+
 def safe_display(image):
-    global screen_on
+    global current_image
     if screen_on:
         disp.display(image)
+    current_image = image.copy()
+    
 
 def display_scud():
     gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
@@ -362,10 +366,14 @@ def periodic_update():
 
 
 def wake_screen():
-    global screen_on, last_input_time
+    global screen_on, last_input_time, current_image
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
+        if current_image:
+            disp.display(current_image)
+        else:
+            display_scud()
         return True
     return False
 
