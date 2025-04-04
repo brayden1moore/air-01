@@ -109,6 +109,13 @@ disp.begin()
 
 mpv_process = None
 stream = None
+screen_on = True
+last_stream_time = time.time()
+
+def safe_display(image):
+    global screen_on
+    if screen_on:
+        disp.display(image)
 
 def display_scud():
     gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
@@ -135,7 +142,6 @@ def s(number):
 
 
 def display_info(name, play_status):
-
     stream_info = streams[name]
     logo_path = stream_info['logo']
     show_names = []
@@ -259,11 +265,12 @@ def display_info(name, play_status):
         draw.text((19, 195), name, font=font, fill=(255, 255, 255))
         draw.text((19, 205), "No description.", font=font, fill=(255, 255, 255))
     
-    disp.display(image)
+    safe_display(image)
 
 
 def toggle_stream(name):
-    global mpv_process, stream
+    global mpv_process, stream, last_stream_time
+    last_stream_time = time.time()
 
     if name != None:
 
@@ -328,21 +335,47 @@ def shutdown():
 
 
 def periodic_update():
-    global mpv_process
+    global mpv_process, screen_on, last_stream_time
+
     if mpv_process and mpv_process.poll() is None:
+        last_stream_time = time.time()
         display_info(stream, 'play')
+    elif screen_on and (time.time() - last_stream_time > 60):
+        screen_on = False
+        blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
+        disp.display(blank)
 
     threading.Timer(5, periodic_update).start()
+
+
+def wake_screen():
+    global screen_on, last_stream_time
+    if not screen_on:
+        screen_on = True
+        last_stream_time = time.time()
+        display_scud()
+    else:
+        return False  # screen is on, allow default action
+
+
+# wrap button actions so they check wake state first
+def wrapped_action(func):
+    def inner():
+        if wake_screen() is False:
+            func()
+    return inner
+
 
 button_x = Button(16, hold_time=5)
 button_y = Button(24, hold_time=5)
 button_a = Button(5, hold_time=5)
 button_b = Button(6, hold_time=5)
 
-button_b.when_pressed = lambda: toggle_stream(stream)
-button_a.when_pressed = lambda: play_random()
-button_y.when_pressed = lambda: seek_stream(-1)
-button_x.when_pressed = lambda: seek_stream(1)
+button_b.when_pressed = wrapped_action(lambda: toggle_stream(stream))
+button_a.when_pressed = wrapped_action(play_random)
+button_y.when_pressed = wrapped_action(lambda: seek_stream(-1))
+button_x.when_pressed = wrapped_action(lambda: seek_stream(1))
+
 
 periodic_update()
 
