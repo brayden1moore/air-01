@@ -366,7 +366,6 @@ def wake_screen():
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
-        display_scud()
         return True
     return False
 
