@@ -1,6 +1,4 @@
-import st7789
 from PIL import Image, ImageDraw, ImageFont, ImageSequence
-from gpiozero import Button
 from subprocess import Popen, run
 import requests
 from datetime import date, datetime, timezone
@@ -9,25 +7,35 @@ import signal
 from io import BytesIO
 import threading
 import random
+import platform
+
+if platform.system() == "Linux":
+    import st7789
+    from gpiozero import Button
+else:
+    class MockDisplay:
+        def __init__(self, *args, **kwargs):
+            self.width = 240
+            self.height = 240
+
+        def begin(self):
+            pass
+
+        def display(self, img):
+            pass
+
+    st7789 = type('st7789', (), {'ST7789': MockDisplay})
+
+    class Button:
+        def __init__(self, pin, hold_time=None):
+            self.when_pressed = None
 
 streams = {
-    'KQED': {
-        'name': 'KQED',
-        'stream': 'https://streams.kqed.org/kqedradio?onsite=true',
-        'info': 'https://media-api.kqed.org/radio-schedules/',
-        'logo': 'kqed.png'
-    },
     'HydeFM': {
         'name': 'HydeFM',
         'stream': 'https://media.evenings.co/s/DReMy100B',
         'info': 'https://api.evenings.co/v1/streams/hydefm/public',
         'logo': 'hydefm.png'
-    },
-    'NTS 2': {
-        'name': 'NTS 2',
-        'stream': 'https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp&device=800913353.1735584982',
-        'info': 'https://www.nts.live/api/v2/live',
-        'logo': 'nts2.png'
     },
     'NTS 1': {
         'name': 'NTS 1',
@@ -35,26 +43,56 @@ streams = {
         'info': 'https://www.nts.live/api/v2/live',
         'logo': 'nts1.png'
     },
+    'NTS 2': {
+        'name': 'NTS 2',
+        'stream': 'https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp&device=800913353.1735584982',
+        'info': 'https://www.nts.live/api/v2/live',
+        'logo': 'nts2.png'
+    },
     'Dublab': {
         'name': 'Dublab',
         'stream': 'https://dublab.out.airtime.pro/dublab_a',
         'info': 'https://www.dublab.com/.netlify/functions/schedule?tz=America%2FLos_Angeles',
         'logo': 'dublab.jpeg'
     },
+    'KQED': {
+        'name': 'KQED',
+        'stream': 'https://streams.kqed.org/kqedradio?onsite=true',
+        'info': 'https://media-api.kqed.org/radio-schedules/',
+        'logo': 'kqed.png'
+    },
+    'WNYU': {
+        'name': 'WNYU',
+        'stream': 'http://cinema.acs.its.nyu.edu:8000/wnyu128.mp3',
+        'info': 'https://wnyu.org/v1/schedule/current_and_next',
+        'logo': 'wnyu.jpeg'
+    },
+    'Radio Quantica': {
+        'name': 'Radio Quantica',
+        'stream': 'https://stream.radioquantica.com:8443/stream',
+        'info': 'https://api.radioquantica.com/api/live-info',
+        'logo': 'quantica.jpeg'
+    },
+    'Do!!You!!!': {
+        'name': 'Do!!You!!!',
+        'stream': 'https://doyouworld.out.airtime.pro/doyouworld_a',
+        'info': 'https://doyouworld.airtime.pro/api/live-info-v2',
+        'logo': 'doyou.png'
+    }
+    #'Fault Radio': {
+    #    'name': 'Fault Radio',
+    #    'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio',
+    #    'info': '',
+    #    'logo': 'fault.png'
+    #},
     #'Lower Grand Radio': {
     #    'name': 'Lower Grand Radio',
     #    'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
     #    'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
     #},
-    'Fault Radio': {
-        'name': 'Fault Radio',
-        'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio',
-        'info': '',
-        'logo': 'fault.png'
-    }
 }
 
-stream_list = sorted(list(streams.keys()))
+stream_list = list(streams.keys())
 
 disp = st7789.ST7789(
     height=240,
@@ -161,7 +199,32 @@ def display_info(name, play_status):
                 logo_url = program['attachments']
         show_names.append(show_name)
         descriptions.append(description) 
-        logo_urls.append(logo_url)
+    
+    elif name == 'WNYU':
+        info_url = stream_info['info']
+        info = requests.get(info_url).json()
+        id = info[0]['id']
+        description_url = f'https://wnyu.org/v1/schedule/{id}'
+        info = requests.get(description_url).json()
+        show_name = info['program']['name']
+        description = ', '.join([i.title() for i in info['episode']['genre_list']])
+        show_names.append(show_name)
+        descriptions.append(description) 
+    
+    elif name == 'Radio Quantica':
+        info_url = stream_info['info']
+        info = requests.get(info_url).json()
+        description = info['currentShow'][0]['name']
+        descriptions.append(description)
+        show_names.append('Radio Quantica')
+
+    elif name == 'Do!!You!!!':
+        info_url = stream_info['info']
+        info = requests.get(info_url).json()
+        show_name = info['shows']['current']['name']
+        description = info['tracks']['current']['name'].replace(' - ','')
+        show_names.append(show_name)
+        descriptions.append(description) 
 
     show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
     descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
@@ -242,9 +305,13 @@ def play_random():
     toggle_stream(chosen)
 
 def seek_stream(direction):
-    if stream == None:
-        play_random()
     
+    if (stream == None) & (direction==1):
+        toggle_stream(stream_list[0])
+    
+    elif (stream == None) & (direction==-1):
+        toggle_stream(stream_list[-1])
+
     else:
         idx = stream_list.index(stream)
         try:
@@ -278,6 +345,25 @@ button_y.when_pressed = lambda: seek_stream(-1)
 button_x.when_pressed = lambda: seek_stream(1)
 
 periodic_update()
+
+if platform.system() != 'Linux':
+    from pynput import keyboard
+
+    def on_press(key):
+        try:
+            if key.char == 'u':  # B
+                toggle_stream(stream)
+            elif key.char == 'i':  # A
+                play_random()
+            elif key.char == 'j':  # Y
+                seek_stream(-1)
+            elif key.char == 'k':  # X
+                seek_stream(1)
+        except AttributeError:
+            pass
+
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()
 
 try:
     while True:
