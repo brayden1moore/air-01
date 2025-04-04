@@ -78,7 +78,19 @@ streams = {
         'stream': 'https://doyouworld.out.airtime.pro/doyouworld_a',
         'info': 'https://doyouworld.airtime.pro/api/live-info-v2',
         'logo': 'doyou.png'
-    }
+    },
+    'SutroFM': {
+        'name': 'SutroFM',
+        'stream': 'https://media.evenings.co/s/7Lo66BLQe',
+        'info': 'https://api.evenings.co/v1/streams/sutrofm/public',
+        'logo': 'sutrofm.jpeg'
+    },
+    #'BlueMoonRadio': {
+    #    'name': 'BlueMoonRadio',
+    #    'stream': '',
+    #    'info': '',
+    #    'logo': 'bluemoon.png'
+    #}
     #'Fault Radio': {
     #    'name': 'Fault Radio',
     #    'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio',
@@ -110,7 +122,7 @@ disp.begin()
 mpv_process = None
 stream = None
 screen_on = True
-last_stream_time = time.time()
+last_input_time = time.time()
 
 def safe_display(image):
     global screen_on
@@ -148,18 +160,19 @@ def display_info(name, play_status):
     descriptions = []
     logo_urls = []
 
-    if name == 'HydeFM':
+    if name in ['HydeFM','SutroFM']:
         info = requests.get(stream_info['info']).json()
         status = info['online']
         show_title = info.get('name', name)
         num_listeners = info['listeners']
         listeners = f"{num_listeners} listener{s(num_listeners)}."
-        descriptions.append(listeners)
 
         if status == False:
-            show_names.append('OFFLINE')
+            show_names.append(name)
+            descriptions.append('Is offline.')
         else:
             show_names.append(show_title)
+            descriptions.append(listeners)
 
     elif 'NTS' in name:
         info = requests.get(stream_info['info']).json()
@@ -227,8 +240,12 @@ def display_info(name, play_status):
     elif name == 'Do!!You!!!':
         info_url = stream_info['info']
         info = requests.get(info_url).json()
-        show_name = info['shows']['current']['name']
-        description = info['tracks']['current']['name'].replace(' - ','')
+        try:
+            show_name = info['shows']['current']['name']
+            description = info['tracks']['current']['name'].replace(' - ','')
+        except:
+            show_name = 'Do!!You!!!Radio'
+            description = 'Is offline.'
         show_names.append(show_name)
         descriptions.append(description) 
 
@@ -335,12 +352,8 @@ def shutdown():
 
 
 def periodic_update():
-    global mpv_process, screen_on, last_stream_time
-
-    if mpv_process and mpv_process.poll() is None:
-        last_stream_time = time.time()
-        display_info(stream, 'play')
-    elif screen_on and (time.time() - last_stream_time > 60):
+    global screen_on, last_input_time
+    if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
         blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
         disp.display(blank)
@@ -349,19 +362,18 @@ def periodic_update():
 
 
 def wake_screen():
-    global screen_on, last_stream_time
+    global screen_on, last_input_time
+    last_input_time = time.time()
     if not screen_on:
         screen_on = True
-        last_stream_time = time.time()
         display_scud()
-    else:
-        return False  # screen is on, allow default action
+        return True
+    return False
 
 
-# wrap button actions so they check wake state first
 def wrapped_action(func):
     def inner():
-        if wake_screen() is False:
+        if not wake_screen():
             func()
     return inner
 
