@@ -132,7 +132,6 @@ last_input_time = time.time()
 def safe_display(image):
     global current_image
     if screen_on:
-        backlight.on()
         disp.display(image)
     current_image = image.copy()
     
