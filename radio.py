@@ -153,8 +153,10 @@ def display_scud():
     draw = ImageDraw.Draw(image)
     draw.text((32, 10), '[play/pause]', font=font, fill=(0, 0, 0))
     draw.text((160, 10), '[random]', font=font, fill=(0, 0, 0))
-    draw.text((37, 220), 'previous', font=font, fill=(0, 0, 0))
-    draw.text((170, 220), 'next', font=font, fill=(0, 0, 0))
+    prev_stream = '< ' + stream_list[-1]
+    next_stream = stream_list[0] + ' >'
+    draw.text((10, 224), prev_stream, font=font, fill=(0, 0, 0))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(0, 0, 0))
     disp.display(image)
 
 display_scud()
@@ -302,7 +304,7 @@ def display_info(name, play_status):
     draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
     draw.text((10, 224), prev_stream, font=font, fill=(100, 100, 100))
-    draw.text((230-len(next_stream)*5.5, 224), next_stream, font=font, fill=(100, 100, 100))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(100, 100, 100))
     safe_display(image)
 
 
