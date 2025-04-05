@@ -7,7 +7,13 @@ import signal
 from io import BytesIO
 import threading
 import random
+import pigpio
 import platform
+
+pi = pigpio.pi() 
+pi.set_mode(13, pigpio.OUTPUT)
+pi.set_PWM_frequency(13, 1000)
+pi.set_PWM_dutycycle(13, 255)
 
 if platform.system() == "Linux":
     import st7789
@@ -359,6 +365,7 @@ def periodic_update():
     global screen_on, last_input_time
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
+        pi.set_PWM_dutycycle(13, 0)
         blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
         disp.display(blank)
 
@@ -370,6 +377,7 @@ def wake_screen():
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
+        pi.set_PWM_dutycycle(13, 255)
         if current_image:
             disp.display(current_image)
         else:
