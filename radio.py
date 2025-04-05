@@ -274,9 +274,9 @@ def display_info(name, play_status):
         logo = Image.open(BytesIO(response.content)).resize((150, 150))
     else:
         logo_path = f'logos/{logo_path}'
-        logo = Image.open(logo_path).resize((150, 150))
+        logo = Image.open(logo_path).resize((145, 145))
 
-    border = Image.new('RGB', (152, 152), color=(255, 255, 255))
+    border = Image.new('RGB', (147, 147), color=(255, 255, 255))
     image.paste(border, (69, 27))
     image.paste(logo, (70, 28))
 
