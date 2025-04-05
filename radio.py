@@ -10,9 +10,9 @@ import random
 import platform
 import RPi.GPIO as GPIO
 
-BACKLIGHT_PIN = 13
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
+#BACKLIGHT_PIN = 13
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
 
 def backlight_on():
     GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
@@ -20,7 +20,7 @@ def backlight_on():
 def backlight_off():
     GPIO.output(BACKLIGHT_PIN, GPIO.LOW)
 
-backlight_on()
+#backlight_on()
 
 if platform.system() == "Linux":
     import st7789
@@ -369,7 +369,7 @@ def periodic_update():
     global screen_on, last_input_time
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
-        backlight_off()
+        #backlight_off()
         blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
         disp.display(blank)
 
@@ -380,7 +380,7 @@ def wake_screen():
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
-        backlight_on()
+        #backlight_on()
         if current_image:
             disp.display(current_image)
         else:
