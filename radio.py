@@ -68,6 +68,12 @@ streams = {
         'info': 'https://wnyu.org/v1/schedule/current_and_next',
         'logo': 'wnyu.jpeg'
     },
+    'Voices': {
+        'name': 'Voices',
+        'stream': 'https://voicesradio.out.airtime.pro/voicesradio_a',
+        'info': 'https://voicesradio.airtime.pro/api/live-info-v2?timezone=America/Los_Angeles',
+        'logo': 'voices.jpeg'
+    },
     'Radio Quantica': {
         'name': 'Radio Quantica',
         'stream': 'https://stream.radioquantica.com:8443/stream',
@@ -253,14 +259,14 @@ def display_info(name, play_status):
         descriptions.append(description)
         show_names.append('Radio Quantica')
 
-    elif name == 'Do!!You!!!':
+    elif name in ['Do!!You!!!','Voices']:
         info_url = stream_info['info']
         info = requests.get(info_url).json()
         try:
             show_name = info['shows']['current']['name']
             description = info['tracks']['current']['name'].replace(' - ','')
         except:
-            show_name = 'Do!!You!!!Radio'
+            show_name = name
             description = 'Is offline.'
         show_names.append(show_name)
         descriptions.append(description) 
