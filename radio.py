@@ -374,6 +374,7 @@ def wake_screen():
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
+        backlight.on()
         if current_image:
             disp.display(current_image)
         else:
