@@ -296,13 +296,13 @@ def display_info(name, play_status):
         draw.text((19, 195), name, font=font, fill=(255, 255, 255))
         draw.text((19, 205), "No description.", font=font, fill=(255, 255, 0))
     
-    prev_stream = stream_list[stream_list.index(name)-1]
-    next_stream = stream_list[stream_list.index(name)+1]
+    prev_stream = '< ' + stream_list[stream_list.index(name)-1]
+    next_stream = stream_list[stream_list.index(name)+1] + ' >'
 
     draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
-    draw.text((10, 224), f'[{prev_stream}]', font=font, fill=(100, 100, 100))
-    draw.text((230-len(next_stream)*5, 224), f'[{next_stream}]', font=font, fill=(100, 100, 100))
+    draw.text((10, 224), prev_stream, font=font, fill=(100, 100, 100))
+    draw.text((230-len(next_stream)*5, 224), next_stream, font=font, fill=(100, 100, 100))
     safe_display(image)
 
 
