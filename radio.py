@@ -113,7 +113,7 @@ streams = {
 
 stream_list = list(streams.keys())
 
-disp = st7789(
+disp = st7789.ST7789(
     rotation=180,     # Needed to display the right way up on Pirate Audio
     port=0,          # SPI port
     cs=1,            # SPI port Chip-select channel
