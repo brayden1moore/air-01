@@ -11,10 +11,7 @@ import platform
 
 if platform.system() == "Linux":
     import st7789
-    from gpiozero import Button, LED
-
-    backlight = LED(13)
-    backlight.on()  
+    from gpiozero import Button
 else:
     class MockDisplay:
         def __init__(self, *args, **kwargs):
@@ -364,7 +361,6 @@ def periodic_update():
         screen_on = False
         blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
         disp.display(blank)
-        backlight.off()
 
     threading.Timer(5, periodic_update).start()
 
@@ -374,7 +370,6 @@ def wake_screen():
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
-        backlight.on()
         if current_image:
             disp.display(current_image)
         else:
