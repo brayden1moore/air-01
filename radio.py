@@ -14,6 +14,7 @@ pi = pigpio.pi()
 pi.set_mode(13, pigpio.OUTPUT)
 pi.set_PWM_frequency(13, 1000)
 pi.set_PWM_dutycycle(13, 255)
+SPI_SPEED_MHZ = 90
 
 if platform.system() == "Linux":
     import st7789
@@ -112,15 +113,14 @@ streams = {
 
 stream_list = list(streams.keys())
 
-disp = st7789.ST7789(
-    height=240,
-    width=240,
-    rotation=180,
-    port=0,
-    cs=1,
-    dc=9,
-    backlight=13,
-    spi_speed_hz=80_000_000
+disp = st7789(
+    rotation=180,     # Needed to display the right way up on Pirate Audio
+    port=0,          # SPI port
+    cs=1,            # SPI port Chip-select channel
+    dc=9,            # BCM pin used for data/command
+    backlight=None,  # We'll control the backlight ourselves
+    # backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
+    spi_speed_hz=SPI_SPEED_MHZ * 1000 * 1000
 )
 
 disp.begin()
