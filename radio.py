@@ -299,7 +299,10 @@ def display_info(name, play_status):
         draw.text((19, 205), "No description.", font=font, fill=(255, 255, 0))
     
     prev_stream = '< ' + stream_list[stream_list.index(name)-1]
-    next_stream = stream_list[stream_list.index(name)+1] + ' >'
+    try:
+        next_stream = stream_list[stream_list.index(name)+1] + ' >'
+    except:
+        next_stream = stream_list[0] + ' >'
 
     draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
