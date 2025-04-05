@@ -293,8 +293,8 @@ def display_info(name, play_status):
         draw.text((19, 195), show_names[0], font=font, fill=(255, 255, 255))
         draw.text((19, 205), descriptions[0], font=font, fill=(255, 255, 255))
     except:
-        draw.text((19, 195), name, font=font, fill=(255, 255, 255))
-        draw.text((19, 205), "No description.", font=font, fill=(255, 255, 255))
+        draw.text((19, 195), name, font=font, fill=(255, 255, 0))
+        draw.text((19, 205), "No description.", font=font, fill=(255, 255, 0))
     
     draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
