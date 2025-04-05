@@ -296,9 +296,9 @@ def display_info(name, play_status):
         draw.text((19, 195), name, font=font, fill=(255, 255, 255))
         draw.text((19, 205), "No description.", font=font, fill=(255, 255, 255))
     
-    draw.text((35, 10), '[play/pause]', font=font, fill=(100, 100, 100))
+    draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((161, 10), '[random]', font=font, fill=(100, 100, 100))
-    draw.text((37, 224), '[previous]', font=font, fill=(100, 100, 100))
+    draw.text((34, 224), '[previous]', font=font, fill=(100, 100, 100))
     draw.text((163, 224), '[next]', font=font, fill=(100, 100, 100))
     safe_display(image)
 
