@@ -202,7 +202,7 @@ def display_info(name, play_status):
         show_info = info['results'][result_idx]['now']
 
         description = show_info['embeds']['details']['description']
-
+        print(show_info['embeds']['details']['description'])
         if not description:
             genres = []
             for g in show_info['embeds']['details']['genres']:
