@@ -263,8 +263,8 @@ def display_info(name, play_status):
         show_names.append(show_name)
         descriptions.append(description) 
 
-    show_names = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
-    descriptions = [i.replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
+    show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
+    descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
 
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
@@ -297,9 +297,9 @@ def display_info(name, play_status):
         draw.text((19, 205), "No description.", font=font, fill=(255, 255, 255))
     
     draw.text((35, 10), '[play/pause]', font=font, fill=(100, 100, 100))
-    draw.text((165, 10), '[random]', font=font, fill=(100, 100, 100))
+    draw.text((161, 10), '[random]', font=font, fill=(100, 100, 100))
     draw.text((37, 224), '[previous]', font=font, fill=(100, 100, 100))
-    draw.text((165, 224), '[next]', font=font, fill=(100, 100, 100))
+    draw.text((163, 224), '[next]', font=font, fill=(100, 100, 100))
     safe_display(image)
 
 
