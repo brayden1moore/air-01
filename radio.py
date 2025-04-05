@@ -318,7 +318,7 @@ def toggle_stream(name):
                     "mpv",
                     "--ao=alsa",
                     "--audio-device=alsa/hw:1,0",
-                    "--volume=50",
+                    "--volume=100",
                     "--no-video",
                     stream_url
                 ])
@@ -330,7 +330,7 @@ def toggle_stream(name):
                 "mpv",
                 "--ao=alsa",
                 "--audio-device=alsa/hw:1,0",
-                "--volume=50",
+                "--volume=100",
                 "--no-video",
                 stream_url
             ])
