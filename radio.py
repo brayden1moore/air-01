@@ -277,16 +277,16 @@ def display_info(name, play_status):
         logo = Image.open(logo_path).resize((150, 150))
 
     border = Image.new('RGB', (152, 152), color=(255, 255, 255))
-    image.paste(border, (69, 19))
-    image.paste(logo, (70, 20))
+    image.paste(border, (69, 24))
+    image.paste(logo, (70, 25))
 
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((30, 30))
-    image.paste(icon, (19,19))
+    image.paste(icon, (19,24))
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
-    image.paste(icon, (19,65))
+    image.paste(icon, (19,69))
 
     font = ImageFont.load_default()
     try:
@@ -296,10 +296,10 @@ def display_info(name, play_status):
         draw.text((19, 195), name, font=font, fill=(255, 255, 255))
         draw.text((19, 205), "No description.", font=font, fill=(255, 255, 255))
     
-    draw.text((35, 10), 'play/pause', font=font, fill=(255, 255, 255))
-    draw.text((165, 10), 'random', font=font, fill=(255, 255, 255))
-    draw.text((37, 220), 'previous', font=font, fill=(255, 255, 255))
-    draw.text((170, 220), 'next', font=font, fill=(255, 255, 255))
+    draw.text((35, 10), '[play/pause]', font=font, fill=(100, 100, 100))
+    draw.text((165, 10), '[random]', font=font, fill=(100, 100, 100))
+    draw.text((37, 220), '[previous]', font=font, fill=(100, 100, 100))
+    draw.text((170, 220), '[next]', font=font, fill=(100, 100, 100))
     safe_display(image)
 
 
