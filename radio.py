@@ -201,15 +201,15 @@ def display_info(name, play_status):
         result_idx = 0 if name == 'NTS 1' else 1
         show_info = info['results'][result_idx]['now']
 
-        genres = []
-        for g in show_info['embeds']['details']['genres']:
-            genres.append(g['value']) 
-        
-        if len(genres)==0:
-            descriptions.append(show_info['embeds']['details']['description'])
-        else:
-            descriptions.append(', '.join(genres))
+        description = show_info['embeds']['details']['description']
 
+        if not description:
+            genres = []
+            for g in show_info['embeds']['details']['genres']:
+                genres.append(g['value']) 
+                descriptions.append(', '.join(genres))
+        else:
+            descriptions.append(description)
         show_names.append(show_info['broadcast_title'])
 
     elif name == 'KQED':
