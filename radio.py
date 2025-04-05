@@ -277,12 +277,12 @@ def display_info(name, play_status):
         logo = Image.open(logo_path).resize((145, 145))
 
     border = Image.new('RGB', (147, 147), color=(255, 255, 255))
-    image.paste(border, (69, 30))
-    image.paste(logo, (70, 31))
+    image.paste(border, (69, 35))
+    image.paste(logo, (70, 36))
 
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
-    image.paste(icon, (22,30))
+    image.paste(icon, (22,35))
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
