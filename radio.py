@@ -12,7 +12,7 @@ import platform
 
 pi = pigpio.pi() 
 pi.set_mode(13, pigpio.OUTPUT)
-pi.set_PWM_frequency(13, 1000)
+pi.set_PWM_frequency(13, 2000)
 pi.set_PWM_dutycycle(13, 255)
 SPI_SPEED_MHZ = 180
 
