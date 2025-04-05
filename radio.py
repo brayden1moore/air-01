@@ -301,7 +301,7 @@ def display_info(name, play_status):
 
     draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
-    draw.text((34-len(next_stream)*1.5, 224), f'[{prev_stream}]', font=font, fill=(100, 100, 100))
+    draw.text((34-len(next_stream)*0.75, 224), f'[{prev_stream}]', font=font, fill=(100, 100, 100))
     draw.text((162-len(next_stream)*1.5, 224), f'[{next_stream}]', font=font, fill=(100, 100, 100))
     safe_display(image)
 
