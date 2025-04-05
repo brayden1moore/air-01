@@ -14,7 +14,7 @@ pi = pigpio.pi()
 pi.set_mode(13, pigpio.OUTPUT)
 pi.set_PWM_frequency(13, 1000)
 pi.set_PWM_dutycycle(13, 255)
-SPI_SPEED_MHZ = 90
+SPI_SPEED_MHZ = 180
 
 if platform.system() == "Linux":
     import st7789
@@ -120,7 +120,7 @@ disp = st7789.ST7789(
     dc=9,            # BCM pin used for data/command
     backlight=None,  # We'll control the backlight ourselves
     # backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
-    spi_speed_hz=SPI_SPEED_MHZ * 1000 * 2000
+    spi_speed_hz=SPI_SPEED_MHZ * 1000 * 1000
 )
 
 disp.begin()
