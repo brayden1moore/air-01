@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 BACKLIGHT_PIN = 13
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
+FONT_SIZE = 6
 
 def backlight_on():
     GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
@@ -152,7 +153,7 @@ def safe_display(image):
 def display_scud():
     gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
     frame = ImageSequence.Iterator(gif)[0].convert('RGB')
-    font = ImageFont.load_default()
+    font = ImageFont.load_default(size=FONT_SIZE)
 
     image = Image.new('RGB', (240, 240))
     image.paste(frame, (0, 0))
@@ -296,7 +297,7 @@ def display_info(name, play_status):
     icon = Image.open(icon_path).resize((30, 110))
     image.paste(icon, (19,75))
 
-    font = ImageFont.load_default()
+    font = ImageFont.load_default(size=FONT_SIZE)
     try:
         draw.text((24, 195), show_names[0], font=font, fill=(255, 255, 255))
         draw.text((24, 205), descriptions[0], font=font, fill=(255, 255, 0))
