@@ -10,11 +10,14 @@ import random
 import pigpio
 import platform
 
-pi = pigpio.pi() 
-pi.set_mode(13, pigpio.OUTPUT)
-pi.set_PWM_frequency(13, 1000)
-pi.write(13,1)
-SPI_SPEED_MHZ = 90
+def backlight_on():
+    run(['gpio', '-g', 'mode', '13', 'out'])
+    run(['gpio', '-g', 'write', '13', '1'])
+
+def backlight_off():
+    run(['gpio', '-g', 'write', '13', '0'])
+
+backlight_on()
 
 if platform.system() == "Linux":
     import st7789
@@ -120,7 +123,6 @@ disp = st7789.ST7789(
     dc=9,            # BCM pin used for data/command
     backlight=None,  # We'll control the backlight ourselves
     # backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
-    spi_speed_hz=SPI_SPEED_MHZ * 1000 * 1000
 )
 
 disp.begin()
@@ -365,19 +367,18 @@ def periodic_update():
     global screen_on, last_input_time
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
-        pi.write(13,0)
+        backlight_off()
         blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
         disp.display(blank)
 
     threading.Timer(5, periodic_update).start()
-
 
 def wake_screen():
     global screen_on, last_input_time, current_image
     last_input_time = time.time()
     if not screen_on:
         screen_on = True
-        pi.write(13, 1)
+        backlight_on()
         if current_image:
             disp.display(current_image)
         else:
@@ -402,7 +403,6 @@ button_b.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 button_a.when_pressed = wrapped_action(play_random)
 button_y.when_pressed = wrapped_action(lambda: seek_stream(-1))
 button_x.when_pressed = wrapped_action(lambda: seek_stream(1))
-
 
 periodic_update()
 
