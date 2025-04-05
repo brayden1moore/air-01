@@ -44,12 +44,6 @@ else:
             self.when_pressed = None
 
 streams = {
-    'HydeFM': {
-        'name': 'HydeFM',
-        'stream': 'https://media.evenings.co/s/DReMy100B',
-        'info': 'https://api.evenings.co/v1/streams/hydefm/public',
-        'logo': 'hydefm.png'
-    },
     'NTS 1': {
         'name': 'NTS 1',
         'stream': 'https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp&device=800913353.1735584982',
@@ -68,12 +62,6 @@ streams = {
         'info': 'https://www.dublab.com/.netlify/functions/schedule?tz=America%2FLos_Angeles',
         'logo': 'dublab.jpeg'
     },
-    'KQED': {
-        'name': 'KQED',
-        'stream': 'https://streams.kqed.org/kqedradio?onsite=true',
-        'info': 'https://media-api.kqed.org/radio-schedules/',
-        'logo': 'kqed.png'
-    },
     'WNYU': {
         'name': 'WNYU',
         'stream': 'http://cinema.acs.its.nyu.edu:8000/wnyu128.mp3',
@@ -86,6 +74,12 @@ streams = {
         'info': 'https://api.radioquantica.com/api/live-info',
         'logo': 'quantica.jpeg'
     },
+    'HydeFM': {
+        'name': 'HydeFM',
+        'stream': 'https://media.evenings.co/s/DReMy100B',
+        'info': 'https://api.evenings.co/v1/streams/hydefm/public',
+        'logo': 'hydefm.png'
+    },
     'Do!!You!!!': {
         'name': 'Do!!You!!!',
         'stream': 'https://doyouworld.out.airtime.pro/doyouworld_a',
@@ -97,6 +91,12 @@ streams = {
         'stream': 'https://media.evenings.co/s/7Lo66BLQe',
         'info': 'https://api.evenings.co/v1/streams/sutrofm/public',
         'logo': 'sutrofm.jpeg'
+    },
+    'KQED': {
+        'name': 'KQED',
+        'stream': 'https://streams.kqed.org/kqedradio?onsite=true',
+        'info': 'https://media-api.kqed.org/radio-schedules/',
+        'logo': 'kqed.png'
     },
     #'BlueMoonRadio': {
     #    'name': 'BlueMoonRadio',
