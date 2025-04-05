@@ -124,8 +124,7 @@ disp = st7789.ST7789(
     port=0,          # SPI port
     cs=1,            # SPI port Chip-select channel
     dc=9,            # BCM pin used for data/command
-    backlight=None,  # We'll control the backlight ourselves
-    # backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
+    backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
 )
 
 disp.begin()
