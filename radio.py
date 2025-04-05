@@ -274,11 +274,11 @@ def display_info(name, play_status):
         logo = Image.open(BytesIO(response.content)).resize((150, 150))
     else:
         logo_path = f'logos/{logo_path}'
-        logo = Image.open(logo_path).resize((145, 145))
+        logo = Image.open(logo_path).resize((140, 140))
 
-    border = Image.new('RGB', (147, 147), color=(255, 255, 255))
-    image.paste(border, (69, 35))
-    image.paste(logo, (70, 36))
+    border = Image.new('RGB', (142, 142), color=(255, 255, 255))
+    image.paste(border, (75, 35))
+    image.paste(logo, (76, 36))
 
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
@@ -298,8 +298,8 @@ def display_info(name, play_status):
     
     draw.text((35, 10), '[play/pause]', font=font, fill=(100, 100, 100))
     draw.text((165, 10), '[random]', font=font, fill=(100, 100, 100))
-    draw.text((37, 220), '[previous]', font=font, fill=(100, 100, 100))
-    draw.text((170, 220), '[next]', font=font, fill=(100, 100, 100))
+    draw.text((37, 224), '[previous]', font=font, fill=(100, 100, 100))
+    draw.text((165, 224), '[next]', font=font, fill=(100, 100, 100))
     safe_display(image)
 
 
