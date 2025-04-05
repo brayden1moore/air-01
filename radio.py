@@ -7,15 +7,18 @@ import signal
 from io import BytesIO
 import threading
 import random
-import pigpio
 import platform
+import RPi.GPIO as GPIO
+
+BACKLIGHT_PIN = 13
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
 
 def backlight_on():
-    run(['gpio', '-g', 'mode', '13', 'out'])
-    run(['gpio', '-g', 'write', '13', '1'])
+    GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
-    run(['gpio', '-g', 'write', '13', '0'])
+    GPIO.output(BACKLIGHT_PIN, GPIO.LOW)
 
 backlight_on()
 
