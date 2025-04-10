@@ -158,12 +158,11 @@ def safe_display(image):
     
 
 def display_scud():
-    gif = Image.open('assets/scudhouse.gif').resize((240, 240)) 
-    frame = ImageSequence.Iterator(gif)[0].convert('RGB')
+    img = Image.open('assets/dancers.png').resize((240, 240)) 
     font = ImageFont.load_default()
 
     image = Image.new('RGB', (240, 240))
-    image.paste(frame, (0, 0))
+    image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
     draw.text((32, 10), '[play/pause]', font=font, fill=(0, 0, 0))
     draw.text((160, 10), '[random]', font=font, fill=(0, 0, 0))
