@@ -105,7 +105,19 @@ streams = {
         'info': 'https://media-api.kqed.org/radio-schedules/',
         'logo': 'kqed.png'
     },
-    #'BlueMoonRadio': {
+    'Lower Grand Radio': {
+        'name': 'Lower Grand Radio',
+        'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
+        'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
+        'logo': 'lgr.png'
+    },
+    'Kiosk Radio': {
+        'name': 'Kiosk Radio',
+        'stream': 'https://kioskradiobxl.out.airtime.pro/kioskradiobxl_b',
+        'info': 'https://kioskradiobxl.airtime.pro/api/live-info-v2',
+        'logo': 'kiosk.webp'
+    }
+        #'BlueMoonRadio': {
     #    'name': 'BlueMoonRadio',
     #    'stream': '',
     #    'info': '',
@@ -116,11 +128,6 @@ streams = {
     #    'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio',
     #    'info': '',
     #    'logo': 'fault.png'
-    #},
-    #'Lower Grand Radio': {
-    #    'name': 'Lower Grand Radio',
-    #    'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
-    #    'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
     #},
 }
 
@@ -183,6 +190,7 @@ def display_info(name, play_status):
     descriptions = []
     logo_urls = []
 
+    # evening
     if name in ['HydeFM','SutroFM']:
         info = requests.get(stream_info['info']).json()
         status = info['online']
@@ -260,7 +268,8 @@ def display_info(name, play_status):
         descriptions.append(description)
         show_names.append('Radio Quantica')
 
-    elif name in ['Do!!You!!!','Voices']:
+    # airtime
+    elif name in ['Do!!You!!!','Voices','Lower Grand Radio','Kiosk Radio']:
         info_url = stream_info['info']
         info = requests.get(info_url).json()
         try:
