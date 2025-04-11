@@ -408,11 +408,13 @@ def toggle_stream(name):
 
     
 def play_random():
+    global stream
     pause()
     available_streams = [i for i in stream_list if i != stream]
     chosen = random.choice(available_streams)
     display_everything(chosen)
     play(chosen)
+    stream = chosen
 
 def seek_stream(direction):
     global stream 
