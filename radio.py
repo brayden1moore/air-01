@@ -262,13 +262,12 @@ def display_everything(name, play_status='pause'):
     draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(100, 100, 100))
     safe_display(image)
 
-    display_info()
+    display_info(name)
 
 
-def display_info():
+def display_info(name):
     global current_image
 
-    name = stream 
     stream_info = streams[name]
 
     show_names = []
