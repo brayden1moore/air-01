@@ -407,11 +407,13 @@ def display_info(name):
 
 def toggle_stream(name):
     global mpv_process
-
-    if mpv_process:
-        pause()
+    if name:
+        if mpv_process:
+            pause()
+        else:
+            play(name)
     else:
-        play(name)
+        pass
 
     
 def play_random():
