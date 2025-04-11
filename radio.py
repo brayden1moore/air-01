@@ -383,10 +383,9 @@ def display_info(name):
     descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
 
     font = ImageFont.load_default()
-    image = ImageDraw.Draw(current_image)
+    image = current_image.copy()
     draw = ImageDraw.Draw(image)
 
-    image = current_image.copy()
     background = Image.new('RGB', (240, 20), color=(0, 0, 0))
     image.paste(background, (24, 195))
 
