@@ -365,6 +365,8 @@ def display_info(name):
         except:
             show_name = name
             description = 'Is offline.'
+        
+        print(description)
         show_names.append(show_name)
         descriptions.append(description) 
 
@@ -380,6 +382,7 @@ def display_info(name):
             'User-Agent': 'Mozilla/5.0'
         }
         response = requests.post(url, data=payload, headers=headers).json()
+        print(response['current-show'])
         descriptions.append(response['current-show'])
         show_names.append(name)
 
