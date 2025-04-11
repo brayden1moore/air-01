@@ -421,24 +421,24 @@ def seek_stream(direction):
     global stream 
 
     if (stream == None) & (direction==1):
-        display_info(stream_list[0])
+        display_everything(stream_list[0])
         stream = stream_list[0]
     
     elif (stream == None) & (direction==-1):
-        display_info(stream_list[-1])
+        display_everything(stream_list[-1])
         stream = stream_list[-1]
 
     else:
         idx = stream_list.index(stream)
         try:
-            display_info(stream_list[idx + direction])
+            display_everything(stream_list[idx + direction])
             stream = stream_list[-1]
         except:
             if direction == 1:
-                display_info(stream_list[0])
+                display_everything(stream_list[0])
                 stream = stream_list[0]
             else:
-                display_info(stream_list[-1])
+                display_everything(stream_list[-1])
                 stream = stream_list[-1]
 
 
