@@ -382,7 +382,7 @@ def display_info(name):
             'User-Agent': 'Mozilla/5.0'
         }
         response = requests.post(url, data=payload, headers=headers).json()
-        print(response['current-show'])
+        print('BLOOP',response['current-show'])
         descriptions.append(response['current-show'])
         show_names.append(name)
 
@@ -429,26 +429,21 @@ def seek_stream(direction):
     pause()
 
     if (stream == None) & (direction==1):
-        display_everything(stream_list[0])
-        stream = stream_list[0]
-    
+        stream = stream_list[0]       
+         
     elif (stream == None) & (direction==-1):
-        display_everything(stream_list[-1])
         stream = stream_list[-1]
 
     else:
         idx = stream_list.index(stream)
-        try:
-            display_everything(stream_list[idx + direction])
+        if (direction == 1) and (idx==len(stream_list)-1):
+            stream = stream_list[0]
+        elif (direction == -1) and (idx==0):
+            stream = stream_list[-1]
+        else:
             stream = stream_list[idx + direction]
-        except:
-            if direction == 1:
-                display_everything(stream_list[0])
-                stream = stream_list[0]
-            else:
-                display_everything(stream_list[-1])
-                stream = stream_list[-1]
-    
+
+    display_everything(stream)
     play(stream)
 
 
