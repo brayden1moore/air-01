@@ -382,12 +382,9 @@ def display_info(name):
             'User-Agent': 'Mozilla/5.0'
         }
         response = requests.post(url, data=payload, headers=headers).json()
-        print('BLOOP',response['current-show'])
+        print('BLOOP',response)
         descriptions.append(response['current-show'])
         show_names.append(name)
-
-    show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
-    descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
 
     font = ImageFont.load_default()
     image = current_image.copy()
@@ -397,6 +394,8 @@ def display_info(name):
     image.paste(background, (24, 195))
 
     try:
+        show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
+        descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
         draw.text((24, 195), show_names[0], font=font, fill=(255, 255, 255))
         draw.text((24, 205), descriptions[0], font=font, fill=(255, 255, 0))
     except:
@@ -424,13 +423,14 @@ def play_random():
     play(chosen)
     stream = chosen
 
+
 def seek_stream(direction):
     global stream 
     pause()
 
     if (stream == None) & (direction==1):
         stream = stream_list[0]       
-         
+
     elif (stream == None) & (direction==-1):
         stream = stream_list[-1]
 
