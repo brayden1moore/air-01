@@ -176,7 +176,7 @@ def display_scud():
     next_stream = stream_list[0] + ' >'
     draw.text((10, 224), prev_stream, font=font, fill=(0, 0, 0))
     draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(0, 0, 0))
-    disp.display(image)
+    safe_display(image)
 
 display_scud()
 
@@ -413,6 +413,7 @@ def toggle_stream(name):
 def play_random():
     available_streams = [i for i in stream_list if i != stream]
     chosen = random.choice(available_streams)
+    display_everything(chosen)
     toggle_stream(chosen)
 
 
