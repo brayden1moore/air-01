@@ -260,8 +260,13 @@ def display_everything(name, play_status='pause'):
     draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
     draw.text((10, 224), prev_stream, font=font, fill=(100, 100, 100))
     draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(100, 100, 100))
-    safe_display(image)
 
+    background = Image.new('RGB', (240, 20), color=(0, 0, 0))
+    image.paste(background, (24, 195))
+    draw.text((24, 195), name, font=font, fill=(255, 255, 255))
+    draw.text((24, 205), "Loading info...", font=font, fill=(255, 255, 0))
+
+    safe_display(image)
     display_info(name)
 
 
@@ -440,6 +445,8 @@ def seek_stream(direction):
             else:
                 display_everything(stream_list[-1])
                 stream = stream_list[-1]
+    
+    play(stream)
 
 
 def shutdown():
