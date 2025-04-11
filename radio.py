@@ -429,7 +429,7 @@ def seek_stream(direction):
         idx = stream_list.index(stream)
         try:
             display_everything(stream_list[idx + direction])
-            stream = stream_list[-1]
+            stream = stream_list[idx + direction]
         except:
             if direction == 1:
                 display_everything(stream_list[0])
