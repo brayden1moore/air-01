@@ -382,8 +382,7 @@ def display_info(name):
             'User-Agent': 'Mozilla/5.0'
         }
         response = requests.post(url, data=payload, headers=headers).json()
-        print('BLOOP',response)
-        descriptions.append(response['current-show'])
+        descriptions.append(response['current-show']['showName'])
         show_names.append(name)
 
     font = ImageFont.load_default()
