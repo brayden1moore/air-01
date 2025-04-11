@@ -186,14 +186,93 @@ def s(number):
         return ''
     else:
         return 's'
+    
+
+def pause():
+    global mpv_process, current_image
+
+    if mpv_process:
+        mpv_process.send_signal(signal.SIGTERM)
+        mpv_process = None
+    
+    image = current_image.copy()
+    background = Image.new('RGB', (25, 25), color=(0, 0, 0))
+    icon = Image.open('assets/pause.png').resize((25, 25))
+    image.paste(background, (22, 35))
+    image.paste(icon, (22, 35))
+    safe_display(image)
 
 
-def display_info(name, play_status):
+def play(name):
+    global mpv_process, current_image
+
+    stream_info = streams[name]
+    stream_url = stream_info['stream']
+
+    mpv_process = Popen([
+        "mpv",
+        "--ao=alsa",
+        "--audio-device=alsa/hw:1,0",
+        "--volume=90",
+        "--no-video",
+        stream_url
+    ])
+
+    image = current_image.copy()
+    background = Image.new('RGB', (25, 25), color=(0, 0, 0))
+    icon = Image.open('assets/play.png').resize((25, 25))
+    image.paste(background, (22, 35))
+    image.paste(icon, (22, 35))
+    safe_display(image)
+
+
+def display_everything(name, play_status='pause'):
     stream_info = streams[name]
     logo_path = stream_info['logo']
+
+    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+    draw = ImageDraw.Draw(image)
+
+    logo_path = f'logos/{logo_path}'
+    logo = Image.open(logo_path).resize((140, 140))
+
+    border = Image.new('RGB', (142, 142), color=(255, 255, 255))
+    image.paste(border, (75, 35))
+    image.paste(logo, (76, 36))
+
+    icon_path = f'assets/{play_status}.png'
+    icon = Image.open(icon_path).resize((25, 25))
+    image.paste(icon, (22,35))
+
+    icon_path = f'assets/flower.png'
+    icon = Image.open(icon_path).resize((30, 110))
+    image.paste(icon, (19,75))
+
+    font = ImageFont.load_default()
+    
+    prev_stream = '< ' + stream_list[stream_list.index(name)-1]
+    try:
+        next_stream = stream_list[stream_list.index(name)+1] + ' >'
+    except:
+        next_stream = stream_list[0] + ' >'
+
+    draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
+    draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
+    draw.text((10, 224), prev_stream, font=font, fill=(100, 100, 100))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(100, 100, 100))
+    safe_display(image)
+
+    display_info()
+
+
+def display_info():
+    global current_image
+
+    name = stream 
+    stream_info = streams[name]
+
     show_names = []
     descriptions = []
-    logo_urls = []
 
     # evening
     if name in ['HydeFM','SutroFM']:
@@ -304,108 +383,62 @@ def display_info(name, play_status):
     show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
     descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
 
-    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+    font = ImageFont.load_default()
+    image = ImageDraw.Draw(current_image)
     draw = ImageDraw.Draw(image)
 
-    if len(logo_urls)>0:
-        response = requests.get(logo_urls[0])
-        logo = Image.open(BytesIO(response.content)).resize((150, 150))
-    else:
-        logo_path = f'logos/{logo_path}'
-        logo = Image.open(logo_path).resize((140, 140))
+    image = current_image.copy()
+    background = Image.new('RGB', (240, 20), color=(0, 0, 0))
+    image.paste(background, (24, 195))
 
-    border = Image.new('RGB', (142, 142), color=(255, 255, 255))
-    image.paste(border, (75, 35))
-    image.paste(logo, (76, 36))
-
-    icon_path = f'assets/{play_status}.png'
-    icon = Image.open(icon_path).resize((25, 25))
-    image.paste(icon, (22,35))
-
-    icon_path = f'assets/flower.png'
-    icon = Image.open(icon_path).resize((30, 110))
-    image.paste(icon, (19,75))
-
-    font = ImageFont.load_default()
     try:
         draw.text((24, 195), show_names[0], font=font, fill=(255, 255, 255))
         draw.text((24, 205), descriptions[0], font=font, fill=(255, 255, 0))
     except:
         draw.text((24, 195), name, font=font, fill=(255, 255, 255))
         draw.text((24, 205), "No description.", font=font, fill=(255, 255, 0))
-    
-    prev_stream = '< ' + stream_list[stream_list.index(name)-1]
-    try:
-        next_stream = stream_list[stream_list.index(name)+1] + ' >'
-    except:
-        next_stream = stream_list[0] + ' >'
 
-    draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
-    draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
-    draw.text((10, 224), prev_stream, font=font, fill=(100, 100, 100))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(100, 100, 100))
     safe_display(image)
 
 
 def toggle_stream(name):
-    global mpv_process, stream, last_stream_time
-    last_stream_time = time.time()
+    global stream
 
-    if name != None:
+    if name == stream:
+        pause()
+    else:
+        play(name)
 
-        stream_info = streams[name]
-        stream_url = stream_info['stream']
-        display_info(name, 'pause')
-
-        if mpv_process: # if stream is playing, stop it
-            mpv_process.send_signal(signal.SIGTERM)
-            mpv_process = None
-            
-        if stream != name: # if the button pressed is a new stream, get it ready to play it
-            #mpv_process = Popen([ 
-            #    "mpv",
-            #    "--ao=alsa",
-            #    "--audio-device=alsa/hw:1,0",
-            #    "--volume=90",
-            #    "--no-video",
-            #    stream_url
-            #])
-            stream = name
-            #display_info(name, 'pause')
-        else: # otherwise play the one pressed
-            mpv_process = Popen([
-                "mpv",
-                "--ao=alsa",
-                "--audio-device=alsa/hw:1,0",
-                "--volume=90",
-                "--no-video",
-                stream_url
-            ])
-            stream = name
-            display_info(name, 'play')
-
+    
 def play_random():
     available_streams = [i for i in stream_list if i != stream]
     chosen = random.choice(available_streams)
     toggle_stream(chosen)
 
+
 def seek_stream(direction):
-    
+    global stream 
+
     if (stream == None) & (direction==1):
-        toggle_stream(stream_list[0])
+        display_info(stream_list[0])
+        stream = stream_list[0]
     
     elif (stream == None) & (direction==-1):
-        toggle_stream(stream_list[-1])
+        display_info(stream_list[-1])
+        stream = stream_list[-1]
 
     else:
         idx = stream_list.index(stream)
         try:
-            toggle_stream(stream_list[idx + direction])
+            display_info(stream_list[idx + direction])
+            stream = stream_list[-1]
         except:
             if direction == 1:
-                toggle_stream(stream_list[0])
+                display_info(stream_list[0])
+                stream = stream_list[0]
             else:
-                toggle_stream(stream_list[-1])
+                display_info(stream_list[-1])
+                stream = stream_list[-1]
 
 
 def shutdown():
