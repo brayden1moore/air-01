@@ -361,17 +361,17 @@ def toggle_stream(name):
             mpv_process = None
             display_info(name, 'pause')
 
-            if stream != name: # if the button pressed is a new stream, play it
-                mpv_process = Popen([ 
-                    "mpv",
-                    "--ao=alsa",
-                    "--audio-device=alsa/hw:1,0",
-                    "--volume=90",
-                    "--no-video",
-                    stream_url
-                ])
+            if stream != name: # if the button pressed is a new stream, get it ready to play it
+                #mpv_process = Popen([ 
+                #    "mpv",
+                #    "--ao=alsa",
+                #    "--audio-device=alsa/hw:1,0",
+                #    "--volume=90",
+                #    "--no-video",
+                #    stream_url
+                #])
                 stream = name
-                display_info(name, 'play')
+                #display_info(name, 'pause')
 
         else: # otherwise play the one pressed
             mpv_process = Popen([
