@@ -294,7 +294,6 @@ def display_info(name):
         show_info = info['results'][result_idx]['now']
 
         description = show_info['embeds']['details']['description']
-        print(show_info['embeds']['details']['description'])
         if not description:
             genres = []
             for g in show_info['embeds']['details']['genres']:
@@ -400,9 +399,9 @@ def display_info(name):
 
 
 def toggle_stream(name):
-    global stream
+    global mpv_process
 
-    if name == stream:
+    if mpv_process:
         pause()
     else:
         play(name)
@@ -452,7 +451,13 @@ def periodic_update():
         blank = Image.new('RGB', (240, 240), color=(0, 0, 0))
         disp.display(blank)
 
+    else:
+        try:
+            display_info(stream)
+        except:
+            pass
     threading.Timer(5, periodic_update).start()
+
 
 def wake_screen():
     global screen_on, last_input_time, current_image
