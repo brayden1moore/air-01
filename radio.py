@@ -75,6 +75,12 @@ streams = {
         'info': 'https://voicesradio.airtime.pro/api/live-info-v2?timezone=America/Los_Angeles',
         'logo': 'voices.jpeg'
     },
+    'Bloop Radio': {
+        'name': 'Bloop Radio',
+        'stream': 'https://radio.canstream.co.uk:8058/live.mp3',
+        'info': 'https://blooplondon.com/wp-admin/admin-ajax.php?action=radio_station_current_show',
+        'logo': 'bloop.png'
+    },
     'Radio Quantica': {
         'name': 'Radio Quantica',
         'stream': 'https://stream.radioquantica.com:8443/stream',
@@ -279,6 +285,21 @@ def display_info(name, play_status):
             description = 'Is offline.'
         show_names.append(show_name)
         descriptions.append(description) 
+
+    elif name == 'Bloop Radio':
+        url = stream_info['info']
+        payload = {
+            'action': 'show-time-curd',
+            'crud-action': 'read',
+            'read-type': 'current'
+        }
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': 'Mozilla/5.0'
+        }
+        response = requests.post(url, data=payload, headers=headers).json()
+        descriptions.append(response['current-show'])
+        show_names.append(name)
 
     show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
     descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
