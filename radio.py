@@ -75,7 +75,7 @@ streams = {
     },
     'The Lot Radio': {
         'name': 'The Lot Radio',
-        'stream': ' https://lax-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=jUpPJwZzBI7EVJxGzkp0C8',
+        'stream': 'https://lvpr.tv/?v=85c28sa2o8wppm58&lowLatency=false&muted=false',
         'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
         'location': 'Brooklyn',
         'logo': 'thelot.jpeg'
@@ -376,7 +376,7 @@ def display_info(name):
             if datetime.fromisoformat(program['startTime']) < now:
                 show_name = program['eventTitleMeta']['artist'] if program['eventTitleMeta']['artist'] else "Dublab"                
                 description = program['eventTitleMeta']['eventName']
-                
+
         show_names.append(show_name)
         descriptions.append(description)
         locations.append(stream_info['location']) 
@@ -422,6 +422,7 @@ def display_info(name):
 
             if end_time > now_utc > start_time:
                 show_names.append(event['summary'])
+                event_id = event['id']
         
         locations.append(stream_info['location'])
         descriptions.append('No description.')
