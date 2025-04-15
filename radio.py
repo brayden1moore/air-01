@@ -143,15 +143,15 @@ streams = {
         'logo': 'kiosk.webp',
         'location': 'Brussels'
     },
-    'Internet Public Radio': {
-        'name': 'Internet Public Radio',
+    'IPR': {
+        'name': 'IPR',
         'stream': 'https://c11.radioboss.fm:18270/stream?_ic2=1744737620752',
         'info': 'https://c11.radioboss.fm/w/nowplayinginfo?u=270&1744737649518',
         'logo': 'internet.png',
         'location': 'Guadalajara'
     },
-    'The Lot Radio': {
-        'name': 'The Lot Radio',
+    'The Lot': {
+        'name': 'The Lot',
         'stream': 'https://sea-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=dAvba6VvdyAFTqOauDG09y',
         'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
         'location': 'Brooklyn',
@@ -393,7 +393,7 @@ def display_info(name):
         descriptions.append(description) 
         locations.append(stream_info['location']) 
 
-    elif name == 'The Lot Radio':
+    elif name == 'The Lot':
         
         api_key = 'AIzaSyD7jIVZog7IC--y1RBCiLuUmxEDeBH9wDA'
         calendar_id = stream_info['info']
@@ -462,11 +462,15 @@ def display_info(name):
             'User-Agent': 'Mozilla/5.0'
         }
         response = requests.post(url, data=payload, headers=headers).json()
-        show_names.append(response['current-show']['showName'])
+        try:
+            show_name = response['current-show']['showName']
+        except:
+            show_name = 'Re-run'
+        show_names.append(show_name)
         locations.append(stream_info['location']) 
         descriptions.append('No description.')
     
-    elif name == 'Internet Public Radio':
+    elif name == 'IPR':
         url = stream_info['info']
         info = requests.get(url).json()
         show_names.append(info['nowplaying'])
