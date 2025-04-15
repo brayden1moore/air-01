@@ -435,7 +435,7 @@ def display_info(name):
     elif name == 'We Are Various':
         url = stream_info['info']
         info = requests.get(url).json()
-        show_names.append(info['now_playing']['title'])
+        show_names.append(info['now_playing']['song']['title'])
         locations.append(stream_info['location']) 
         descriptions.append('No description.')
 
