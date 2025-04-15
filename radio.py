@@ -376,7 +376,7 @@ def display_info(name):
             if datetime.fromisoformat(program['startTime']) < now:
                 show_name = program['eventTitleMeta']['artist'] if program['eventTitleMeta']['artist'] else "Dublab"                
                 description = program['eventTitleMeta']['eventName']
-                logo_url = program['attachments']
+                
         show_names.append(show_name)
         descriptions.append(description)
         locations.append(stream_info['location']) 
