@@ -290,15 +290,15 @@ def display_everything(name, play_status='pause'):
     except:
         next_stream = stream_list[0] + ' >'
 
-    draw.text((32, 10), '[play/pause]', font=font, fill=(100, 100, 100))
-    draw.text((160, 10), '[random]', font=font, fill=(100, 100, 100))
-    draw.text((10, 224), prev_stream, font=font, fill=(100, 100, 100))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(100, 100, 100))
+    draw.text((32, 10), '[play/pause]', font=font, fill=(150, 150, 150))
+    draw.text((160, 10), '[random]', font=font, fill=(150, 150, 150))
+    draw.text((10, 224), prev_stream, font=font, fill=(150, 150, 150))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(150, 150, 150))
 
-    background = Image.new('RGB', (240, 20), color=(0, 0, 0))
+    background = Image.new('RGB', (240, 25), color=(0, 0, 0))
     image.paste(background, (24, 195))
     draw.text((24, 195), name, font=font, fill=(255, 255, 255))
-    draw.text((24, 205), "Loading info...", font=font, fill=(255, 255, 0))
+    draw.text((24, 205), "Loading info...", font=font, fill=(200, 200, 200))
 
     safe_display(image)
     display_info(name)
@@ -499,10 +499,10 @@ def display_info(name):
         title = f'{name} ({locations[0]})'
         
         draw.text((24, 195), title, font=font, fill=(255, 255, 255))
-        draw.text((24, 205), show_names[0][:40], font=font, fill=(255, 255, 0))
+        draw.text((24, 205), show_names[0][:40], font=font, fill=(200, 200, 200))
     except:
         draw.text((24, 195), title, font=font, fill=(255, 255, 255))
-        draw.text((24, 205), "No description.", font=font, fill=(255, 255, 0))
+        draw.text((24, 205), "No description.", font=font, fill=(200, 200, 200))
 
     safe_display(image)
 
