@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont, ImageSequence
 from subprocess import Popen, run
 import requests
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timezone, timedelta
 import time
 import signal
 from io import BytesIO
@@ -72,6 +72,13 @@ streams = {
         'info': 'https://wnyu.org/v1/schedule/current_and_next',
         'logo': 'wnyu.jpeg',
         'location': 'New York'
+    },
+    'The Lot Radio': {
+        'name': 'The Lot Radio',
+        'stream': ' https://lax-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=jUpPJwZzBI7EVJxGzkp0C8',
+        'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
+        'location': 'Brooklyn',
+        'logo': 'thelot.jpeg'
     },
     'Voices': {
         'name': 'Voices',
@@ -385,6 +392,39 @@ def display_info(name):
         show_names.append(show_name)
         descriptions.append(description) 
         locations.append(stream_info['location']) 
+
+    elif name == 'The Lot Radio':
+        
+        api_key = 'AIzaSyD7jIVZog7IC--y1RBCiLuUmxEDeBH9wDA'
+        calendar_id = stream_info['info']
+        time_minus_1hr = (datetime.now(timezone.utc) - timedelta(hours=1)).replace(microsecond=0).isoformat()
+
+        url = f'https://www.googleapis.com/calendar/v3/calendars/{calendar_id}/events'
+        params = {
+            'key': api_key,
+            'maxResults': 3,
+            'singleEvents': True,
+            'orderBy': 'startTime',
+            'timeMin': time_minus_1hr
+        }
+
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        for event in data.get('items', []):
+            end_time_str = event['end']['dateTime']
+            end_time = datetime.fromisoformat(end_time_str)
+
+            start_time_str = event['start']['dateTime']
+            start_time = datetime.fromisoformat(start_time_str)
+
+            now_utc = datetime.now(timezone.utc)
+
+            if end_time > now_utc > start_time:
+                show_names.append(event['summary'])
+        
+        locations.append(stream_info['location'])
+        descriptions.append('No description.')
     
     elif name == 'Radio Quantica':
         info_url = stream_info['info']
@@ -438,6 +478,7 @@ def display_info(name):
         show_names.append(info['now_playing']['song']['title'])
         locations.append(stream_info['location']) 
         descriptions.append('No description.')
+
 
     font = ImageFont.load_default()
     image = current_image.copy()
