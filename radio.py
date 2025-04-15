@@ -122,6 +122,12 @@ streams = {
         'stream': 'https://kioskradiobxl.out.airtime.pro/kioskradiobxl_b',
         'info': 'https://kioskradiobxl.airtime.pro/api/live-info-v2',
         'logo': 'kiosk.webp'
+    },
+    'Internet Public Radio': {
+        'name': 'Internet Public Radio',
+        'stream': 'https://c11.radioboss.fm:18270/stream?_ic2=1744737620752',
+        'info': 'https://c11.radioboss.fm/w/nowplayinginfo?u=270&1744737649518',
+        'logo': 'internet.png'
     }
         #'BlueMoonRadio': {
     #    'name': 'BlueMoonRadio',
@@ -384,6 +390,12 @@ def display_info(name):
         response = requests.post(url, data=payload, headers=headers).json()
         descriptions.append(response['current-show']['showName'])
         show_names.append(name)
+    
+    elif name == 'Internet Public Radio':
+        url = stream_info['info']
+        info = requests.get(url).json()
+        show_names.append(name)
+        descriptions.append(info['nowplaying'])
 
     font = ImageFont.load_default()
     image = current_image.copy()
@@ -395,8 +407,8 @@ def display_info(name):
     try:
         show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in show_names]
         descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"') for i in descriptions]
-        draw.text((24, 195), show_names[0], font=font, fill=(255, 255, 255))
-        draw.text((24, 205), descriptions[0], font=font, fill=(255, 255, 0))
+        draw.text((24, 195), show_names[0][:40], font=font, fill=(255, 255, 255))
+        draw.text((24, 205), descriptions[0][:40], font=font, fill=(255, 255, 0))
     except:
         draw.text((24, 195), name, font=font, fill=(255, 255, 255))
         draw.text((24, 205), "No description.", font=font, fill=(255, 255, 0))
