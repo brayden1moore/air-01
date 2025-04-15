@@ -73,13 +73,6 @@ streams = {
         'logo': 'wnyu.jpeg',
         'location': 'New York'
     },
-    'The Lot Radio': {
-        'name': 'The Lot Radio',
-        'stream': 'https://sea-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=dAvba6VvdyAFTqOauDG09y',
-        'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
-        'location': 'Brooklyn',
-        'logo': 'thelot.jpeg'
-    },
     'Voices': {
         'name': 'Voices',
         'stream': 'https://voicesradio.out.airtime.pro/voicesradio_a',
@@ -156,7 +149,14 @@ streams = {
         'info': 'https://c11.radioboss.fm/w/nowplayinginfo?u=270&1744737649518',
         'logo': 'internet.png',
         'location': 'Guadalajara'
-    }
+    },
+    'The Lot Radio': {
+        'name': 'The Lot Radio',
+        'stream': 'https://sea-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=dAvba6VvdyAFTqOauDG09y',
+        'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
+        'location': 'Brooklyn',
+        'logo': 'thelot.jpeg'
+    },
         #'BlueMoonRadio': {
     #    'name': 'BlueMoonRadio',
     #    'stream': '',
