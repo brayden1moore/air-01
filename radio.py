@@ -75,7 +75,7 @@ streams = {
     },
     'The Lot Radio': {
         'name': 'The Lot Radio',
-        'stream': 'https://lvpr.tv/?v=85c28sa2o8wppm58&lowLatency=false&muted=false',
+        'stream': 'https://sea-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=dAvba6VvdyAFTqOauDG09y',
         'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
         'location': 'Brooklyn',
         'logo': 'thelot.jpeg'
