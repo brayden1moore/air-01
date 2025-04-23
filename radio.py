@@ -96,7 +96,7 @@ last_input_time = time.time()
 
 def safe_display(image):
     global current_image
-    if screen_on:
+    if screen_on & (image != current_image):
         disp.display(image)
     current_image = image.copy()
     
@@ -196,22 +196,8 @@ def display_everything(name, play_status='pause'):
     draw.text((10, 224), prev_stream, font=font, fill=(150, 150, 150))
     draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(150, 150, 150))
 
+    # stream info
     background = Image.new('RGB', (240, 25), color=(0, 0, 0))
-    image.paste(background, (24, 195))
-    draw.text((24, 195), name, font=font, fill=(255, 255, 255))
-    draw.text((24, 205), "Loading info...", font=font, fill=(200, 200, 200))
-
-    safe_display(image) # display 
-
-
-def display_info(name):
-    global current_image
-
-    font = ImageFont.load_default()
-    image = current_image.copy()
-    draw = ImageDraw.Draw(image)
-
-    background = Image.new('RGB', (240, 20), color=(0, 0, 0))
     image.paste(background, (24, 195))
 
     title = f"{name} ({streams[name]['location']})"
@@ -231,8 +217,8 @@ def display_info(name):
         border = Image.new('RGB', (142, 142), color=(255, 255, 255))
         image.paste(border, (75, 35))
         image.paste(show_logo, (76, 36))
-        
-    safe_display(image)
+
+    safe_display(image) # display 
 
 
 def toggle_stream(name):
@@ -294,7 +280,7 @@ def periodic_update():
     else:
         try:
             streams = get_streams()
-            display_info(stream)
+            display_everything(stream)
         except:
             pass
     threading.Timer(5, periodic_update).start()
