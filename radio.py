@@ -46,7 +46,7 @@ else:
 
 
 def get_streams():
-    url = 'internetradioprotocol.org/info'
+    url = 'https://internetradioprotocol.org/info'
     streams = requests.get(url).json()
     return streams
 
