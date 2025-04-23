@@ -213,10 +213,13 @@ def display_everything(name, play_status='pause'):
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
-        show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((140, 140))
-        border = Image.new('RGB', (142, 142), color=(255, 255, 255))
-        image.paste(border, (75, 35))
-        image.paste(show_logo, (76, 36))
+        try:
+            show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((140, 140))
+            border = Image.new('RGB', (142, 142), color=(255, 255, 255))
+            image.paste(border, (75, 35))
+            image.paste(show_logo, (76, 36))
+        except:
+            pass
 
     safe_display(image) # display 
 
