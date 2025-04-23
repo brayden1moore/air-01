@@ -215,7 +215,7 @@ def display_info(name):
     background = Image.new('RGB', (240, 20), color=(0, 0, 0))
     image.paste(background, (24, 195))
 
-    title = f'{name} ({streams[name]['location']})'
+    title = f"{name} ({streams[name]['location']})"
     parts = [
         streams[name]['nowPlaying'],
         streams[name]['nowPlayingArtist'],
