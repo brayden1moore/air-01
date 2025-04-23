@@ -44,134 +44,38 @@ else:
         def __init__(self, pin, hold_time=None):
             self.when_pressed = None
 
-streams = {
-    'NTS 1': {
-        'name': 'NTS 1',
-        'stream': 'https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp&device=800913353.1735584982',
-        'info': 'https://www.nts.live/api/v2/live',
-        'logo': 'nts1.png',
-        'location': 'London'
-    },
-    'NTS 2': {
-        'name': 'NTS 2',
-        'stream': 'https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp&device=800913353.1735584982',
-        'info': 'https://www.nts.live/api/v2/live',
-        'logo': 'nts2.png',
-        'location': 'London'
-    },
-    'Dublab': {
-        'name': 'Dublab',
-        'stream': 'https://dublab.out.airtime.pro/dublab_a',
-        'info': 'https://www.dublab.com/.netlify/functions/schedule?tz=America%2FLos_Angeles',
-        'logo': 'dublab.jpeg',
-        'location': 'Los Angeles'
-    },
-    'WNYU': {
-        'name': 'WNYU',
-        'stream': 'http://cinema.acs.its.nyu.edu:8000/wnyu128.mp3',
-        'info': 'https://wnyu.org/v1/schedule/current_and_next',
-        'logo': 'wnyu.jpeg',
-        'location': 'New York'
-    },
-    'Voices': {
-        'name': 'Voices',
-        'stream': 'https://voicesradio.out.airtime.pro/voicesradio_a',
-        'info': 'https://voicesradio.airtime.pro/api/live-info-v2?timezone=America/Los_Angeles',
-        'logo': 'voices.jpeg',
-        'location': 'London'
-    },
-    'Bloop Radio': {
-        'name': 'Bloop Radio',
-        'stream': 'https://radio.canstream.co.uk:8058/live.mp3',
-        'info': 'https://blooplondon.com/wp-admin/admin-ajax.php?action=radio_station_current_show',
-        'logo': 'bloop.png',
-        'location': 'London'
-    },
-    'Radio Quantica': {
-        'name': 'Radio Quantica',
-        'stream': 'https://stream.radioquantica.com:8443/stream',
-        'info': 'https://api.radioquantica.com/api/live-info',
-        'logo': 'quantica.jpeg',
-        'location': 'Lisbon'
-    },
-    'HydeFM': {
-        'name': 'HydeFM',
-        'stream': 'https://media.evenings.co/s/DReMy100B',
-        'info': 'https://api.evenings.co/v1/streams/hydefm/public',
-        'logo': 'hydefm.png',
-        'location': 'San Francisco'
-    },
-    'Do!!You!!!': {
-        'name': 'Do!!You!!!',
-        'stream': 'https://doyouworld.out.airtime.pro/doyouworld_a',
-        'info': 'https://doyouworld.airtime.pro/api/live-info-v2',
-        'logo': 'doyou.png',
-        'location': 'Los Angeles'
-    },
-    'SutroFM': {
-        'name': 'SutroFM',
-        'stream': 'https://media.evenings.co/s/7Lo66BLQe',
-        'info': 'https://api.evenings.co/v1/streams/sutrofm/public',
-        'logo': 'sutrofm.jpeg',
-        'location': 'San Francisco'
-    },
-    'KQED': {
-        'name': 'KQED',
-        'stream': 'https://streams.kqed.org/kqedradio?onsite=true',
-        'info': 'https://media-api.kqed.org/radio-schedules/',
-        'logo': 'kqed.png',
-        'location': 'San Francisco'
-    },
-    'Lower Grand Radio': {
-        'name': 'Lower Grand Radio',
-        'stream': 'https://lowergrandradio.out.airtime.pro:8000/lowergrandradio_a',
-        'info': 'https://lowergrandradio.airtime.pro/api/live-info-v2',
-        'logo': 'lgr.png',
-        'location': 'Oakland'
-    },
-    'We Are Various': {
-        'name': 'We Are Various',
-        'stream': 'https://azuracast.wearevarious.com/listen/we_are_various/live.mp3',
-        'info': 'https://azuracast.wearevarious.com/api/nowplaying/we_are_various',
-        'logo': 'various.jpeg',
-        'location': 'Antwerp'
-    },
-    'Kiosk Radio': {
-        'name': 'Kiosk Radio',
-        'stream': 'https://kioskradiobxl.out.airtime.pro/kioskradiobxl_b',
-        'info': 'https://kioskradiobxl.airtime.pro/api/live-info-v2',
-        'logo': 'kiosk.webp',
-        'location': 'Brussels'
-    },
-    'IPR': {
-        'name': 'IPR',
-        'stream': 'https://c11.radioboss.fm:18270/stream?_ic2=1744737620752',
-        'info': 'https://c11.radioboss.fm/w/nowplayinginfo?u=270&1744737649518',
-        'logo': 'internet.png',
-        'location': 'Guadalajara'
-    },
-    'The Lot': {
-        'name': 'The Lot',
-        'stream': 'https://sea-prod-catalyst-0.lp-playback.studio/hls/video+85c28sa2o8wppm58/0_1/index.m3u8?tkn=dAvba6VvdyAFTqOauDG09y',
-        'info': 'thelotradio.com_j1ordgiru5n55sa5u312tjgm9k@group.calendar.google.com',
-        'location': 'Brooklyn',
-        'logo': 'thelot.jpeg'
-    },
-        #'BlueMoonRadio': {
-    #    'name': 'BlueMoonRadio',
-    #    'stream': '',
-    #    'info': '',
-    #    'logo': 'bluemoon.png'
-    #}
-    #'Fault Radio': {
-    #    'name': 'Fault Radio',
-    #    'stream': 'https://player.twitch.tv/?autoplay=1&channel=Faultradio',
-    #    'info': '',
-    #    'logo': 'fault.png'
-    #},
-}
 
+def get_streams():
+    url = 'internetradioprotocol.org/info'
+    streams = requests.get(url).json()
+    return streams
+
+streams = get_streams()
 stream_list = list(streams.keys())
+
+'''
+"Bloop Radio": {
+        "about": "Family Operated Online Underground Radio Station based in the heart of Central London. Specialising in Electronic Music that broadcasts nothing but exclusive shows from London based Residents & Guests DJs.",
+        "bandcampLink": null,
+        "infoLink": "https://blooplondon.com/wp-admin/admin-ajax.php?action=radio_station_current_show",
+        "instaLink": null,
+        "lastUpdated": "2025-04-23 21:00:13.159242+00:00",
+        "location": "London",
+        "logo": "logos/bloop.png",
+        "mainLink": "https://www.blooplondon.com",
+        "name": "Bloop Radio",
+        "nowPlaying": "Re-Run",
+        "nowPlayingAdditionalInfo": null,
+        "nowPlayingArtist": null,
+        "nowPlayingDescription": null,
+        "nowPlayingDescriptionLong": null,
+        "nowPlayingSubtitle": null,
+        "showLogo": null,
+        "soundcloudLink": null,
+        "status": "Online",
+        "streamLink": "https://radio.canstream.co.uk:8058/live.mp3"
+    },
+'''
 
 disp = st7789.ST7789(
     rotation=180,     # Needed to display the right way up on Pirate Audio
@@ -240,8 +144,7 @@ def pause():
 def play(name):
     global mpv_process, current_image
 
-    stream_info = streams[name]
-    stream_url = stream_info['stream']
+    stream_url = streams[name]['streamLink']
 
     mpv_process = Popen([
         "mpv",
@@ -261,15 +164,13 @@ def play(name):
 
 
 def display_everything(name, play_status='pause'):
-    stream_info = streams[name]
-    logo_path = stream_info['logo']
+    global streams
 
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
-    logo_path = f'logos/{logo_path}'
-    logo = Image.open(logo_path).resize((140, 140))
-
+    logo_url = streams[name]['logo']
+    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((140, 140))
     border = Image.new('RGB', (142, 142), color=(255, 255, 255))
     image.paste(border, (75, 35))
     image.paste(logo, (76, 36))
@@ -300,191 +201,13 @@ def display_everything(name, play_status='pause'):
     draw.text((24, 195), name, font=font, fill=(255, 255, 255))
     draw.text((24, 205), "Loading info...", font=font, fill=(200, 200, 200))
 
-    safe_display(image)
-    display_info(name)
+    safe_display(image) # display 
 
 
 def display_info(name):
     global current_image
 
-    stream_info = streams[name]
-
-    show_names = []
-    descriptions = []
-    locations = []
-
-    # evening
-    if name in ['HydeFM','SutroFM']:
-        info = requests.get(stream_info['info']).json()
-        status = info['online']
-        show_title = info.get('name', name)
-        num_listeners = info['listeners']
-        listeners = f"{num_listeners} listener{s(num_listeners)}."
-        locations.append(stream_info['location'])
-
-        if status == False:
-            show_names.append(name)
-            descriptions.append('Is offline.')
-        else:
-            show_names.append(show_title)
-            descriptions.append(listeners)
-
-    elif 'NTS' in name:
-        info = requests.get(stream_info['info']).json()
-        result_idx = 0 if name == 'NTS 1' else 1
-        show_info = info['results'][result_idx]['now']
-        description = show_info['embeds']['details']['description']
-        location = show_info['embeds']['details']['location_long']
-        if not description:
-            genres = []
-            for g in show_info['embeds']['details']['genres']:
-                genres.append(g['value']) 
-                descriptions.append(', '.join(genres))
-        else:
-            descriptions.append(description)
-        if not location:
-            locations.append(stream_info['location'])
-        else: 
-            locations.append(location)
-
-        show_names.append(show_info['broadcast_title'])
-
-    elif name == 'KQED':
-        today = date.today().isoformat()
-        epoch_time = int(time.time())
-        info_url = stream_info['info'] + today
-        info = requests.get(info_url).json()
-        programs = info['data']['attributes']['schedule']
-        show_name = name
-        description = 'No description.'        
-        for program in programs:
-            if int(program['startTime']) < epoch_time:
-                show_name = program['programTitle']
-                description = program['programDescription']
-        
-        show_names.append(show_name)
-        locations.append(stream_info['location'])
-        descriptions.append(description) 
-
-    elif name == 'Dublab':
-        now = datetime.now(timezone.utc)
-        info_url = stream_info['info']
-        info = requests.get(info_url).json()
-        show_name = name
-        description = 'No description.'
-        for program in info:
-            if datetime.fromisoformat(program['startTime']) < now:
-                show_name = program['eventTitleMeta']['artist'] if program['eventTitleMeta']['artist'] else "Dublab"                
-                description = program['eventTitleMeta']['eventName']
-
-        show_names.append(show_name)
-        descriptions.append(description)
-        locations.append(stream_info['location']) 
-    
-    elif name == 'WNYU':
-        info_url = stream_info['info']
-        info = requests.get(info_url).json()
-        id = info[0]['id']
-        description_url = f'https://wnyu.org/v1/schedule/{id}'
-        info = requests.get(description_url).json()
-        show_name = info['program']['name']
-        description = ', '.join([i.title() for i in info['episode']['genre_list']])
-        show_names.append(show_name)
-        descriptions.append(description) 
-        locations.append(stream_info['location']) 
-
-    elif name == 'The Lot':
-        
-        api_key = 'AIzaSyD7jIVZog7IC--y1RBCiLuUmxEDeBH9wDA'
-        calendar_id = stream_info['info']
-        time_minus_1hr = (datetime.now(timezone.utc) - timedelta(hours=1)).replace(microsecond=0).isoformat()
-
-        url = f'https://www.googleapis.com/calendar/v3/calendars/{calendar_id}/events'
-        params = {
-            'key': api_key,
-            'maxResults': 3,
-            'singleEvents': True,
-            'orderBy': 'startTime',
-            'timeMin': time_minus_1hr
-        }
-
-        response = requests.get(url, params=params)
-        data = response.json()
-
-        for event in data.get('items', []):
-            end_time_str = event['end']['dateTime']
-            end_time = datetime.fromisoformat(end_time_str)
-
-            start_time_str = event['start']['dateTime']
-            start_time = datetime.fromisoformat(start_time_str)
-
-            now_utc = datetime.now(timezone.utc)
-
-            if end_time > now_utc > start_time:
-                show_names.append(event['summary'])
-                event_id = event['id']
-        
-        locations.append(stream_info['location'])
-        descriptions.append('No description.')
-    
-    elif name == 'Radio Quantica':
-        info_url = stream_info['info']
-        info = requests.get(info_url).json()
-        show_name = info['currentShow'][0]['name']
-        show_names.append(show_name)
-        locations.append(stream_info['location']) 
-        descriptions.append('No description.')
-
-    # airtime
-    elif name in ['Do!!You!!!','Voices','Lower Grand Radio','Kiosk Radio']:
-        info_url = stream_info['info']
-        info = requests.get(info_url).json()
-        try:
-            show_name = info['shows']['current']['name']
-            description = info['tracks']['current']['name'].replace(' - ','')
-        except:
-            show_name = name
-            description = 'Is offline.'
-        
-        show_names.append(show_name)
-        descriptions.append(description) 
-        locations.append(stream_info['location']) 
-
-    elif name == 'Bloop Radio':
-        url = stream_info['info']
-        payload = {
-            'action': 'show-time-curd',
-            'crud-action': 'read',
-            'read-type': 'current'
-        }
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': 'Mozilla/5.0'
-        }
-        response = requests.post(url, data=payload, headers=headers).json()
-        try:
-            show_name = response['current-show']['showName']
-        except:
-            show_name = 'Re-run'
-        show_names.append(show_name)
-        locations.append(stream_info['location']) 
-        descriptions.append('No description.')
-    
-    elif name == 'IPR':
-        url = stream_info['info']
-        info = requests.get(url).json()
-        show_names.append(info['nowplaying'])
-        locations.append(stream_info['location']) 
-        descriptions.append('No description.')
-
-    elif name == 'We Are Various':
-        url = stream_info['info']
-        info = requests.get(url).json()
-        show_names.append(info['now_playing']['song']['title'])
-        locations.append(stream_info['location']) 
-        descriptions.append('No description.')
-
-
+    streams = get_streams() # get stream info from IRP
     font = ImageFont.load_default()
     image = current_image.copy()
     draw = ImageDraw.Draw(image)
@@ -492,18 +215,24 @@ def display_info(name):
     background = Image.new('RGB', (240, 20), color=(0, 0, 0))
     image.paste(background, (24, 195))
 
-    try:
-        show_names = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"').replace('\n',' ') for i in show_names]
-        descriptions = [i.replace('&amp;','&').replace('\u2019', "'").replace('\u2013', "-").replace('&#039;',"'").replace('\u201c','"').replace('\u201d','"').replace('\n',' ') for i in descriptions]
-        
-        title = f'{name} ({locations[0]})'
-        
-        draw.text((24, 195), title, font=font, fill=(255, 255, 255))
-        draw.text((24, 205), show_names[0][:40], font=font, fill=(200, 200, 200))
-    except:
-        draw.text((24, 195), title, font=font, fill=(255, 255, 255))
-        draw.text((24, 205), "No description.", font=font, fill=(200, 200, 200))
+    title = f'{name} ({streams[name]['location']})'
+    parts = [
+        streams[name]['nowPlaying'],
+        streams[name]['nowPlayingArtist'],
+        streams[name]['nowPlayingSubtitle'],
+        streams[name]['nowPlayingAdditionalInfo'],
+    ]
+    subtitle = " - ".join(p for p in parts if p)
+    draw.text((24, 195), title, font=font, fill=(255, 255, 255))
+    draw.text((24, 205), subtitle, font=font, fill=(200, 200, 200))
 
+    show_logo_url = streams[name]['showLogo']
+    if show_logo_url:
+        show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((140, 140))
+        border = Image.new('RGB', (142, 142), color=(255, 255, 255))
+        image.paste(border, (75, 35))
+        image.paste(show_logo, (76, 36))
+        
     safe_display(image)
 
 
