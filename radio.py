@@ -207,7 +207,6 @@ def display_everything(name, play_status='pause'):
 def display_info(name):
     global current_image
 
-    streams = get_streams() # get stream info from IRP
     font = ImageFont.load_default()
     image = current_image.copy()
     draw = ImageDraw.Draw(image)
@@ -285,7 +284,7 @@ def shutdown():
 
 
 def periodic_update():
-    global screen_on, last_input_time
+    global screen_on, last_input_time, streams
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
         backlight_off()
@@ -294,6 +293,7 @@ def periodic_update():
 
     else:
         try:
+            streams = get_streams()
             display_info(stream)
         except:
             pass
