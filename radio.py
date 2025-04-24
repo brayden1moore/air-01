@@ -92,14 +92,15 @@ LOGO_X = round(240/2) - round(LOGO_SIZE/2)
 SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
-NEXT_LOGO_X = 240 - round(SMALL_LOGO_SIZE/2) - round(SMALL_LOGO_SIZE * 0.33)
+NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.33)
 
-TITLE_Y = LOGO_SIZE + LOGO_Y + 15
+TITLE_Y = LOGO_SIZE + LOGO_Y + 10
 SUBTITLE_Y = TITLE_Y + 25
 LOCATION_Y = SUBTITLE_Y + 15
 
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
+
 
 def x(string, font):
     text_width, _ = font.getsize(string)
@@ -224,10 +225,11 @@ def display_everything(name):
     location = streams[name]['location']
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 20)
-    draw.text((x(title, font), 160), title, font=font, fill=(255,255,255))
+    draw.text((x(title, font), TITLE_Y), title, font=font, fill=(255,255,255))
+
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
-    draw.text((x(subtitle, font), 185), subtitle, font=font, fill=(255,255,255))
-    draw.text((x(location, font), 200), location, font=font, fill=(255,255,255))
+    draw.text((x(subtitle, font), SUBTITLE_Y), subtitle, font=font, fill=(255,255,255))
+    draw.text((x(location, font), LOCATION_Y), location, font=font, fill=(255,255,255))
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
