@@ -49,9 +49,14 @@ def get_streams():
     url = 'https://internetradioprotocol.org/info'
     streams = requests.get(url).json()
 
+    inactive_streams = []
     for name, value in streams.items():
         if value['status'] == "Offline":
-            del streams[name]
+            inactive_streams.append(name)
+
+    for inactive_stream in inactive_streams:
+        del streams[inactive_stream]
+        
     return streams
 
 streams = get_streams()
