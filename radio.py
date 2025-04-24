@@ -194,7 +194,7 @@ def display_everything(name, play_status='pause'):
     ]
     subtitle = " - ".join(p for p in parts if p)
     font = ImageFont.truetype("assets/andalemono.ttf", 15)
-    draw.text((24, 195), title, font=font, fill=(255, 255, 255))
+    draw.text((24, 185), title, font=font, fill=(255, 255, 255))
     font = ImageFont.truetype("assets/andalemono.ttf", 10)
     draw.text((24, 205), subtitle, font=font, fill=(255, 255, 255))
 
