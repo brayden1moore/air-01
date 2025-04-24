@@ -181,13 +181,13 @@ def display_everything(name):
     draw = ImageDraw.Draw(image)
 
     logo = Image.open(streams[name]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
-    prev = Image.open(streams[prev_stream]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
-    next = Image.open(streams[next_stream]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
+    prev = Image.open(streams[prev_stream]['logoBytes']).resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
+    next = Image.open(streams[next_stream]['logoBytes']).resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
 
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
 
-    image.paste(prev, PREV_LOGO_X, SMALL_LOGO_Y)
-    image.paste(prev, NEXT_LOGO_X, SMALL_LOGO_Y)
+    image.paste(prev, (PREV_LOGO_X, SMALL_LOGO_Y))
+    image.paste(prev, (NEXT_LOGO_X, SMALL_LOGO_Y))
 
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
