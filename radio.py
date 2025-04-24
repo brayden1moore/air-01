@@ -52,6 +52,10 @@ def get_streams():
 
     inactive_streams = []
     for name, value in streams.items():
+
+        logo = BytesIO(requests.get(value['logo']).content)
+        value['logoBytes'] = logo
+
         if value['status'] == "Offline":
             inactive_streams.append(name)
 
@@ -159,8 +163,7 @@ def display_everything(name):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
-    logo_url = streams[name]['logo']
-    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((LOGO_SIZE, LOGO_SIZE))
+    logo = Image.open(streams[name]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(255,255,255))
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
