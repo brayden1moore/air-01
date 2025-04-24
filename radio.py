@@ -94,7 +94,7 @@ SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
 NEXT_LOGO_X = 240 - round(SMALL_LOGO_SIZE/2) - round(SMALL_LOGO_SIZE * 0.33)
 
-TITLE_Y = LOGO_SIZE + LOGO_Y
+TITLE_Y = LOGO_SIZE + LOGO_Y + 15
 SUBTITLE_Y = TITLE_Y + 25
 LOCATION_Y = SUBTITLE_Y + 15
 
@@ -202,8 +202,8 @@ def display_everything(name):
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 
-    draw.text((32, 10), '[play/pause]', font=font, fill=(255,255,255))
-    draw.text((160, 10), '[random]', font=font, fill=(255,255,255))
+    #draw.text((32, 10), '[play/pause]', font=font, fill=(255,255,255))
+    #draw.text((160, 10), '[random]', font=font, fill=(255,255,255))
     #draw.text((10, 224), prev_stream, font=font, fill=(255,255,255))
     #draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255,255,255))
 
