@@ -84,6 +84,7 @@ LOGO_Y = 35
 LOGO_X = 20
 LOGO_SIZE = 120
 STATUS_SIZE = 25
+STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+round(LOGO_SIZE/2)-STATUS_SIZE)
 
 def safe_display(image):
     global current_image
@@ -126,7 +127,7 @@ def pause():
     
     image = current_image.copy()
     icon = Image.open('assets/pause.png').resize((STATUS_SIZE, STATUS_SIZE))
-    image.paste(icon, (LOGO_X+(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+(LOGO_SIZE/2)-STATUS_SIZE))
+    image.paste(icon, STATUS_LOCATION)
     safe_display(image)
     play_status = 'pause'
 
@@ -147,7 +148,7 @@ def play(name):
 
     image = current_image.copy()
     icon = Image.open('assets/play.png').resize((25, 25))
-    image.paste(icon, (LOGO_X+(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+(LOGO_SIZE/2)-STATUS_SIZE))
+    image.paste(icon, STATUS_LOCATION)
     safe_display(image)
     play_status = 'play'
 
@@ -166,7 +167,7 @@ def display_everything(name):
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
-    image.paste(icon, (LOGO_X+(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+(LOGO_SIZE/2)-STATUS_SIZE))
+    image.paste(icon, STATUS_LOCATION)
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
