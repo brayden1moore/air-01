@@ -89,6 +89,11 @@ LOGO_SIZE = 120
 LOGO_Y = 35
 LOGO_X = round(240/2) - round(LOGO_SIZE/2)
 
+SMALL_LOGO_SIZE = 80
+SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
+PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
+NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.66)
+
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
 
@@ -166,29 +171,35 @@ def play(name):
 def display_everything(name):
     global streams, play_status
 
+    prev_stream = stream_list[stream_list.index(name)-1]
+    try:
+        next_stream = stream_list[stream_list.index(name)+1]
+    except:
+        next_stream = stream_list[0]
+
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
     logo = Image.open(streams[name]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
+    prev = Image.open(streams[prev_stream]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
+    next = Image.open(streams[next_stream]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
+
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
+
+    image.paste(prev, PREV_LOGO_X, SMALL_LOGO_Y)
+    image.paste(prev, NEXT_LOGO_X, SMALL_LOGO_Y)
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 
-    prev_stream = '< ' + stream_list[stream_list.index(name)-1][:10]
-    try:
-        next_stream = stream_list[stream_list.index(name)+1][:10] + ' >'
-    except:
-        next_stream = stream_list[0][:10] + ' >'
-
     draw.text((32, 10), '[play/pause]', font=font, fill=(255,255,255))
     draw.text((160, 10), '[random]', font=font, fill=(255,255,255))
-    draw.text((10, 224), prev_stream, font=font, fill=(255,255,255))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255,255,255))
+    #draw.text((10, 224), prev_stream, font=font, fill=(255,255,255))
+    #draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255,255,255))
 
     # stream info
     background = Image.new('RGB', (240, 25), color=(0, 0, 0))
