@@ -84,9 +84,10 @@ current_image = None
 play_status = 'pause'
 last_input_time = time.time()
 
-LOGO_Y = 35
-LOGO_X = 20
+
 LOGO_SIZE = 120
+LOGO_Y = 35
+LOGO_X = round(240/2) - round(LOGO_SIZE/2)
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
 
