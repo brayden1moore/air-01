@@ -94,7 +94,7 @@ STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(
 
 def x(string, font):
     text_width, _ = font.getsize(string)
-    return (240 - text_width) // 2
+    return max((240 - text_width) // 2, 0)
 
 def safe_display(image):
     global current_image
@@ -170,7 +170,7 @@ def display_everything(name):
     draw = ImageDraw.Draw(image)
 
     logo = Image.open(streams[name]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
-    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(255,255,255))
+    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
     
