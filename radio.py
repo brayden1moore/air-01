@@ -189,11 +189,13 @@ def display_everything(name):
     prev = Image.open(streams[prev_stream]['logoBytes']).resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
     next = Image.open(streams[next_stream]['logoBytes']).resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
 
+    border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=(200,200,200))
+    image.paste(border, (PREV_LOGO_X, SMALL_LOGO_Y))
+    image.paste(border, (NEXT_LOGO_X, SMALL_LOGO_Y))
+    image.paste(prev, (PREV_LOGO_X+1, SMALL_LOGO_Y+1))
+    image.paste(next, (NEXT_LOGO_X+1, SMALL_LOGO_Y+1))
+
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
-
-    image.paste(prev, (PREV_LOGO_X, SMALL_LOGO_Y))
-    image.paste(next, (NEXT_LOGO_X, SMALL_LOGO_Y))
-
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
     
@@ -230,7 +232,7 @@ def display_everything(name):
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
         try:
-            show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((120, 120))
+            show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((LOGO_SIZE, LOGO_SIZE))
             border = Image.new('RGB', (122, 122), color=(255,255,255))
             image.paste(border, (LOGO_X, LOGO_Y))
             image.paste(show_logo, (LOGO_X+1, LOGO_Y+1))
