@@ -85,14 +85,18 @@ play_status = 'pause'
 last_input_time = time.time()
 
 
-LOGO_SIZE = 160
-LOGO_Y = 40
+LOGO_SIZE = 140
+LOGO_Y = 25
 LOGO_X = round(240/2) - round(LOGO_SIZE/2)
 
 SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
-NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.33)
+NEXT_LOGO_X = 240 - round(SMALL_LOGO_SIZE/2) - round(SMALL_LOGO_SIZE * 0.33)
+
+TITLE_Y = LOGO_SIZE + LOGO_Y
+SUBTITLE_Y = TITLE_Y + 25
+LOCATION_Y = SUBTITLE_Y + 15
 
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
@@ -100,6 +104,7 @@ STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(
 def x(string, font):
     text_width, _ = font.getsize(string)
     return max((240 - text_width) // 2, 0)
+
 
 def safe_display(image):
     global current_image
