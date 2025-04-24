@@ -142,7 +142,7 @@ def play(name):
     image = current_image.copy()
     icon = Image.open('assets/play.png').resize((25, 25))
     image.paste(icon, (22, 35))
-    safe_display(image)
+    #safe_display(image)
 
 
 def display_everything(name):
@@ -195,10 +195,10 @@ def display_everything(name):
     location = streams[name]['location']
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 20)
-    draw.text((20, 165), title, font=font, fill=(255,255,255))
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
+    draw.text((20, 160), title, font=font, fill=(255,255,255))
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
     draw.text((20, 185), subtitle, font=font, fill=(255,255,255))
-    draw.text((20, 195), location, font=font, fill=(255,255,255))
+    draw.text((20, 200), location, font=font, fill=(255,255,255))
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
