@@ -23,6 +23,7 @@ def backlight_off():
 
 backlight_on()
 
+
 if platform.system() == "Linux":
     import st7789
     from gpiozero import Button
@@ -89,7 +90,7 @@ def safe_display(image):
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
+    font = ImageFont.load_default()
 
     image = Image.new('RGB', (240, 240))
     image.paste(img, (0, 0))
@@ -142,7 +143,7 @@ def play(name):
 
     image = current_image.copy()
     icon = Image.open('assets/play.png').resize((25, 25))
-    image.paste(icon, (22, 35))
+    image.paste(icon, (215, 35))
     safe_display(image)
     play_status = 'play'
 
@@ -156,12 +157,12 @@ def display_everything(name):
     logo_url = streams[name]['logo']
     logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
     border = Image.new('RGB', (122, 122), color=(255,255,255))
-    image.paste(border, (100, 35))
-    image.paste(logo, (101, 36))
+    image.paste(border, (75, 35))
+    image.paste(show_logo, (76, 36))
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
-    image.paste(icon, (22,35))
+    image.paste(icon, (215, 35))
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
