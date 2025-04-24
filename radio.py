@@ -89,10 +89,10 @@ LOGO_SIZE = 120
 LOGO_Y = 35
 LOGO_X = round(240/2) - round(LOGO_SIZE/2)
 
-SMALL_LOGO_SIZE = 80
+SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
-NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.66)
+NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.33)
 
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
@@ -187,7 +187,7 @@ def display_everything(name):
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
 
     image.paste(prev, (PREV_LOGO_X, SMALL_LOGO_Y))
-    image.paste(prev, (NEXT_LOGO_X, SMALL_LOGO_Y))
+    image.paste(next, (NEXT_LOGO_X, SMALL_LOGO_Y))
 
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
