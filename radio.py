@@ -95,7 +95,7 @@ def safe_display(image):
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    font = ImageFont.load_default()
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 
     image = Image.new('RGB', (240, 240))
     image.paste(img, (0, 0))
@@ -174,7 +174,6 @@ def display_everything(name):
     #image.paste(icon, (19,75))
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
-    font = ImageFont.load_default()
 
     prev_stream = '< ' + stream_list[stream_list.index(name)-1][:10]
     try:
