@@ -158,8 +158,8 @@ def display_everything(name):
     logo_url = streams[name]['logo']
     logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
     border = Image.new('RGB', (122, 122), color=(255,255,255))
-    image.paste(border, (24, 35))
-    image.paste(logo, (25, 36))
+    image.paste(border, (20, 35))
+    image.paste(logo, (21, 36))
 
     '''
     icon_path = f'assets/{play_status}.png'
@@ -196,10 +196,13 @@ def display_everything(name):
         streams[name]['nowPlayingAdditionalInfo'],
     ]
     subtitle = " - ".join(p for p in parts if p)
+    location = streams[name]['location']
+
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 20)
-    draw.text((24, 155), title, font=font, fill=(255,255,255))
+    draw.text((20, 165), title, font=font, fill=(255,255,255))
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
-    draw.text((24, 175), subtitle, font=font, fill=(255,255,255))
+    draw.text((20, 185), location, font=font, fill=(255,255,255))
+    draw.text((20, 185), f'"{subtitle}"', font=font, fill=(255,255,255))
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
