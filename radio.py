@@ -158,7 +158,7 @@ def display_everything(name):
     logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
     border = Image.new('RGB', (122, 122), color=(255,255,255))
     image.paste(border, (75, 35))
-    image.paste(show_logo, (76, 36))
+    image.paste(logo, (76, 36))
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
