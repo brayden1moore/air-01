@@ -48,34 +48,14 @@ else:
 def get_streams():
     url = 'https://internetradioprotocol.org/info'
     streams = requests.get(url).json()
+
+    for name, value in streams:
+        if value['status'] == "Offline":
+            del streams[name]
     return streams
 
 streams = get_streams()
 stream_list = list(streams.keys())
-
-'''
-"Bloop Radio": {
-        "about": "Family Operated Online Underground Radio Station based in the heart of Central London. Specialising in Electronic Music that broadcasts nothing but exclusive shows from London based Residents & Guests DJs.",
-        "bandcampLink": null,
-        "infoLink": "https://blooplondon.com/wp-admin/admin-ajax.php?action=radio_station_current_show",
-        "instaLink": null,
-        "lastUpdated": "2025-04-23 21:00:13.159242+00:00",
-        "location": "London",
-        "logo": "logos/bloop.png",
-        "mainLink": "https://www.blooplondon.com",
-        "name": "Bloop Radio",
-        "nowPlaying": "Re-Run",
-        "nowPlayingAdditionalInfo": null,
-        "nowPlayingArtist": null,
-        "nowPlayingDescription": null,
-        "nowPlayingDescriptionLong": null,
-        "nowPlayingSubtitle": null,
-        "showLogo": null,
-        "soundcloudLink": null,
-        "status": "Online",
-        "streamLink": "https://radio.canstream.co.uk:8058/live.mp3"
-    },
-'''
 
 disp = st7789.ST7789(
     rotation=180,     # Needed to display the right way up on Pirate Audio
