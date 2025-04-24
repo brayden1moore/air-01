@@ -88,8 +88,13 @@ last_input_time = time.time()
 LOGO_SIZE = 120
 LOGO_Y = 35
 LOGO_X = round(240/2) - round(LOGO_SIZE/2)
+
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
+
+def x(string, font):
+    text_width, _ = font.getsize(string)
+    return (240 - text_width) // 2
 
 def safe_display(image):
     global current_image
@@ -171,11 +176,6 @@ def display_everything(name):
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
-    #image.paste(icon, STATUS_LOCATION)
-
-    icon_path = f'assets/flower.png'
-    icon = Image.open(icon_path).resize((30, 110))
-    #image.paste(icon, (19,75))
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 
@@ -205,18 +205,18 @@ def display_everything(name):
     location = streams[name]['location']
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 20)
-    draw.text((20, 160), title, font=font, fill=(255,255,255))
+    draw.text((x(title, font), 160), title, font=font, fill=(255,255,255))
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
-    draw.text((20, 185), subtitle, font=font, fill=(255,255,255))
-    draw.text((20, 200), location, font=font, fill=(255,255,255))
+    draw.text((x(subtitle, font), 185), subtitle, font=font, fill=(255,255,255))
+    draw.text((x(location, font), 200), location, font=font, fill=(255,255,255))
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
         try:
             show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((120, 120))
             border = Image.new('RGB', (122, 122), color=(255,255,255))
-            image.paste(border, (20, 35))
-            image.paste(show_logo, (21, 36))
+            image.paste(border, (LOGO_X, LOGO_Y))
+            image.paste(show_logo, (LOGO_X+1, LOGO_Y+1))
         except:
             pass
 
