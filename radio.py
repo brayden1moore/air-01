@@ -156,8 +156,8 @@ def display_everything(name):
     logo_url = streams[name]['logo']
     logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
     border = Image.new('RGB', (122, 122), color=(255,255,255))
-    image.paste(border, (75, 35))
-    image.paste(logo, (76, 36))
+    image.paste(border, (100, 35))
+    image.paste(logo, (101, 36))
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
@@ -165,10 +165,11 @@ def display_everything(name):
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
-    image.paste(icon, (19,75))
+    #image.paste(icon, (19,75))
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
-    
+    font = ImageFont.load_default()
+
     prev_stream = '< ' + stream_list[stream_list.index(name)-1][:10]
     try:
         next_stream = stream_list[stream_list.index(name)+1][:10] + ' >'
@@ -204,7 +205,7 @@ def display_everything(name):
     if show_logo_url:
         try:
             show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((120, 120))
-            border = Image.new('RGB', (122, 122), color=(0,0,0))
+            border = Image.new('RGB', (122, 122), color=(255,255,255))
             image.paste(border, (75, 35))
             image.paste(show_logo, (76, 36))
         except:
