@@ -56,7 +56,7 @@ def get_streams():
 
     for inactive_stream in inactive_streams:
         del streams[inactive_stream]
-        
+
     return streams
 
 streams = get_streams()
@@ -88,7 +88,7 @@ def safe_display(image):
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    font = ImageFont.truetype("assets/andalemono.ttf", 15)
+    font = ImageFont.truetype("assets/andalemono.ttf", 10)
 
     image = Image.new('RGB', (240, 240))
     image.paste(img, (0, 0))
@@ -168,7 +168,7 @@ def display_everything(name, play_status='pause'):
     icon = Image.open(icon_path).resize((30, 110))
     image.paste(icon, (19,75))
 
-    font = ImageFont.truetype("assets/andalemono.ttf", 15)
+    font = ImageFont.truetype("assets/andalemono.ttf", 10)
     
     prev_stream = '< ' + stream_list[stream_list.index(name)-1]
     try:
