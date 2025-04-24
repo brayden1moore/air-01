@@ -85,8 +85,8 @@ play_status = 'pause'
 last_input_time = time.time()
 
 
-LOGO_SIZE = 120
-LOGO_Y = 35
+LOGO_SIZE = 160
+LOGO_Y = 40
 LOGO_X = round(240/2) - round(LOGO_SIZE/2)
 
 SMALL_LOGO_SIZE = 60
