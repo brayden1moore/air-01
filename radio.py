@@ -152,15 +152,16 @@ def play(name):
 def display_everything(name):
     global streams, play_status
 
-    image = Image.new('RGB', (240, 240), color=(255, 255, 255))
+    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
     logo_url = streams[name]['logo']
-    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((140, 140))
-    border = Image.new('RGB', (142, 142), color=(0,0,0))
-    image.paste(border, (75, 35))
-    image.paste(logo, (76, 36))
+    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((100, 100))
+    border = Image.new('RGB', (142, 142), color=(255,255,255))
+    image.paste(border, (24, 35))
+    image.paste(logo, (25, 36))
 
+    '''
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
     image.paste(icon, (22,35))
@@ -168,25 +169,26 @@ def display_everything(name):
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
     image.paste(icon, (19,75))
+    '''
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
     
-    prev_stream = '< ' + stream_list[stream_list.index(name)-1]
+    prev_stream = '< ' + stream_list[stream_list.index(name)-1][:10]
     try:
-        next_stream = stream_list[stream_list.index(name)+1] + ' >'
+        next_stream = stream_list[stream_list.index(name)+1][:10] + ' >'
     except:
-        next_stream = stream_list[0] + ' >'
+        next_stream = stream_list[0][:10] + ' >'
 
-    draw.text((32, 10), '[play/pause]', font=font, fill=(0,0,0))
-    draw.text((160, 10), '[random]', font=font, fill=(0,0,0))
-    draw.text((10, 224), prev_stream, font=font, fill=(0,0,0))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(0,0,0))
+    draw.text((32, 10), '[play/pause]', font=font, fill=(255,255,255))
+    draw.text((160, 10), '[random]', font=font, fill=(255,255,255))
+    draw.text((10, 224), prev_stream, font=font, fill=(255,255,255))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255,255,255))
 
     # stream info
-    background = Image.new('RGB', (240, 25), color=(255, 255, 255))
+    background = Image.new('RGB', (240, 25), color=(0, 0, 0))
     image.paste(background, (24, 195))
 
-    title = f"{name} ({streams[name]['location']})"
+    title = f"{name}"
     parts = [
         streams[name]['nowPlaying'],
         streams[name]['nowPlayingArtist'],
@@ -194,10 +196,10 @@ def display_everything(name):
         streams[name]['nowPlayingAdditionalInfo'],
     ]
     subtitle = " - ".join(p for p in parts if p)
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 15)
-    draw.text((24, 185), title, font=font, fill=(0,0,0))
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 16)
+    draw.text((24, 185), title, font=font, fill=(255,255,255))
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
-    draw.text((24, 205), subtitle, font=font, fill=(0,0,0))
+    draw.text((24, 205), subtitle, font=font, fill=(255,255,255))
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
