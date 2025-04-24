@@ -125,10 +125,10 @@ def pause():
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
     
-    image = current_image.copy()
-    icon = Image.open('assets/pause.png').resize((STATUS_SIZE, STATUS_SIZE))
-    image.paste(icon, STATUS_LOCATION)
-    safe_display(image)
+    #image = current_image.copy()
+    #icon = Image.open('assets/pause.png').resize((STATUS_SIZE, STATUS_SIZE))
+    #image.paste(icon, STATUS_LOCATION)
+    #safe_display(image)
     play_status = 'pause'
 
 
@@ -146,9 +146,9 @@ def play(name):
         stream_url
     ])
 
-    image = current_image.copy()
-    icon = Image.open('assets/play.png').resize((25, 25))
-    image.paste(icon, STATUS_LOCATION)
+    #image = current_image.copy()
+    #icon = Image.open('assets/play.png').resize((25, 25))
+    #image.paste(icon, STATUS_LOCATION)
     #safe_display(image)
     play_status = 'play'
 
