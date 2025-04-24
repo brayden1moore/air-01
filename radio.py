@@ -230,6 +230,8 @@ def display_everything(name):
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
     draw.text((x(subtitle, font), SUBTITLE_Y), subtitle, font=font, fill=(255,255,255))
     draw.text((x(location, font), LOCATION_Y), location, font=font, fill=(255,255,255))
+    
+    safe_display(image)
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
