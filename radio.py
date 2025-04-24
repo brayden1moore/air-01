@@ -88,7 +88,7 @@ def safe_display(image):
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    font = ImageFont.truetype("assets/andalemono.ttf", 10)
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 
     image = Image.new('RGB', (240, 240))
     image.paste(img, (0, 0))
@@ -168,7 +168,7 @@ def display_everything(name, play_status='pause'):
     icon = Image.open(icon_path).resize((30, 110))
     image.paste(icon, (19,75))
 
-    font = ImageFont.truetype("assets/andalemono.ttf", 10)
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
     
     prev_stream = '< ' + stream_list[stream_list.index(name)-1]
     try:
@@ -193,9 +193,9 @@ def display_everything(name, play_status='pause'):
         streams[name]['nowPlayingAdditionalInfo'],
     ]
     subtitle = " - ".join(p for p in parts if p)
-    font = ImageFont.truetype("assets/andalemono.ttf", 15)
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 15)
     draw.text((24, 185), title, font=font, fill=(0,0,0))
-    font = ImageFont.truetype("assets/andalemono.ttf", 10)
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
     draw.text((24, 205), subtitle, font=font, fill=(0,0,0))
 
     show_logo_url = streams[name]['showLogo']
