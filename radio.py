@@ -176,10 +176,10 @@ def display_everything(name, play_status='pause'):
     except:
         next_stream = stream_list[0] + ' >'
 
-    draw.text((32, 10), '[play/pause]', font=font, fill=(150, 150, 150))
-    draw.text((160, 10), '[random]', font=font, fill=(150, 150, 150))
-    draw.text((10, 224), prev_stream, font=font, fill=(150, 150, 150))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(150, 150, 150))
+    draw.text((32, 10), '[play/pause]', font=font, fill=(255, 255, 255))
+    draw.text((160, 10), '[random]', font=font, fill=(255, 255, 255))
+    draw.text((10, 224), prev_stream, font=font, fill=(255, 255, 255))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255, 255, 255))
 
     # stream info
     background = Image.new('RGB', (240, 25), color=(0, 0, 0))
@@ -193,8 +193,10 @@ def display_everything(name, play_status='pause'):
         streams[name]['nowPlayingAdditionalInfo'],
     ]
     subtitle = " - ".join(p for p in parts if p)
+    font = ImageFont.truetype("assets/andalemono.ttf", 15)
     draw.text((24, 195), title, font=font, fill=(255, 255, 255))
-    draw.text((24, 205), subtitle, font=font, fill=(200, 200, 200))
+    font = ImageFont.truetype("assets/andalemono.ttf", 10)
+    draw.text((24, 205), subtitle, font=font, fill=(255, 255, 255))
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
