@@ -113,7 +113,7 @@ def s(number):
     
 
 def pause():
-    global mpv_process, current_image
+    global mpv_process, current_image, play_status
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
@@ -123,10 +123,11 @@ def pause():
     icon = Image.open('assets/pause.png').resize((25, 25))
     image.paste(icon, (22, 35))
     safe_display(image)
+    play_status = 'pause'
 
 
 def play(name):
-    global mpv_process, current_image
+    global mpv_process, current_image, play_status
 
     stream_url = streams[name]['streamLink']
 
@@ -142,7 +143,8 @@ def play(name):
     image = current_image.copy()
     icon = Image.open('assets/play.png').resize((25, 25))
     image.paste(icon, (22, 35))
-    #safe_display(image)
+    safe_display(image)
+    play_status = 'play'
 
 
 def display_everything(name):
@@ -154,10 +156,9 @@ def display_everything(name):
     logo_url = streams[name]['logo']
     logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
     border = Image.new('RGB', (122, 122), color=(255,255,255))
-    image.paste(border, (20, 35))
-    image.paste(logo, (21, 36))
-
-    '''
+    image.paste(border, (75, 35))
+    image.paste(logo, (76, 36))
+    
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
     image.paste(icon, (22,35))
@@ -165,7 +166,6 @@ def display_everything(name):
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
     image.paste(icon, (19,75))
-    '''
 
     font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
     
@@ -203,8 +203,8 @@ def display_everything(name):
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
         try:
-            show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((140, 140))
-            border = Image.new('RGB', (142, 142), color=(0,0,0))
+            show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((120, 120))
+            border = Image.new('RGB', (122, 122), color=(0,0,0))
             image.paste(border, (75, 35))
             image.paste(show_logo, (76, 36))
         except:
