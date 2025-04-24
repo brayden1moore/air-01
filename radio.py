@@ -185,11 +185,12 @@ def display_everything(name):
     next = Image.open(streams[next_stream]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
 
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
-    image.paste(border, (LOGO_X, LOGO_Y))
-    image.paste(logo, (LOGO_X+1, LOGO_Y+1))
 
     image.paste(prev, PREV_LOGO_X, SMALL_LOGO_Y)
     image.paste(prev, NEXT_LOGO_X, SMALL_LOGO_Y)
+
+    image.paste(border, (LOGO_X, LOGO_Y))
+    image.paste(logo, (LOGO_X+1, LOGO_Y+1))
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
