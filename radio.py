@@ -76,6 +76,7 @@ mpv_process = None
 stream = None
 screen_on = True
 current_image = None
+play_status = 'pause'
 last_input_time = time.time()
 
 
@@ -93,12 +94,12 @@ def display_scud():
     image = Image.new('RGB', (240, 240))
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
-    draw.text((32, 10), '[play/pause]', font=font, fill=(255, 255, 255))
-    draw.text((160, 10), '[random]', font=font, fill=(255, 255, 255))
+    draw.text((32, 10), '[play/pause]', font=font, fill=(0, 0, 0))
+    draw.text((160, 10), '[random]', font=font, fill=(0, 0, 0))
     prev_stream = '< ' + stream_list[-1]
     next_stream = stream_list[0] + ' >'
-    draw.text((10, 224), prev_stream, font=font, fill=(255, 255, 255))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255, 255, 255))
+    draw.text((10, 224), prev_stream, font=font, fill=(0, 0, 0))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(0, 0, 0))
     safe_display(image)
 
 display_scud()
@@ -148,8 +149,8 @@ def play(name):
     safe_display(image)
 
 
-def display_everything(name, play_status='pause'):
-    global streams
+def display_everything(name):
+    global streams, play_status
 
     image = Image.new('RGB', (240, 240), color=(255, 255, 255))
     draw = ImageDraw.Draw(image)
@@ -223,13 +224,14 @@ def toggle_stream(name):
 
     
 def play_random():
-    global stream
+    global stream, play_status
     pause()
     available_streams = [i for i in stream_list if i != stream]
     chosen = random.choice(available_streams)
     display_everything(chosen)
     play(chosen)
     stream = chosen
+    play_status = 'play'
 
 
 def seek_stream(direction):
