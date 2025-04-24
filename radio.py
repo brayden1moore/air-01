@@ -80,6 +80,10 @@ current_image = None
 play_status = 'pause'
 last_input_time = time.time()
 
+LOGO_Y = 35
+LOGO_X = 20
+LOGO_SIZE = 120
+STATUS_SIZE = 25
 
 def safe_display(image):
     global current_image
@@ -121,8 +125,8 @@ def pause():
         mpv_process = None
     
     image = current_image.copy()
-    icon = Image.open('assets/pause.png').resize((25, 25))
-    image.paste(icon, (22, 35))
+    icon = Image.open('assets/pause.png').resize((STATUS_SIZE, STATUS_SIZE))
+    image.paste(icon, (LOGO_X+(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+(LOGO_SIZE/2)-STATUS_SIZE))
     safe_display(image)
     play_status = 'pause'
 
@@ -143,7 +147,7 @@ def play(name):
 
     image = current_image.copy()
     icon = Image.open('assets/play.png').resize((25, 25))
-    image.paste(icon, (215, 35))
+    image.paste(icon, (LOGO_X+(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+(LOGO_SIZE/2)-STATUS_SIZE))
     safe_display(image)
     play_status = 'play'
 
@@ -155,14 +159,14 @@ def display_everything(name):
     draw = ImageDraw.Draw(image)
 
     logo_url = streams[name]['logo']
-    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
-    border = Image.new('RGB', (122, 122), color=(255,255,255))
-    image.paste(border, (20, 35))
-    image.paste(logo, (21, 36))
+    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((LOGO_SIZE, LOGO_SIZE))
+    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(255,255,255))
+    image.paste(border, (LOGO_X, LOGO_Y))
+    image.paste(logo, (LOGO_X+1, LOGO_Y+1))
     
     icon_path = f'assets/{play_status}.png'
     icon = Image.open(icon_path).resize((25, 25))
-    image.paste(icon, (215, 35))
+    image.paste(icon, (LOGO_X+(LOGO_SIZE/2)-STATUS_SIZE, LOGO_Y+(LOGO_SIZE/2)-STATUS_SIZE))
 
     icon_path = f'assets/flower.png'
     icon = Image.open(icon_path).resize((30, 110))
