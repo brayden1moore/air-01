@@ -156,8 +156,8 @@ def display_everything(name):
     draw = ImageDraw.Draw(image)
 
     logo_url = streams[name]['logo']
-    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((100, 100))
-    border = Image.new('RGB', (142, 142), color=(255,255,255))
+    logo = Image.open(BytesIO(requests.get(logo_url).content)).resize((120, 120))
+    border = Image.new('RGB', (122, 122), color=(255,255,255))
     image.paste(border, (24, 35))
     image.paste(logo, (25, 36))
 
@@ -196,9 +196,9 @@ def display_everything(name):
         streams[name]['nowPlayingAdditionalInfo'],
     ]
     subtitle = " - ".join(p for p in parts if p)
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 16)
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 20)
     draw.text((24, 185), title, font=font, fill=(255,255,255))
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
+    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
     draw.text((24, 205), subtitle, font=font, fill=(255,255,255))
 
     show_logo_url = streams[name]['showLogo']
