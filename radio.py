@@ -9,7 +9,7 @@ from io import BytesIO
 import threading
 import random
 import platform
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO # type: ignore
 
 BACKLIGHT_PIN = 13
 GPIO.setmode(GPIO.BCM)
@@ -36,6 +36,7 @@ BORDER_COLOR = (125,125,125)
 TEXT_COLOR = (255,255,255)
 TEXT_COLOR_2 = (225,225,225)
 BACKGROUND_COLOR = (0,0,0)
+BORDER_SIZE = 2
 
 SMALL_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 MEDIUM_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
@@ -204,15 +205,15 @@ def display_everything(name, update=False):
     prev = streams[prev_stream]['logo_small']
     next = streams[next_stream]['logo_small']
 
-    border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=BORDER_COLOR)
+    border = Image.new('RGB', (SMALL_LOGO_SIZE+BORDER_SIZE*2, SMALL_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
     image.paste(border, (PREV_LOGO_X, SMALL_LOGO_Y))
     image.paste(border, (NEXT_LOGO_X, SMALL_LOGO_Y))
-    image.paste(prev, (PREV_LOGO_X+1, SMALL_LOGO_Y+1))
-    image.paste(next, (NEXT_LOGO_X+1, SMALL_LOGO_Y+1))
+    image.paste(prev, (PREV_LOGO_X+BORDER_SIZE, SMALL_LOGO_Y+BORDER_SIZE))
+    image.paste(next, (NEXT_LOGO_X+BORDER_SIZE, SMALL_LOGO_Y+BORDER_SIZE))
 
-    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=BORDER_COLOR)
+    border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
     image.paste(border, (LOGO_X, LOGO_Y))
-    image.paste(logo, (LOGO_X+1, LOGO_Y+1))
+    image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE*2))
 
     title = f"{name}"
     parts = [
