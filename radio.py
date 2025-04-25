@@ -174,12 +174,15 @@ def pause():
     play_status = 'pause'
 
 
-def play(name):
+def play(name, toggled):
     global mpv_process, current_image, play_status
 
-    stream_url = streams[name]['streamLink']
-    safe_display(saved_image_while_paused)
     play_status = 'play'
+    
+    if toggled:
+        safe_display(saved_image_while_paused)
+
+    stream_url = streams[name]['streamLink']
 
     mpv_process = Popen([
         "mpv",
@@ -251,7 +254,7 @@ def toggle_stream(name):
         if mpv_process:
             pause()
         else:
-            play(name)
+            play(name, toggled=True)
     else:
         pass
 
