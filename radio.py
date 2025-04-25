@@ -157,7 +157,7 @@ def s(number):
     
 
 def pause():
-    global mpv_process, play_status
+    global mpv_process, play_status, current_image
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
