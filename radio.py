@@ -41,7 +41,7 @@ BORDER_SIZE = 2
 SMALL_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 MEDIUM_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
 LARGE_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf",20)
-PAUSE_IMAGE = Image.open('assets/pause.png').resize((LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2))
+PAUSE_IMAGE = (Image.open('assets/pause.png').convert('RGBA').resize((LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2)))
 
 def backlight_on():
     GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
@@ -161,10 +161,11 @@ def pause():
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
-    
-    image = current_image.copy()
-    image.paste(PAUSE_IMAGE, (LOGO_X,LOGO_Y))
-    safe_display(image)
+
+    img = current_image.convert('RGBA')
+    img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
+
+    safe_display(img.convert('RGB'))
     play_status = 'pause'
 
 
@@ -182,10 +183,10 @@ def play(name):
         stream_url
     ])
 
-    #image = current_image.copy()
+    image = current_image.copy()
     #icon = Image.open('assets/play.png').resize((25, 25))
     #image.paste(icon, STATUS_LOCATION)
-    #safe_display(image)
+    safe_display(image)
     play_status = 'play'
 
 
