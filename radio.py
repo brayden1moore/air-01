@@ -15,6 +15,26 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
 FONT_SIZE = 6
 
+LOGO_SIZE = 140
+LOGO_Y = 25
+LOGO_X = round(240/2) - round(LOGO_SIZE/2)
+
+SMALL_LOGO_SIZE = 60
+SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
+PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
+NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * (0.33/2))
+
+TITLE_Y = LOGO_SIZE + LOGO_Y + 10
+SUBTITLE_Y = TITLE_Y + 25
+LOCATION_Y = SUBTITLE_Y + 15
+
+STATUS_SIZE = 25
+STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
+
+SMALL_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
+MEDIUM_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
+LARGE_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf",20)
+
 def backlight_on():
     GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
@@ -84,24 +104,6 @@ current_image = None
 play_status = 'pause'
 last_input_time = time.time()
 
-
-LOGO_SIZE = 140
-LOGO_Y = 25
-LOGO_X = round(240/2) - round(LOGO_SIZE/2)
-
-SMALL_LOGO_SIZE = 60
-SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
-PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
-NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * (0.33/2))
-
-TITLE_Y = LOGO_SIZE + LOGO_Y + 10
-SUBTITLE_Y = TITLE_Y + 25
-LOCATION_Y = SUBTITLE_Y + 15
-
-STATUS_SIZE = 25
-STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
-
-
 def x(string, font):
     text_width, _ = font.getsize(string)
     return max((240 - text_width) // 2, 0)
@@ -116,17 +118,15 @@ def safe_display(image):
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
-
     image = Image.new('RGB', (240, 240))
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
-    draw.text((32, 10), '[play/pause]', font=font, fill=(0, 0, 0))
-    draw.text((160, 10), '[random]', font=font, fill=(0, 0, 0))
+    draw.text((32, 10), '[play/pause]', font=SMALL_FONT, fill=(0, 0, 0))
+    draw.text((160, 10), '[random]', font=SMALL_FONT, fill=(0, 0, 0))
     prev_stream = '< ' + stream_list[-1][:10]
     next_stream = stream_list[0][:10] + ' >'
-    draw.text((10, 224), prev_stream, font=font, fill=(0, 0, 0))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(0, 0, 0))
+    draw.text((10, 224), prev_stream, font=SMALL_FONT, fill=(0, 0, 0))
+    draw.text((230-len(next_stream)*6, 224), next_stream, font=SMALL_FONT, fill=(0, 0, 0))
     safe_display(image)
 
 display_scud()
@@ -200,15 +200,8 @@ def display_everything(name):
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
     
-    icon_path = f'assets/{play_status}.png'
-    icon = Image.open(icon_path).resize((25, 25))
-
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
-
-    #draw.text((32, 10), '[play/pause]', font=font, fill=(255,255,255))
-    #draw.text((160, 10), '[random]', font=font, fill=(255,255,255))
-    #draw.text((10, 224), prev_stream, font=font, fill=(255,255,255))
-    #draw.text((230-len(next_stream)*6, 224), next_stream, font=font, fill=(255,255,255))
+    #icon_path = f'assets/{play_status}.png'
+    #icon = Image.open(icon_path).resize((25, 25))
 
     # stream info
     background = Image.new('RGB', (240, 25), color=(0, 0, 0))
@@ -224,12 +217,9 @@ def display_everything(name):
     subtitle = " - ".join(p for p in parts if p)
     location = streams[name]['location']
 
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 20)
-    draw.text((x(title, font), TITLE_Y), title, font=font, fill=(255,255,255))
-
-    font = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
-    draw.text((x(subtitle, font), SUBTITLE_Y), subtitle, font=font, fill=(255,255,255))
-    draw.text((x(location, font), LOCATION_Y), location, font=font, fill=(255,255,255))
+    draw.text((x(title, LARGE_FONT), TITLE_Y), title, font=LARGE_FONT, fill=(255,255,255))
+    draw.text((x(subtitle, MEDIUM_FONT), SUBTITLE_Y), subtitle, font=MEDIUM_FONT, fill=(255,255,255))
+    draw.text((x(location, MEDIUM_FONT), LOCATION_Y), location, font=MEDIUM_FONT, fill=(255,255,255))
     
     safe_display(image)
 
