@@ -117,6 +117,7 @@ mpv_process = None
 stream = None
 screen_on = True
 current_image = None
+saved_image_while_paused = None
 play_status = 'pause'
 last_input_time = time.time()
 first_display = True
@@ -157,18 +158,17 @@ def s(number):
     
 
 def pause():
-    global mpv_process, play_status, current_image
+    global mpv_process, play_status, saved_image_while_paused
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
 
     if first_display != True:
+        saved_image_while_paused = current_image
         img = current_image.convert('RGBA')
-        played_state = img.copy()
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
-        current_image = played_state
     
     play_status = 'pause'
 
@@ -177,8 +177,7 @@ def play(name):
     global mpv_process, current_image, play_status
 
     stream_url = streams[name]['streamLink']
-    image = current_image.copy()
-    safe_display(image)
+    safe_display(saved_image_while_paused)
     play_status = 'play'
 
     mpv_process = Popen([
