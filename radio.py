@@ -164,8 +164,9 @@ def pause():
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
 
+    saved_image_while_paused = current_image.copy()
+
     if first_display != True:
-        saved_image_while_paused = current_image
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
