@@ -165,9 +165,10 @@ def pause():
 
     if first_display != True:
         img = current_image.convert('RGBA')
+        played_state = img.copy()
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
-        current_image = img
+        current_image = played_state
     
     play_status = 'pause'
 
