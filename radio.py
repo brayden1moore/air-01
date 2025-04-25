@@ -73,6 +73,8 @@ def fetch_logo(name, url):
     return name, BytesIO(resp.content)
 
 def get_streams():
+    global streams
+
     info = requests.get('https://internetradioprotocol.org/info').json()
     active = {n: v for n, v in info.items() if v['status']=="Online"}
     
@@ -224,9 +226,6 @@ def display_everything(name, update=False):
     draw.text((x(title, LARGE_FONT), TITLE_Y), title, font=LARGE_FONT, fill=(255,255,255))
     draw.text((x(subtitle, MEDIUM_FONT), SUBTITLE_Y), subtitle, font=MEDIUM_FONT, fill=(255,255,255))
     draw.text((x(location, MEDIUM_FONT), LOCATION_Y), location, font=MEDIUM_FONT, fill=(255,255,255))
-    
-    if not update:
-        safe_display(image)
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
@@ -301,6 +300,7 @@ def periodic_update():
     else:
         try:
             streams = get_streams()
+            stream_list = list(streams.keys())
             display_everything(stream, update=True)
         except:
             pass
