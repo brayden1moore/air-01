@@ -193,9 +193,9 @@ def display_everything(name):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
-    logo = Image.open(streams[name]['logo_full'])
-    prev = Image.open(streams[prev_stream]['logo_small'])
-    next = Image.open(streams[next_stream]['logo_small'])
+    logo = streams[name]['logo_full']
+    prev = streams[prev_stream]['logo_small']
+    next = streams[next_stream]['logo_small']
 
     border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=(255,255,255))
     image.paste(border, (PREV_LOGO_X, SMALL_LOGO_Y))
