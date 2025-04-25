@@ -213,7 +213,7 @@ def display_everything(name, update=False):
 
     border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
     image.paste(border, (LOGO_X, LOGO_Y))
-    image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE*2))
+    image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
 
     title = f"{name}"
     parts = [
@@ -233,9 +233,9 @@ def display_everything(name, update=False):
     if show_logo_url:
         try:
             show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((LOGO_SIZE, LOGO_SIZE))
-            border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=BORDER_COLOR)
+            border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
             image.paste(border, (LOGO_X, LOGO_Y))
-            image.paste(show_logo, (LOGO_X+1, LOGO_Y+1))
+            image.paste(show_logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
         except:
             pass
 
