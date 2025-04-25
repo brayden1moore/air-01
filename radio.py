@@ -66,6 +66,14 @@ else:
         def __init__(self, pin, hold_time=None):
             self.when_pressed = None
 
+def rounded_corners(im: Image.Image, radius: int) -> Image.Image:
+    im = im.convert("RGBA")
+    w, h = im.size
+    mask = Image.new("L", (w, h), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle([0, 0, w, h], radius=radius, fill=255)
+    im.putalpha(mask)
+    return im
 
 def fetch_logo(name, url):
     resp = requests.get(url, timeout=5)
@@ -74,20 +82,22 @@ def fetch_logo(name, url):
 
 def get_streams():
     info = requests.get('https://internetradioprotocol.org/info').json()
-    active = {n: v for n, v in info.items() if v['status']=="Online"}
-    
+    active = {n:v for n,v in info.items() if v['status']=="Online"}
+
     with ThreadPoolExecutor(max_workers=8) as exe:
-        futures = [
-            exe.submit(fetch_logo, name, v['logo'])
-            for name, v in active.items()
-        ]
+        futures = [exe.submit(fetch_logo, name, v['logo'])
+                   for name, v in active.items()]
         for f in as_completed(futures):
             name, buf = f.result()
-            active[name]['logoBytes'] = buf
-
             img = Image.open(buf).convert('RGB')
-            active[name]['logo_full']  = img.resize((LOGO_SIZE,  LOGO_SIZE))
-            active[name]['logo_small'] = img.resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
+
+            full  = img.resize((LOGO_SIZE,  LOGO_SIZE))
+            small = img.resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
+
+            active[name]['logo_full']       = full
+            active[name]['logo_small']      = small
+            active[name]['logo_full_round'] = rounded_corners(full,  14)
+            active[name]['logo_small_round']= rounded_corners(small, 8)
 
     return active
 
