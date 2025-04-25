@@ -295,8 +295,8 @@ def periodic_update():
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
         backlight_off()
-        blank = Image.new('RGB', (240, 240), color=(255, 255, 255))
-        disp.display(blank)
+        #blank = Image.new('RGB', (240, 240), color=(255, 255, 255))
+        #disp.display(blank)
 
     else:
         try:
