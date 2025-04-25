@@ -119,6 +119,7 @@ screen_on = True
 current_image = None
 play_status = 'pause'
 last_input_time = time.time()
+first_display = True
 
 def x(string, font):
     text_width, _ = font.getsize(string)
@@ -156,16 +157,17 @@ def s(number):
     
 
 def pause():
-    global mpv_process, current_image, play_status
+    global mpv_process, play_status
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
 
-    img = current_image.convert('RGBA')
-    img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
-
-    safe_display(img.convert('RGB'))
+    if first_display != True:
+        img = current_image.convert('RGBA')
+        img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
+        safe_display(img.convert('RGB'))
+    
     play_status = 'pause'
 
 
@@ -173,6 +175,9 @@ def play(name):
     global mpv_process, current_image, play_status
 
     stream_url = streams[name]['streamLink']
+    image = current_image.copy()
+    safe_display(image)
+    play_status = 'play'
 
     mpv_process = Popen([
         "mpv",
@@ -183,15 +188,10 @@ def play(name):
         stream_url
     ])
 
-    image = current_image.copy()
-    #icon = Image.open('assets/play.png').resize((25, 25))
-    #image.paste(icon, STATUS_LOCATION)
-    safe_display(image)
-    play_status = 'play'
-
-
 def display_everything(name, update=False):
-    global streams, play_status
+    global streams, play_status, first_display
+
+    first_display = False
 
     prev_stream = stream_list[stream_list.index(name)-1]
     try:
