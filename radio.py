@@ -174,11 +174,11 @@ def pause():
     play_status = 'pause'
 
 
-def play(name, toggled):
+def play(name, toggled=False):
     global mpv_process, current_image, play_status
 
     play_status = 'play'
-    
+
     if toggled:
         safe_display(saved_image_while_paused)
 
