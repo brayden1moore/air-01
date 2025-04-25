@@ -306,7 +306,7 @@ def periodic_update():
             display_everything(stream)
         except:
             pass
-    threading.Timer(5, periodic_update).start()
+    threading.Timer(60, periodic_update).start()
 
 
 def wake_screen():
