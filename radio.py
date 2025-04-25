@@ -167,6 +167,7 @@ def pause():
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
+        current_image = img
     
     play_status = 'pause'
 
