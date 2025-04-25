@@ -66,14 +66,6 @@ else:
         def __init__(self, pin, hold_time=None):
             self.when_pressed = None
 
-def rounded_corners(im: Image.Image, radius: int) -> Image.Image:
-    im = im.convert("RGBA")
-    w, h = im.size
-    mask = Image.new("L", (w, h), 0)
-    draw = ImageDraw.Draw(mask)
-    draw.rounded_rectangle([0, 0, w, h], radius=radius, fill=255)
-    im.putalpha(mask)
-    return im
 
 def fetch_logo(name, url):
     resp = requests.get(url, timeout=5)
@@ -82,22 +74,20 @@ def fetch_logo(name, url):
 
 def get_streams():
     info = requests.get('https://internetradioprotocol.org/info').json()
-    active = {n:v for n,v in info.items() if v['status']=="Online"}
-
+    active = {n: v for n, v in info.items() if v['status']=="Online"}
+    
     with ThreadPoolExecutor(max_workers=8) as exe:
-        futures = [exe.submit(fetch_logo, name, v['logo'])
-                   for name, v in active.items()]
+        futures = [
+            exe.submit(fetch_logo, name, v['logo'])
+            for name, v in active.items()
+        ]
         for f in as_completed(futures):
             name, buf = f.result()
+            active[name]['logoBytes'] = buf
+
             img = Image.open(buf).convert('RGB')
-
-            full  = img.resize((LOGO_SIZE,  LOGO_SIZE))
-            small = img.resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
-
-            active[name]['logo_full']       = full
-            active[name]['logo_small']      = small
-            active[name]['logo_full_round'] = rounded_corners(full,  14)
-            active[name]['logo_small_round']= rounded_corners(small, 8)
+            active[name]['logo_full']  = img.resize((LOGO_SIZE,  LOGO_SIZE))
+            active[name]['logo_small'] = img.resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
 
     return active
 
@@ -191,7 +181,7 @@ def play(name):
     play_status = 'play'
 
 
-def display_everything(name):
+def display_everything(name, update=False):
     global streams, play_status
 
     prev_stream = stream_list[stream_list.index(name)-1]
@@ -203,9 +193,9 @@ def display_everything(name):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
-    logo = streams[name]['logo_full_round']
-    prev = streams[prev_stream]['logo_small_round']
-    next = streams[next_stream]['logo_small_round']
+    logo = streams[name]['logo_full']
+    prev = streams[prev_stream]['logo_small']
+    next = streams[next_stream]['logo_small']
 
     border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=(255,255,255))
     image.paste(border, (PREV_LOGO_X, SMALL_LOGO_Y))
@@ -216,9 +206,6 @@ def display_everything(name):
     border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(255,255,255))
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
-    
-    #icon_path = f'assets/{play_status}.png'
-    #icon = Image.open(icon_path).resize((25, 25))
 
     # stream info
     background = Image.new('RGB', (240, 25), color=(0, 0, 0))
@@ -238,7 +225,8 @@ def display_everything(name):
     draw.text((x(subtitle, MEDIUM_FONT), SUBTITLE_Y), subtitle, font=MEDIUM_FONT, fill=(255,255,255))
     draw.text((x(location, MEDIUM_FONT), LOCATION_Y), location, font=MEDIUM_FONT, fill=(255,255,255))
     
-    safe_display(image)
+    if not update:
+        safe_display(image)
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
@@ -313,7 +301,7 @@ def periodic_update():
     else:
         try:
             streams = get_streams()
-            display_everything(stream)
+            display_everything(stream, update=True)
         except:
             pass
     threading.Timer(60, periodic_update).start()
