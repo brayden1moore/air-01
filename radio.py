@@ -32,6 +32,11 @@ LOCATION_Y = SUBTITLE_Y + 15
 STATUS_SIZE = 25
 STATUS_LOCATION = (LOGO_X+round(LOGO_SIZE/2)-round(STATUS_SIZE/2), LOGO_Y+round(LOGO_SIZE/2)-round(STATUS_SIZE/2))
 
+BORDER_COLOR = (125,125,125)
+TEXT_COLOR = (255,255,255)
+TEXT_COLOR_2 = (225,225,225)
+BACKGROUND_COLOR = (0,0,0)
+
 SMALL_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
 MEDIUM_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
 LARGE_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf",20)
@@ -192,26 +197,22 @@ def display_everything(name, update=False):
     except:
         next_stream = stream_list[0]
 
-    image = Image.new('RGB', (240, 240), color=(0, 0, 0))
+    image = Image.new('RGB', (240, 240), color=BACKGROUND_COLOR)
     draw = ImageDraw.Draw(image)
 
     logo = streams[name]['logo_full']
     prev = streams[prev_stream]['logo_small']
     next = streams[next_stream]['logo_small']
 
-    border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=(255,255,255))
+    border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=BORDER_COLOR)
     image.paste(border, (PREV_LOGO_X, SMALL_LOGO_Y))
     image.paste(border, (NEXT_LOGO_X, SMALL_LOGO_Y))
     image.paste(prev, (PREV_LOGO_X+1, SMALL_LOGO_Y+1))
     image.paste(next, (NEXT_LOGO_X+1, SMALL_LOGO_Y+1))
 
-    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(255,255,255))
+    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=BORDER_COLOR)
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
-
-    # stream info
-    background = Image.new('RGB', (240, 25), color=(0, 0, 0))
-    image.paste(background, (24, 195))
 
     title = f"{name}"
     parts = [
@@ -223,15 +224,15 @@ def display_everything(name, update=False):
     subtitle = " - ".join(p for p in parts if p)
     location = streams[name]['location']
 
-    draw.text((x(title, LARGE_FONT), TITLE_Y), title, font=LARGE_FONT, fill=(255,255,255))
-    draw.text((x(subtitle, MEDIUM_FONT), SUBTITLE_Y), subtitle, font=MEDIUM_FONT, fill=(255,255,255))
-    draw.text((x(location, MEDIUM_FONT), LOCATION_Y), location, font=MEDIUM_FONT, fill=(255,255,255))
+    draw.text((x(title, LARGE_FONT), TITLE_Y), title, font=LARGE_FONT, fill=TEXT_COLOR)
+    draw.text((x(subtitle, MEDIUM_FONT), SUBTITLE_Y), subtitle, font=MEDIUM_FONT, fill=TEXT_COLOR_2)
+    draw.text((x(location, MEDIUM_FONT), LOCATION_Y), location, font=MEDIUM_FONT, fill=TEXT_COLOR_2)
 
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
         try:
             show_logo = Image.open(BytesIO(requests.get(show_logo_url).content)).resize((LOGO_SIZE, LOGO_SIZE))
-            border = Image.new('RGB', (122, 122), color=(255,255,255))
+            border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=BORDER_COLOR)
             image.paste(border, (LOGO_X, LOGO_Y))
             image.paste(show_logo, (LOGO_X+1, LOGO_Y+1))
         except:
@@ -294,9 +295,6 @@ def periodic_update():
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
         backlight_off()
-        #blank = Image.new('RGB', (240, 240), color=(255, 255, 255))
-        #disp.display(blank)
-
     else:
         try:
             streams = get_streams()
