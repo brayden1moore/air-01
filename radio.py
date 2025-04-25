@@ -2,6 +2,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageSequence
 from subprocess import Popen, run
 import requests
 from datetime import date, datetime, timezone, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 import signal
 from io import BytesIO
@@ -66,23 +67,29 @@ else:
             self.when_pressed = None
 
 
+def fetch_logo(name, url):
+    resp = requests.get(url, timeout=5)
+    resp.raise_for_status()
+    return name, BytesIO(resp.content)
+
 def get_streams():
-    url = 'https://internetradioprotocol.org/info'
-    streams = requests.get(url).json()
+    info = requests.get('https://internetradioprotocol.org/info').json()
+    active = {n: v for n, v in info.items() if v['status']=="Online"}
+    
+    with ThreadPoolExecutor(max_workers=8) as exe:
+        futures = [
+            exe.submit(fetch_logo, name, v['logo'])
+            for name, v in active.items()
+        ]
+        for f in as_completed(futures):
+            name, buf = f.result()
+            active[name]['logoBytes'] = buf
 
-    inactive_streams = []
-    for name, value in streams.items():
+            img = Image.open(buf).convert('RGB')
+            active[name]['logo_full']  = img.resize((LOGO_SIZE,  LOGO_SIZE))
+            active[name]['logo_small'] = img.resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
 
-        logo = BytesIO(requests.get(value['logo']).content)
-        value['logoBytes'] = logo
-
-        if value['status'] == "Offline":
-            inactive_streams.append(name)
-
-    for inactive_stream in inactive_streams:
-        del streams[inactive_stream]
-
-    return streams
+    return active
 
 streams = get_streams()
 stream_list = list(streams.keys())
@@ -186,17 +193,17 @@ def display_everything(name):
     image = Image.new('RGB', (240, 240), color=(0, 0, 0))
     draw = ImageDraw.Draw(image)
 
-    logo = Image.open(streams[name]['logoBytes']).resize((LOGO_SIZE, LOGO_SIZE))
-    prev = Image.open(streams[prev_stream]['logoBytes']).resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
-    next = Image.open(streams[next_stream]['logoBytes']).resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
+    logo = Image.open(streams[name]['logo_full'])
+    prev = Image.open(streams[prev_stream]['logo_small'])
+    next = Image.open(streams[next_stream]['logo_small'])
 
-    border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=(200,200,200))
+    border = Image.new('RGB', (SMALL_LOGO_SIZE+2, SMALL_LOGO_SIZE+2), color=(255,255,255))
     image.paste(border, (PREV_LOGO_X, SMALL_LOGO_Y))
     image.paste(border, (NEXT_LOGO_X, SMALL_LOGO_Y))
     image.paste(prev, (PREV_LOGO_X+1, SMALL_LOGO_Y+1))
     image.paste(next, (NEXT_LOGO_X+1, SMALL_LOGO_Y+1))
 
-    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(200,200,200))
+    border = Image.new('RGB', (LOGO_SIZE+2, LOGO_SIZE+2), color=(255,255,255))
     image.paste(border, (LOGO_X, LOGO_Y))
     image.paste(logo, (LOGO_X+1, LOGO_Y+1))
     
