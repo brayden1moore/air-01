@@ -189,6 +189,7 @@ def play(name, toggled=False):
         "--audio-device=alsa/hw:1,0",
         "--volume=90",
         "--no-video",
+        "--really-quiet",
         stream_url
     ])
 
@@ -299,13 +300,16 @@ def shutdown():
 
 
 def periodic_update():
-    global screen_on, last_input_time, streams
+    global screen_on, last_input_time, streams, stream_list
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
         backlight_off()
     else:
         try:
-            streams = get_streams()
+            info = requests.get('https://internetradioprotocol.org/info').json()
+            for name, v in info.items():
+                if name in streams:
+                    streams[name].update(v)
             stream_list = list(streams.keys())
             display_everything(stream, update=True)
         except:
