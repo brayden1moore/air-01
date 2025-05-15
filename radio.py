@@ -190,15 +190,13 @@ def play(name, toggled=False):
 
     aplay = Popen(["aplay", "-D", "plughw:1,0"], stdin=subprocess.PIPE)
     mpv_process = Popen([
-        "ffmpeg",
-        "-hide_banner",
+        "ffplay",
+        "-nodisp",
+        "-autoexit",
         "-loglevel", "error",
-        "-i", stream_url,
-        "-ar", "44100",
-        "-ac", "2",
-        "-f", "wav",
-        "-"
-    ], stdout=aplay.stdin)
+        "-volume", "90",
+        stream_url
+    ])
 
 def display_everything(name, update=False):
     global streams, play_status, first_display
