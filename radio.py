@@ -315,7 +315,10 @@ def periodic_update():
                 if name in streams:
                     streams[name].update(v)
             stream_list = list(streams.keys())
-            display_everything(stream, update=True)
+
+            if play_status != 'pause':
+                display_everything(stream, update=True)
+                
         except Exception as e:
             print(e)
             pass
