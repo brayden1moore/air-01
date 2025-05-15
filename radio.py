@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont, ImageSequence
 from subprocess import Popen, run
+import subprocess
 import requests
 from datetime import date, datetime, timezone, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -161,7 +162,8 @@ def pause(show_icon=False):
     global mpv_process, play_status, saved_image_while_paused
 
     if mpv_process:
-        mpv_process.send_signal(signal.SIGTERM)
+        mpv_process.terminate()
+        #mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
 
     if show_icon==True:
@@ -184,14 +186,16 @@ def play(name, toggled=False):
     stream_url = streams[name]['streamLink']
 
     mpv_process = Popen([
-        "mpv",
-        "--ao=alsa",
-        "--audio-device=alsa/hw:1,0",
-        "--volume=90",
-        "--no-video",
-        "--really-quiet",
-        stream_url
-    ])
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel", "error",
+        "-i", stream_url,
+        "-f", "wav",
+        "-"
+    ], stdout=Popen([
+        "aplay",
+        "-D", "hw:1,0"
+    ], stdin=subprocess.PIPE).stdin)
 
 def display_everything(name, update=False):
     global streams, play_status, first_display
