@@ -194,7 +194,6 @@ def play(name, toggled=False):
         "-autoexit",
         "-loglevel", "error",
         "-volume", "90",
-        "-ao", "alsa",
         stream_url
     ])
 
