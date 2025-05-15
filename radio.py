@@ -157,16 +157,15 @@ def s(number):
         return 's'
     
 
-def pause():
+def pause(show_icon=False):
     global mpv_process, play_status, saved_image_while_paused
 
     if mpv_process:
         mpv_process.send_signal(signal.SIGTERM)
         mpv_process = None
 
-    saved_image_while_paused = current_image.copy()
-
-    if first_display != True:
+    if show_icon==True:
+        saved_image_while_paused = current_image.copy()
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
@@ -254,7 +253,7 @@ def toggle_stream(name):
     global mpv_process
     if name:
         if mpv_process:
-            pause()
+            pause(show_icon=True)
         else:
             play(name, toggled=True)
     else:
