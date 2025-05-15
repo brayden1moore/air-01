@@ -163,15 +163,18 @@ def pause(show_icon=False):
 
     if mpv_process:
         mpv_process.terminate()
-        #mpv_process.send_signal(signal.SIGTERM)
+        try:
+            mpv_process.wait(timeout=2)
+        except:
+            mpv_process.kill()
         mpv_process = None
 
-    if show_icon==True:
+    if show_icon:
         saved_image_while_paused = current_image.copy()
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
-    
+
     play_status = 'pause'
 
 
@@ -185,17 +188,17 @@ def play(name, toggled=False):
 
     stream_url = streams[name]['streamLink']
 
+    aplay = Popen(["aplay", "-D", "plughw:1,0"], stdin=subprocess.PIPE)
     mpv_process = Popen([
         "ffmpeg",
         "-hide_banner",
         "-loglevel", "error",
         "-i", stream_url,
+        "-ar", "44100",
+        "-ac", "2",
         "-f", "wav",
         "-"
-    ], stdout=Popen([
-        "aplay",
-        "-D", "hw:1,0"
-    ], stdin=subprocess.PIPE).stdin)
+    ], stdout=aplay.stdin)
 
 def display_everything(name, update=False):
     global streams, play_status, first_display
