@@ -183,7 +183,6 @@ def pause(show_icon=False):
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
-        current_image = saved_image_while_paused.copy()
 
     play_status = 'pause'
 
