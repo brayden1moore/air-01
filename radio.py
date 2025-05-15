@@ -180,6 +180,7 @@ def pause(show_icon=False):
 
     if show_icon:
         saved_image_while_paused = current_image.copy()
+        print(current_image)
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
@@ -197,6 +198,7 @@ def play(name, toggled=False):
 
     stream_url = streams[name]['streamLink']
     send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
+
 
 def display_everything(name, update=False):
     global streams, play_status, first_display
