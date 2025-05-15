@@ -188,13 +188,13 @@ def play(name, toggled=False):
 
     stream_url = streams[name]['streamLink']
 
-    aplay = Popen(["aplay", "-D", "plughw:1,0"], stdin=subprocess.PIPE)
     mpv_process = Popen([
         "ffplay",
         "-nodisp",
         "-autoexit",
         "-loglevel", "error",
         "-volume", "90",
+        "-ao", "alsa",
         stream_url
     ])
 
