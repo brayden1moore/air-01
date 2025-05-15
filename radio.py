@@ -175,10 +175,10 @@ def s(number):
     
 
 def pause(show_icon=False):
-    global play_status, saved_image_while_paused
+    global play_status, saved_image_while_paused, current_image
     send_mpv_command({"command": ["stop"]})
 
-    if show_icon:
+    if show_icon and current_image:
         saved_image_while_paused = current_image.copy()
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
@@ -317,7 +317,8 @@ def periodic_update():
                     streams[name].update(v)
             stream_list = list(streams.keys())
             display_everything(stream, update=True)
-        except:
+        except Exception as e:
+            print(e)
             pass
     threading.Timer(60, periodic_update).start()
 
