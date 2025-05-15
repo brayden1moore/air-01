@@ -259,14 +259,12 @@ def display_everything(name, update=False):
 
 
 def toggle_stream(name):
-    global mpv_process
+    global play_status
     if name:
-        if mpv_process:
+        if play_status == 'play':
             pause(show_icon=True)
         else:
             play(name, toggled=True)
-    else:
-        pass
 
     
 def play_random():
