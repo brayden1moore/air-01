@@ -178,9 +178,9 @@ def pause(show_icon=False):
     global play_status, saved_image_while_paused
     send_mpv_command({"command": ["stop"]})
 
+    print('CURRENT IMAGE',current_image)
     if show_icon:
         saved_image_while_paused = current_image.copy()
-        print(current_image)
         img = current_image.convert('RGBA')
         img.paste(PAUSE_IMAGE, (LOGO_X, LOGO_Y), PAUSE_IMAGE)
         safe_display(img.convert('RGB'))
