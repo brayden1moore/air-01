@@ -235,6 +235,7 @@ def display_everything(name, update=False):
     draw.text((x(subtitle, MEDIUM_FONT), SUBTITLE_Y), subtitle, font=MEDIUM_FONT, fill=TEXT_COLOR_2)
     draw.text((x(location, MEDIUM_FONT), LOCATION_Y), location, font=MEDIUM_FONT, fill=TEXT_COLOR_2)
 
+    '''
     show_logo_url = streams[name]['showLogo']
     if show_logo_url:
         try:
@@ -244,6 +245,7 @@ def display_everything(name, update=False):
             image.paste(show_logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
         except:
             pass
+    '''
 
     safe_display(image) # display 
 
