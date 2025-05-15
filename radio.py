@@ -52,6 +52,15 @@ def backlight_off():
 
 backlight_on()
 
+mpv_process = Popen([
+    "mpv",
+    "--idle=yes",
+    "--no-video",
+    "--ao=alsa",
+    "--audio-device=alsa/hw:1,0",
+    "--volume=90",
+    "--input-ipc-server=/tmp/mpvsocket"
+])
 
 if platform.system() == "Linux":
     import st7789
@@ -74,6 +83,13 @@ else:
         def __init__(self, pin, hold_time=None):
             self.when_pressed = None
 
+import socket
+import json
+
+def send_mpv_command(cmd):
+    with socket.socket(socket.AF_UNIX) as s:
+        s.connect("/tmp/mpvsocket")
+        s.sendall((json.dumps(cmd) + '\n').encode())
 
 def fetch_logo(name, url):
     resp = requests.get(url, timeout=5)
@@ -159,15 +175,8 @@ def s(number):
     
 
 def pause(show_icon=False):
-    global mpv_process, play_status, saved_image_while_paused
-
-    if mpv_process:
-        mpv_process.terminate()
-        try:
-            mpv_process.wait(timeout=2)
-        except:
-            mpv_process.kill()
-        mpv_process = None
+    global play_status, saved_image_while_paused
+    send_mpv_command({"command": ["stop"]})
 
     if show_icon:
         saved_image_while_paused = current_image.copy()
@@ -179,23 +188,15 @@ def pause(show_icon=False):
 
 
 def play(name, toggled=False):
-    global mpv_process, current_image, play_status
-
+    global play_status, stream
     play_status = 'play'
+    stream = name
 
     if toggled:
         safe_display(saved_image_while_paused)
 
     stream_url = streams[name]['streamLink']
-
-    mpv_process = Popen([
-        "ffplay",
-        "-nodisp",
-        "-autoexit",
-        "-loglevel", "error",
-        "-volume", "90",
-        stream_url
-    ])
+    send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
 
 def display_everything(name, update=False):
     global streams, play_status, first_display
