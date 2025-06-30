@@ -145,6 +145,7 @@ def safe_display(image):
     global current_image
     if screen_on & (image != current_image):
         #disp.display(image)
+        disp.clear()
         disp.ShowImage(image) # for 2 inch
     current_image = image.copy()
     
