@@ -12,7 +12,7 @@ import random
 import platform
 import RPi.GPIO as GPIO # type: ignore
 
-BACKLIGHT_PIN = 13
+BACKLIGHT_PIN = 12 # 13 for HAT
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
 FONT_SIZE = 6
