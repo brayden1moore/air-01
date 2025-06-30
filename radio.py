@@ -105,6 +105,7 @@ streams = get_streams()
 stream_list = list(streams.keys())
 
 # hat
+'''
 disp = st7789.ST7789(
     rotation=180,     # Needed to display the right way up on Pirate Audio
     port=0,          # SPI port
@@ -112,6 +113,8 @@ disp = st7789.ST7789(
     dc=9,            # BCM pin used for data/command
     backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
 )
+disp.begin()
+'''
 
 # 2 inch
 RST = 27
@@ -123,7 +126,6 @@ disp = LCD_2inch.LCD_2inch()
 disp.Init()
 disp.clear()
 disp.bl_DutyCycle(50)
-disp.begin()
 
 mpv_process = None
 stream = None
