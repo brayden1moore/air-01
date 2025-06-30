@@ -144,7 +144,8 @@ def x(string, font):
 def safe_display(image):
     global current_image
     if screen_on & (image != current_image):
-        disp.display(image)
+        #disp.display(image)
+        disp.ShowImage(image) # for 2 inch
     current_image = image.copy()
     
 
@@ -329,7 +330,8 @@ def wake_screen():
         screen_on = True
         backlight_on()
         if current_image:
-            disp.display(current_image)
+            #disp.display(current_image)
+            disp.ShowImage(current_image) # for 2 inch
         else:
             display_scud()
         return True
@@ -397,4 +399,5 @@ except KeyboardInterrupt:
     HEIGHT = disp.height
     img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
     draw = ImageDraw.Draw(img)
-    disp.display(img)
+    #disp.display(img)
+    disp.ShowImage(img) # for 2 inch
