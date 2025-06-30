@@ -153,7 +153,7 @@ def safe_display(image):
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_WIDTH))
+    image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
     draw.text((32, 10), '[play/pause]', font=SMALL_FONT, fill=(0, 0, 0))
