@@ -12,7 +12,19 @@ import random
 import platform
 import RPi.GPIO as GPIO # type: ignore
 
-BACKLIGHT_PIN = 12 # 13 for HAT
+'''
+from . import driver as LCD_2inch
+import spidev as SPI
+
+# Raspberry Pi pin configuration:
+RST = 27
+DC = 25
+BL = 18
+bus = 0 
+device = 0 
+'''
+
+BACKLIGHT_PIN = 18 # 13 for HAT
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
 FONT_SIZE = 6
