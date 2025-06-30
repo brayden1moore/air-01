@@ -12,17 +12,8 @@ import random
 import platform
 import RPi.GPIO as GPIO # type: ignore
 
-'''
 from . import driver as LCD_2inch
 import spidev as SPI
-
-# Raspberry Pi pin configuration:
-RST = 27
-DC = 25
-BL = 18
-bus = 0 
-device = 0 
-'''
 
 BACKLIGHT_PIN = 18 # 13 for HAT
 GPIO.setmode(GPIO.BCM)
@@ -74,27 +65,8 @@ mpv_process = Popen([
     "--input-ipc-server=/tmp/mpvsocket"
 ])
 
-if platform.system() == "Linux":
-    import st7789
-    from gpiozero import Button
-else:
-    class MockDisplay:
-        def __init__(self, *args, **kwargs):
-            self.width = 240
-            self.height = 240
-
-        def begin(self):
-            pass
-
-        def display(self, img):
-            pass
-
-    st7789 = type('st7789', (), {'ST7789': MockDisplay})
-
-    class Button:
-        def __init__(self, pin, hold_time=None):
-            self.when_pressed = None
-
+import st7789
+from gpiozero import Button
 import socket
 import json
 
@@ -132,6 +104,7 @@ def get_streams():
 streams = get_streams()
 stream_list = list(streams.keys())
 
+# hat
 disp = st7789.ST7789(
     rotation=180,     # Needed to display the right way up on Pirate Audio
     port=0,          # SPI port
@@ -140,6 +113,16 @@ disp = st7789.ST7789(
     backlight=13,  # 13 for Pirate-Audio; 18 for back BG slot, 19 for front BG slot.
 )
 
+# 2 inch
+RST = 27
+DC = 25
+BL = 18
+bus = 0 
+device = 0 
+disp = LCD_2inch.LCD_2inch()
+disp.Init()
+disp.clear()
+disp.bl_DutyCycle(50)
 disp.begin()
 
 mpv_process = None
