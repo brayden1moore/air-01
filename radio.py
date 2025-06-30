@@ -15,6 +15,8 @@ import RPi.GPIO as GPIO # type: ignore
 import driver as LCD_2inch
 import spidev as SPI
 
+SCREEN_WIDTH = 320
+SCREEN_HEIGHT = 240
 BACKLIGHT_PIN = 18 # 13 for HAT
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
@@ -145,14 +147,13 @@ def safe_display(image):
     global current_image
     if screen_on & (image != current_image):
         #disp.display(image)
-        disp.clear()
         disp.ShowImage(image) # for 2 inch
     current_image = image.copy()
     
 
 def display_scud():
     img = Image.open('assets/dancers.png').resize((240, 240)) 
-    image = Image.new('RGB', (240, 240))
+    image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_WIDTH))
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
     draw.text((32, 10), '[play/pause]', font=SMALL_FONT, fill=(0, 0, 0))
