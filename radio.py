@@ -12,7 +12,7 @@ import random
 import platform
 import RPi.GPIO as GPIO # type: ignore
 
-from . import driver as LCD_2inch
+import driver as LCD_2inch
 import spidev as SPI
 
 BACKLIGHT_PIN = 18 # 13 for HAT
