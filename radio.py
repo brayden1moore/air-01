@@ -372,6 +372,7 @@ button_x.when_pressed = wrapped_action(lambda: seek_stream(1))
 
 button_b.when_held = restart
 
+play_random()
 periodic_update()
 
 if platform.system() != 'Linux':
