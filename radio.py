@@ -42,7 +42,7 @@ BORDER_COLOR = (0,0,0)
 TEXT_COLOR = (0,0,0)
 TEXT_COLOR_2 = (100,100,100)
 BACKGROUND_COLOR = (255,255,0)
-BORDER_SIZE = 2
+BORDER_SIZE = 4
 
 SMALL_FONT = ImageFont.truetype("assets/andalemono.ttf", 10)
 MEDIUM_FONT = ImageFont.truetype("assets/andalemono.ttf", 12)
