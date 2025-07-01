@@ -364,6 +364,7 @@ def dialTurned(value, direction):
     elif direction == 'L':
         seek_stream(-1)
 
+GPIO.setmode(GPIO.BCM)
 dial = Encoder(26, 22, dialTurned)
 
 button_x = Button(16, hold_time=5)
