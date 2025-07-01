@@ -44,8 +44,8 @@ TEXT_COLOR_2 = (100,100,100)
 BACKGROUND_COLOR = (255,255,0)
 BORDER_SIZE = 2
 
-SMALL_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 10)
-MEDIUM_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf", 12)
+SMALL_FONT = ImageFont.truetype("assets/andalemono.ttf", 10)
+MEDIUM_FONT = ImageFont.truetype("assets/andalemono.ttf", 12)
 LARGE_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf",20)
 PAUSE_IMAGE = (Image.open('assets/pause.png').convert('RGBA').resize((LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2)))
 
