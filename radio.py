@@ -29,8 +29,8 @@ LOGO_X = round(SCREEN_WIDTH/2) - round(LOGO_SIZE/2)
 
 SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
-PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.75)
-NEXT_LOGO_X = LOGO_X + LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.25)
+PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.9)
+NEXT_LOGO_X = LOGO_X + LOGO_SIZE - round(SMALL_LOGO_SIZE * 0.1)
 
 TITLE_Y = LOGO_SIZE + LOGO_Y + 10
 SUBTITLE_Y = TITLE_Y + 25
@@ -146,7 +146,7 @@ first_display = True
 
 def x(string, font):
     text_width, _ = font.getsize(string)
-    return max((SCREEN_WIDTH - text_width) // 2, 0)
+    return max((SCREEN_WIDTH - text_width) // 2, 5)
 
 
 def safe_display(image):
