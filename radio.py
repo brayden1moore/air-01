@@ -52,7 +52,7 @@ PAUSE_IMAGE = (Image.open('assets/pause.png').convert('RGBA').resize((LOGO_SIZE+
 
 def backlight_on():
     if disp:
-        disp.bl_DutyCycle(50)
+        disp.bl_DutyCycle(MAX_BL)
     #GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
@@ -128,10 +128,11 @@ DC = 25
 BL = 23
 bus = 0 
 device = 0 
+MAX_BL = 75
 disp = LCD_2inch.LCD_2inch()
 disp.Init()
 disp.clear()
-disp.bl_DutyCycle(50)
+disp.bl_DutyCycle(MAX_BL)
 
 mpv_process = None
 stream = None
