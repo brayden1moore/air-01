@@ -50,15 +50,15 @@ LARGE_FONT = ImageFont.truetype("assets/Silkscreen-Regular.ttf",20)
 PAUSE_IMAGE = (Image.open('assets/pause.png').convert('RGBA').resize((LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2)))
 
 def backlight_on():
-    disp.bl_DutyCycle(50)
+    if disp:
+        disp.bl_DutyCycle(50)
     #GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
     print("backlight off")
-    disp.bl_DutyCycle(0)
+    if disp:
+        disp.bl_DutyCycle(0)
     #GPIO.output(BACKLIGHT_PIN, GPIO.LOW)
-
-backlight_on()
 
 mpv_process = Popen([
     "mpv",
