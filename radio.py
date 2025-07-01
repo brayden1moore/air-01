@@ -17,9 +17,9 @@ import spidev as SPI
 
 SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 240
-BACKLIGHT_PIN = 18 # 13 for HAT
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
+#BACKLIGHT_PIN = 23 # 13 for HAT
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
 FONT_SIZE = 6
 
 LOGO_SIZE = 150
@@ -124,7 +124,7 @@ disp.begin()
 # 2 inch
 RST = 27
 DC = 25
-BL = 18
+BL = 23
 bus = 0 
 device = 0 
 disp = LCD_2inch.LCD_2inch()
