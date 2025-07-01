@@ -15,9 +15,10 @@ import RPi.GPIO as GPIO # type: ignore
 import driver as LCD_2inch
 import spidev as SPI
 
-#BACKLIGHT_PIN = 23 # 13 for HAT
+#BACKLIGHT_PIN = 13 for HAT
 #GPIO.setmode(GPIO.BCM)
 #GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
+
 SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 240
 FONT_SIZE = 6
@@ -162,7 +163,6 @@ def display_scud():
     safe_display(image)
 
 display_scud()
-
 
 def s(number):
     if number == 1:
@@ -353,6 +353,16 @@ def restart():
         'radio'
     ])
 
+
+from encoder import Encoder
+
+def dialTurned(value, direction):
+    if direction == 'R':
+        seek_stream(1)
+    elif direction == 'L':
+        seek_stream(-1)
+
+dial = Encoder(26, 22, dialTurned)
 
 button_x = Button(16, hold_time=5)
 button_y = Button(24, hold_time=5)
