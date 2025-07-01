@@ -52,7 +52,7 @@ PAUSE_IMAGE = (Image.open('assets/pause.png').convert('RGBA').resize((LOGO_SIZE+
 
 def backlight_on():
     if disp:
-        disp.bl_DutyCycle(100)
+        disp.bl_DutyCycle(50)
     #GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
@@ -131,7 +131,7 @@ device = 0
 disp = LCD_2inch.LCD_2inch()
 disp.Init()
 disp.clear()
-disp.bl_DutyCycle(100)
+disp.bl_DutyCycle(50)
 
 mpv_process = None
 stream = None
@@ -379,25 +379,6 @@ button_b.when_held = restart
 
 play_random()
 periodic_update()
-
-if platform.system() != 'Linux':
-    from pynput import keyboard
-
-    def on_press(key):
-        try:
-            if key.char == 'u':  # B
-                toggle_stream(stream)
-            elif key.char == 'i':  # A
-                play_random()
-            elif key.char == 'j':  # Y
-                seek_stream(-1)
-            elif key.char == 'k':  # X
-                seek_stream(1)
-        except AttributeError:
-            pass
-
-    listener = keyboard.Listener(on_press=on_press)
-    listener.start()
 
 try:
     while True:
