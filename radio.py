@@ -24,12 +24,12 @@ FONT_SIZE = 6
 
 LOGO_SIZE = 150
 LOGO_Y = 20
-LOGO_X = round(240/2) - round(LOGO_SIZE/2)
+LOGO_X = round(SCREEN_WIDTH/2) - round(LOGO_SIZE/2)
 
 SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
-NEXT_LOGO_X = 240 - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * (0.33/2))
+NEXT_LOGO_X = SCREEN_WIDTH - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * (0.33/2))
 
 TITLE_Y = LOGO_SIZE + LOGO_Y + 10
 SUBTITLE_Y = TITLE_Y + 25
@@ -143,7 +143,7 @@ first_display = True
 
 def x(string, font):
     text_width, _ = font.getsize(string)
-    return max((240 - text_width) // 2, 0)
+    return max((SCREEN_WIDTH - text_width) // 2, 0)
 
 
 def safe_display(image):
@@ -213,7 +213,7 @@ def display_everything(name, update=False):
     except:
         next_stream = stream_list[0]
 
-    image = Image.new('RGB', (240, 240), color=BACKGROUND_COLOR)
+    image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT), color=BACKGROUND_COLOR)
     draw = ImageDraw.Draw(image)
 
     logo = streams[name]['logo_full']
