@@ -52,15 +52,13 @@ PAUSE_IMAGE = (Image.open('assets/pause.png').convert('RGBA').resize((LOGO_SIZE+
 
 def backlight_on():
     if disp:
-        print(0)
-        #disp.bl_DutyCycle(50)
+        disp.bl_DutyCycle(100)
     #GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
     print("backlight off")
     if disp:
-        print(0)
-        #disp.bl_DutyCycle(0)
+        disp.bl_DutyCycle(0)
     #GPIO.output(BACKLIGHT_PIN, GPIO.LOW)
 
 mpv_process = Popen([
