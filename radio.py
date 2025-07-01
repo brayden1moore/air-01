@@ -15,11 +15,11 @@ import RPi.GPIO as GPIO # type: ignore
 import driver as LCD_2inch
 import spidev as SPI
 
-SCREEN_WIDTH = 320
-SCREEN_HEIGHT = 240
 #BACKLIGHT_PIN = 23 # 13 for HAT
 #GPIO.setmode(GPIO.BCM)
 #GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
+SCREEN_WIDTH = 320
+SCREEN_HEIGHT = 240
 FONT_SIZE = 6
 
 LOGO_SIZE = 150
@@ -29,7 +29,7 @@ LOGO_X = round(SCREEN_WIDTH/2) - round(LOGO_SIZE/2)
 SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE * 0.66)
-NEXT_LOGO_X = SCREEN_WIDTH - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * (0.33/2))
+NEXT_LOGO_X = SCREEN_WIDTH - SMALL_LOGO_SIZE - round(SMALL_LOGO_SIZE * (0.66/2))
 
 TITLE_Y = LOGO_SIZE + LOGO_Y + 10
 SUBTITLE_Y = TITLE_Y + 25
@@ -159,12 +159,6 @@ def display_scud():
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
-    #draw.text((32, 10), '[play/pause]', font=SMALL_FONT, fill=(0, 0, 0))
-    #draw.text((160, 10), '[random]', font=SMALL_FONT, fill=(0, 0, 0))
-    #prev_stream = '< ' + stream_list[-1][:10]
-    #next_stream = stream_list[0][:10] + ' >'
-    #draw.text((10, 224), prev_stream, font=SMALL_FONT, fill=(0, 0, 0))
-    #draw.text((230-len(next_stream)*6, 224), next_stream, font=SMALL_FONT, fill=(0, 0, 0))
     safe_display(image)
 
 display_scud()
