@@ -133,7 +133,7 @@ device = 0
 disp = LCD_2inch.LCD_2inch()
 disp.Init()
 disp.clear()
-disp.bl_DutyCycle(100)
+disp.bl_DutyCycle(50)
 
 mpv_process = None
 stream = None
