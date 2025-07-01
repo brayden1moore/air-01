@@ -155,16 +155,16 @@ def safe_display(image):
     
 
 def display_scud():
-    img = Image.open('assets/scudradio.png').resize((240, 240)) 
+    img = Image.open('assets/scudradio.png') 
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
-    draw.text((32, 10), '[play/pause]', font=SMALL_FONT, fill=(0, 0, 0))
-    draw.text((160, 10), '[random]', font=SMALL_FONT, fill=(0, 0, 0))
-    prev_stream = '< ' + stream_list[-1][:10]
-    next_stream = stream_list[0][:10] + ' >'
-    draw.text((10, 224), prev_stream, font=SMALL_FONT, fill=(0, 0, 0))
-    draw.text((230-len(next_stream)*6, 224), next_stream, font=SMALL_FONT, fill=(0, 0, 0))
+    #draw.text((32, 10), '[play/pause]', font=SMALL_FONT, fill=(0, 0, 0))
+    #draw.text((160, 10), '[random]', font=SMALL_FONT, fill=(0, 0, 0))
+    #prev_stream = '< ' + stream_list[-1][:10]
+    #next_stream = stream_list[0][:10] + ' >'
+    #draw.text((10, 224), prev_stream, font=SMALL_FONT, fill=(0, 0, 0))
+    #draw.text((230-len(next_stream)*6, 224), next_stream, font=SMALL_FONT, fill=(0, 0, 0))
     safe_display(image)
 
 display_scud()
