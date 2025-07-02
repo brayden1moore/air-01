@@ -15,6 +15,31 @@ import platform
 import driver as LCD_2inch
 import spidev as SPI
 
+# 2 inch
+RST = 27
+DC = 25
+BL = 23
+bus = 0 
+device = 0 
+MAX_BL = 100
+disp = LCD_2inch.LCD_2inch()
+disp.Init()
+disp.clear()
+disp.bl_DutyCycle(MAX_BL)
+
+mpv_process = None
+stream = None
+screen_on = True
+current_image = None
+saved_image_while_paused = None
+play_status = 'pause'
+last_input_time = time.time()
+first_display = True
+current_volume = 90 
+volume_step = 5  
+button_press_time = 0
+rotated = False
+
 SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 240
 FONT_SIZE = 6
@@ -118,30 +143,6 @@ disp = st7789.ST7789(
 disp.begin()
 '''
 
-# 2 inch
-RST = 27
-DC = 25
-BL = 23
-bus = 0 
-device = 0 
-MAX_BL = 100
-disp = LCD_2inch.LCD_2inch()
-disp.Init()
-disp.clear()
-disp.bl_DutyCycle(MAX_BL)
-
-mpv_process = None
-stream = None
-screen_on = True
-current_image = None
-saved_image_while_paused = None
-play_status = 'pause'
-last_input_time = time.time()
-first_display = True
-current_volume = 90 
-volume_step = 5  
-button_press_time = 0
-rotated = False
 
 def x(string, font):
     text_width, _ = font.getsize(string)
