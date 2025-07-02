@@ -328,7 +328,7 @@ def on_button_pressed():
 def on_button_released():
     global button_press_time, volume_adjusted
     
-    if (time.time() - button_press_time < 0.5) and not volume_adjusted:
+    if (time.time() - button_press_time < 0.2) and not volume_adjusted:
         if not wake_screen():
             toggle_stream(stream)
 
