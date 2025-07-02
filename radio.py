@@ -297,6 +297,25 @@ def seek_stream(direction):
     play(stream)
 
 
+current_volume = 90 
+volume_step = 5    
+
+def change_volume(direction):
+    global current_volume
+    if direction == 1: 
+        current_volume = min(100, current_volume + volume_step)
+    else: 
+        current_volume = max(0, current_volume - volume_step)
+        send_mpv_command({"command": ["set_property", "volume", current_volume]})
+
+
+def handle_rotation(direction):
+    if click_button.is_pressed:
+        change_volume(direction)
+    else:
+        seek_stream(direction)
+
+
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
@@ -337,7 +356,6 @@ def wake_screen():
         return True
     return False
 
-
 def wrapped_action(func):
     def inner():
         if not wake_screen():
@@ -354,21 +372,6 @@ def restart():
         'radio'
     ])
 
-
-from encoder import Encoder
-
-def dialTurned(value, direction):
-    if direction == 'R':
-        seek_stream(1)
-    elif direction == 'L':
-        seek_stream(-1)
-
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(38, GPIO.IN)
-#GPIO.setup(32, GPIO.IN)
-#dial = Encoder(leftPin=38, rightPin=32, callback=dialTurned)
-#dial = Encoder(leftPin=17, rightPin=27, callback=dialTurned)
-
 from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26, hold_time=5)
@@ -378,8 +381,8 @@ click_button.when_held = restart
 CLK_PIN = 5 
 DT_PIN = 6   
 rotor = RotaryEncoder(CLK_PIN, DT_PIN)
-rotor.when_rotated_counter_clockwise = wrapped_action(lambda: seek_stream(-1))
-rotor.when_rotated_clockwise = wrapped_action(lambda: seek_stream(1))
+rotor.when_rotated_counter_clockwise = wrapped_action(lambda: handle_rotation(-1))
+rotor.when_rotated_clockwise = wrapped_action(lambda: handle_rotation(1))
 
 #button_x = Button(16, hold_time=5)
 #button_y = Button(24, hold_time=5)
