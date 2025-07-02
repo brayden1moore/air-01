@@ -174,7 +174,8 @@ def s(number):
 
 def pause(show_icon=False):
     global play_status, saved_image_while_paused, current_image
-    send_mpv_command({"command": ["stop"]})
+    #send_mpv_command({"command": ["stop"]})
+    send_mpv_command({"command": ["set_property", "volume", 0]})
 
     if show_icon and current_image:
         saved_image_while_paused = current_image.copy()
@@ -191,10 +192,11 @@ def play(name, toggled=False):
     stream = name
 
     if toggled:
+        send_mpv_command({"command": ["set_property", "volume", current_volume]})
         safe_display(saved_image_while_paused)
-
-    stream_url = streams[name]['streamLink']
-    send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
+    else:
+        stream_url = streams[name]['streamLink']
+        send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
 
 
 def display_everything(name, update=False):
@@ -300,12 +302,11 @@ def seek_stream(direction):
 current_volume = 90 
 volume_step = 5  
 volume_timer = None 
-original_image_before_volume = None  # Add this to store original image
+original_image_before_volume = None 
 
 def change_volume(direction):
     global current_volume, original_image_before_volume
     
-    # Store the original image before showing volume overlay (only on first volume change)
     if original_image_before_volume is None and current_image:
         original_image_before_volume = current_image.copy()
     
@@ -320,7 +321,6 @@ def change_volume(direction):
 def show_volume_overlay(volume):
     global current_image, original_image_before_volume
 
-    # Use the original image before volume overlay was shown
     if original_image_before_volume:
         img = original_image_before_volume.copy()
         draw = ImageDraw.Draw(img)
@@ -336,7 +336,6 @@ def show_volume_overlay(volume):
         volume_width = int((volume / 100) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
         
-        # Update current_image to the image with volume overlay
         current_image = img.copy()
         safe_display(img)
 
@@ -349,7 +348,6 @@ def handle_rotation(direction):
 def on_button_released():
     global current_image, original_image_before_volume
     
-    # Restore the original image without volume overlay
     if original_image_before_volume:
         current_image = original_image_before_volume.copy()
         safe_display(current_image)
@@ -414,7 +412,7 @@ from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26)
 click_button.when_released = on_button_released
-#click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
+click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
 CLK_PIN = 5 
 DT_PIN = 6   
