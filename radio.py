@@ -305,10 +305,7 @@ volume_timer = None
 original_image_before_volume = None 
 
 def change_volume(direction):
-    global current_volume, original_image_before_volume
-    
-    if original_image_before_volume is None and current_image:
-        original_image_before_volume = current_image.copy()
+    global current_volume
     
     if direction == 1: 
         current_volume = min(100, current_volume + volume_step)
@@ -319,10 +316,10 @@ def change_volume(direction):
     show_volume_overlay(current_volume)
 
 def show_volume_overlay(volume):
-    global current_image, original_image_before_volume
+    global current_image
 
     if original_image_before_volume:
-        img = original_image_before_volume.copy()
+        img = current_image.copy()
         draw = ImageDraw.Draw(img)
         
         bar_width = 320
