@@ -302,6 +302,7 @@ volume_step = 5
 volume_timer = None 
 
 def change_volume(direction):
+
     global current_volume
     if direction == 1: 
         current_volume = min(100, current_volume + volume_step)
@@ -337,10 +338,11 @@ def handle_rotation(direction):
     else:
         seek_stream(direction)
 
+def on_button_released():
+    safe_display(current_image)
 
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
-
 
 def periodic_update():
     global screen_on, last_input_time, streams, stream_list
@@ -397,6 +399,7 @@ def restart():
 from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26, hold_time=5)
+click_button.when_released = wrapped_action(lambda: on_button_released())
 #click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
 CLK_PIN = 5 
