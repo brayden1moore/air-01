@@ -169,6 +169,11 @@ def display_scud():
         draw = ImageDraw.Draw(image)
         safe_display(image)
         time.sleep(0.02)
+    img = Image.open(f'assets/scudgif/1.png') 
+    image.paste(img, (0, 0))
+    draw = ImageDraw.Draw(image)
+    safe_display(image)
+    time.sleep(2)
 
 display_scud()
 
