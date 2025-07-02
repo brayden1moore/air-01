@@ -312,7 +312,7 @@ def change_volume(direction):
     show_volume_overlay(current_volume)
 
 def show_volume_overlay(volume):
-    global current_image
+    global current_image, volume_timer
     if 'volume_timer' in globals() and volume_timer:
         volume_timer.cancel()
 
