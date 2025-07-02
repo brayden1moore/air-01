@@ -383,6 +383,7 @@ class SimpleRotaryEncoder:
         self.dt_pin = dt_pin
         self.callback = callback
         
+        GPIO.cleanup()
         # Setup GPIO with pull-up resistors
         GPIO.setup(self.clk_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.setup(self.dt_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
