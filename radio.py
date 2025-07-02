@@ -375,7 +375,7 @@ click_button = Button(26, hold_time=5)
 click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 click_button.when_held = restart
 
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
 CLK_PIN = 5 
 DT_PIN = 6   
 rotor = RotaryEncoder(CLK_PIN, DT_PIN, 0.05)
