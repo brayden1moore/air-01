@@ -306,39 +306,29 @@ def change_volume(direction):
         current_volume = min(100, current_volume + volume_step)
     else: 
         current_volume = max(0, current_volume - volume_step)
-        send_mpv_command({"command": ["set_property", "volume", current_volume]})
-
-        show_volume_overlay(current_volume)
+        
+    send_mpv_command({"command": ["set_property", "volume", current_volume]})
+    show_volume_overlay(current_volume)
 
 def show_volume_overlay(volume):
-    """Display volume level overlay on current image"""
     global current_image
     if current_image:
         img = current_image.copy()
         draw = ImageDraw.Draw(img)
         
-        # Draw volume bar background
         bar_width = 100
         bar_height = 10
         bar_x = (SCREEN_WIDTH - bar_width) // 2
         bar_y = SCREEN_HEIGHT - 30
         
-        # Background rectangle
         draw.rectangle([bar_x-2, bar_y-2, bar_x+bar_width+2, bar_y+bar_height+2], fill=BORDER_COLOR)
         draw.rectangle([bar_x, bar_y, bar_x+bar_width, bar_y+bar_height], fill=BACKGROUND_COLOR)
         
-        # Volume level rectangle
         volume_width = int((volume / 100) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
         
-        # Volume text
-        volume_text = f"Volume: {volume}%"
-        text_x = x(volume_text, MEDIUM_FONT)
-        draw.text((text_x, bar_y - 20), volume_text, font=MEDIUM_FONT, fill=TEXT_COLOR)
-        
         safe_display(img)
         
-        # Clear overlay after 2 seconds
         threading.Timer(2.0, lambda: safe_display(current_image)).start()
 
 
