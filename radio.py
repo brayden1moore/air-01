@@ -318,7 +318,7 @@ def change_volume(direction):
 def show_volume_overlay(volume):
     global current_image
 
-    if original_image_before_volume:
+    if current_image:
         img = current_image.copy()
         draw = ImageDraw.Draw(img)
         
