@@ -335,7 +335,8 @@ def on_button_released():
 
 notch_count = 0
 def handle_rotation(direction):
-    global volume_adjusted, current_volume
+
+    global volume_adjusted, current_volume, notch_count
 
     if click_button.is_pressed:
         volume_adjusted = True
