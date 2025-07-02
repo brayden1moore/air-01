@@ -11,8 +11,7 @@ import threading
 import random
 import platform
 import math
-#import RPi.GPIO as GPIO # type: ignore
-
+import os
 import driver as LCD_2inch
 import spidev as SPI
 
@@ -187,6 +186,24 @@ def s(number):
         return 's'
     
 
+def write_to_tmp_os_path(name):
+    file_path = os.path.join("/tmp", "scud_last_played.txt")
+    
+    with open(file_path, 'w') as file:
+        file.write(name)
+
+
+def read_last_played():
+    file_path = os.path.join("/tmp", "scud_last_played.txt")
+
+    try:
+        with open(file_path, 'r') as file:
+            last_played = file.read()
+        
+        return last_played
+    except:
+        return None
+
 def pause(show_icon=False):
     global play_status, saved_image_while_paused, current_image
     #send_mpv_command({"command": ["stop"]})
@@ -213,6 +230,8 @@ def play(name, toggled=False):
         stream_url = streams[name]['streamLink']
         send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
         send_mpv_command({"command": ["set_property", "volume", current_volume]})
+
+    write_to_tmp_os_path(name)
 
 
 def display_everything(name, update=False):
@@ -443,7 +462,12 @@ rotor.when_rotated_clockwise = wrapped_action(lambda: handle_rotation(1))
 #button_x.when_pressed = wrapped_action(lambda: seek_stream(1))
 #button_b.when_held = restart
 
-play_random()
+last_played = read_last_played()
+if last_played:
+    play(last_played)
+else:
+    play_random()
+
 periodic_update()
 
 try:
