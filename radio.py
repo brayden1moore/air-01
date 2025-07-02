@@ -374,8 +374,8 @@ click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 click_button.when_held = restart
 
 GPIO.setmode(GPIO.BCM)
-CLK_PIN = 20  # Board pin 38
-DT_PIN = 16   # Board pin 36
+CLK_PIN = 5 
+DT_PIN = 6   
 
 class SimpleRotaryEncoder:
     def __init__(self, clk_pin, dt_pin, callback=None):
