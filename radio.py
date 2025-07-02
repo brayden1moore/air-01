@@ -162,12 +162,13 @@ def safe_display(image):
     
 
 def display_scud():
-    img = Image.open('assets/scudradio.png') 
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
-    image.paste(img, (0, 0))
-    draw = ImageDraw.Draw(image)
-    safe_display(image)
-    time.sleep(3)
+    for i in range(1,20):
+        img = Image.open(f'assets/scudgif/{i}.png') 
+        image.paste(img, (0, 0))
+        draw = ImageDraw.Draw(image)
+        safe_display(image)
+        time.sleep(0.05)
 
 display_scud()
 
