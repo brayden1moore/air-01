@@ -10,7 +10,7 @@ from io import BytesIO
 import threading
 import random
 import platform
-import RPi.GPIO as GPIO # type: ignore
+#import RPi.GPIO as GPIO # type: ignore
 
 import driver as LCD_2inch
 import spidev as SPI
@@ -363,11 +363,13 @@ def dialTurned(value, direction):
     elif direction == 'L':
         seek_stream(-1)
 
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
 #GPIO.setup(38, GPIO.IN)
 #GPIO.setup(32, GPIO.IN)
 #dial = Encoder(leftPin=38, rightPin=32, callback=dialTurned)
 #dial = Encoder(leftPin=17, rightPin=27, callback=dialTurned)
+
+from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26, hold_time=5)
 click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
@@ -376,46 +378,8 @@ click_button.when_held = restart
 GPIO.setmode(GPIO.BCM)
 CLK_PIN = 5 
 DT_PIN = 6   
-
-class SimpleRotaryEncoder:
-    def __init__(self, clk_pin, dt_pin, callback=None):
-        self.clk_pin = clk_pin
-        self.dt_pin = dt_pin
-        self.callback = callback
-        
-        GPIO.cleanup()
-        # Setup GPIO with pull-up resistors
-        GPIO.setup(self.clk_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.setup(self.dt_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        
-        # Add event detection on CLK pin falling edge
-        GPIO.add_event_detect(self.clk_pin, GPIO.FALLING, 
-                            callback=self._clk_callback, 
-                            bouncetime=10)
-    
-    def _clk_callback(self, channel):
-        try:
-            import time
-            time.sleep(0.001)  # Small delay for stability
-            
-            dt_state = GPIO.input(self.dt_pin)
-            
-            if dt_state == 0:
-                # Clockwise rotation
-                if self.callback:
-                    self.callback(1, 'R')
-            else:
-                # Counter-clockwise rotation  
-                if self.callback:
-                    self.callback(-1, 'L')
-                    
-        except Exception as e:
-            print(f"Encoder error: {e}")
-    
-    def cleanup(self):
-        GPIO.remove_event_detect(self.clk_pin)
-
-encoder = SimpleRotaryEncoder(CLK_PIN, DT_PIN, callback=dialTurned)
+rotor = RotaryEncoder(CLK_PIN, DT_PIN, 0.05)
+rotor.when_rotated_clockwise = wrapped_action(lambda: seek_stream(1))
 
 #button_x = Button(16, hold_time=5)
 #button_y = Button(24, hold_time=5)
