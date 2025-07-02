@@ -369,7 +369,7 @@ GPIO.setmode(GPIO.BCM)
 #dial = Encoder(leftPin=38, rightPin=32, callback=dialTurned)
 #dial = Encoder(leftPin=17, rightPin=27, callback=dialTurned)
 click_button = Button(26, hold_time=5)
-click_button.when_pressed = wrapped_action(lambda: seek_stream(1))
+click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
 #button_x = Button(16, hold_time=5)
 #button_y = Button(24, hold_time=5)
