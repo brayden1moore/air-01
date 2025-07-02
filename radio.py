@@ -298,7 +298,8 @@ def seek_stream(direction):
 
 
 current_volume = 90 
-volume_step = 5    
+volume_step = 5  
+volume_timer = None 
 
 def change_volume(direction):
     global current_volume
@@ -306,12 +307,15 @@ def change_volume(direction):
         current_volume = min(100, current_volume + volume_step)
     else: 
         current_volume = max(0, current_volume - volume_step)
-        
+
     send_mpv_command({"command": ["set_property", "volume", current_volume]})
     show_volume_overlay(current_volume)
 
 def show_volume_overlay(volume):
     global current_image
+    if 'volume_timer' in globals() and volume_timer:
+        volume_timer.cancel()
+
     if current_image:
         img = current_image.copy()
         draw = ImageDraw.Draw(img)
@@ -326,11 +330,9 @@ def show_volume_overlay(volume):
         
         volume_width = int((volume / 100) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
-        
         safe_display(img)
-        
-        threading.Timer(2.0, lambda: safe_display(current_image)).start()
-
+        volume_timer = threading.Timer(1.0, lambda: safe_display(current_image))
+        volume_timer.start()
 
 def handle_rotation(direction):
     if click_button.is_pressed:
