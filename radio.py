@@ -165,18 +165,12 @@ def safe_display(image):
 def display_scud():
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
     frames = 20
-    base_delay = 0.01
-    
+
     for i in range(1,frames):
         img = Image.open(f'assets/scudgif/{i}.png') 
         image.paste(img, (0, 0))
         draw = ImageDraw.Draw(image)
         safe_display(image)
-
-        t = (i - 1) / (frames - 1)
-        eased_t = 0.5 * (1 - math.cos(t * math.pi))
-        sleep_time = base_delay + (0.08 * (1 - eased_t))
-        time.sleep(sleep_time)
 
     img = Image.open(f'assets/scudgif/1.png') 
     image.paste(img, (0, 0))
