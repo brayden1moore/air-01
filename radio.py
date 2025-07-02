@@ -310,11 +310,10 @@ def change_volume(direction):
 
     send_mpv_command({"command": ["set_property", "volume", current_volume]})
     show_volume_overlay(current_volume)
+    safe_display(current_image)
 
 def show_volume_overlay(volume):
-    global current_image, volume_timer
-    if 'volume_timer' in globals() and volume_timer:
-        volume_timer.cancel()
+    global current_image
 
     if current_image:
         img = current_image.copy()
@@ -331,8 +330,6 @@ def show_volume_overlay(volume):
         volume_width = int((volume / 100) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
         safe_display(img)
-        volume_timer = threading.Timer(1.0, lambda: safe_display(current_image))
-        volume_timer.start()
 
 def handle_rotation(direction):
     if click_button.is_pressed:
