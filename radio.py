@@ -368,8 +368,66 @@ GPIO.setmode(GPIO.BCM)
 #GPIO.setup(32, GPIO.IN)
 #dial = Encoder(leftPin=38, rightPin=32, callback=dialTurned)
 #dial = Encoder(leftPin=17, rightPin=27, callback=dialTurned)
+
 click_button = Button(26, hold_time=5)
 click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
+
+# Rotary Encoder Setup
+CLK_PIN = 38  # Physical pin 38
+DT_PIN = 36   # Physical pin 36
+
+# Encoder variables
+encoder_pos = 0
+last_clk = None
+last_encoder_time = 0
+ENCODER_DEBOUNCE = 0.01  # 10ms debounce
+
+def setup_rotary_encoder():
+    global last_clk
+    
+    # Set pins as inputs with pull-up resistors
+    GPIO.setup(CLK_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(DT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    
+    # Read initial state
+    last_clk = GPIO.input(CLK_PIN)
+    
+    # Add interrupt on CLK pin with debounce
+    GPIO.add_event_detect(CLK_PIN, GPIO.BOTH, callback=read_encoder, bouncetime=5)
+    
+    print("Rotary Encoder Ready on pins CLK=38, DT=36")
+
+def read_encoder(channel):
+    global encoder_pos, last_clk, last_encoder_time
+    
+    current_time = time.time()
+    
+    # Debounce check
+    if current_time - last_encoder_time < ENCODER_DEBOUNCE:
+        return
+    
+    last_encoder_time = current_time
+    current_clk = GPIO.input(CLK_PIN)
+    
+    # Only process on falling edge of CLK
+    if current_clk != last_clk and current_clk == 0:
+        dt_state = GPIO.input(DT_PIN)
+        
+        if dt_state == 1:
+            # Right/clockwise rotation
+            print("Encoder: RIGHT rotation")
+            if not wake_screen():
+                seek_stream(1)  # Next station
+        else:
+            # Left/counter-clockwise rotation  
+            print("Encoder: LEFT rotation")
+            if not wake_screen():
+                seek_stream(-1)  # Previous station
+    
+    last_clk = current_clk
+
+# Add this call after your GPIO.setmode(GPIO.BCM) line
+setup_rotary_encoder()
 
 #button_x = Button(16, hold_time=5)
 #button_y = Button(24, hold_time=5)
@@ -396,5 +454,6 @@ except KeyboardInterrupt:
     HEIGHT = disp.height
     img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
     draw = ImageDraw.Draw(img)
+    GPIO.cleanup()
     #disp.display(img)
     disp.ShowImage(img) # for 2 inch
