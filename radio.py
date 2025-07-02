@@ -168,7 +168,7 @@ def display_scud():
         image.paste(img, (0, 0))
         draw = ImageDraw.Draw(image)
         safe_display(image)
-        time.sleep(0.05)
+        time.sleep(0.02)
 
 display_scud()
 
