@@ -67,7 +67,7 @@ mpv_process = Popen([
     "--no-video",
     "--ao=alsa",
     "--audio-device=alsa/hw:1,0",
-    "--volume=90",
+    f"--volume={current_volume}",
     "--input-ipc-server=/tmp/mpvsocket"
 ])
 
@@ -192,11 +192,11 @@ def play(name, toggled=False):
     stream = name
 
     if toggled:
-        send_mpv_command({"command": ["set_property", "volume", current_volume]})
         safe_display(saved_image_while_paused)
     else:
         stream_url = streams[name]['streamLink']
         send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
+        send_mpv_command({"command": ["set_property", "volume", current_volume]})
 
 
 def display_everything(name, update=False):
