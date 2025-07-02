@@ -339,6 +339,7 @@ def handle_rotation(direction):
         seek_stream(direction)
 
 def on_button_released():
+    global current_image
     safe_display(current_image)
 
 def shutdown():
@@ -399,7 +400,7 @@ def restart():
 from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26, hold_time=5)
-click_button.when_released = wrapped_action(lambda: on_button_released())
+click_button.when_released = on_button_released
 #click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
 CLK_PIN = 5 
