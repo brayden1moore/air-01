@@ -372,6 +372,9 @@ GPIO.setmode(GPIO.BCM)
 click_button = Button(26, hold_time=5)
 click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
+
+# Add this section after your existing GPIO setup and before the main loop
+
 # Rotary Encoder Setup
 CLK_PIN = 38  # Physical pin 38
 DT_PIN = 36   # Physical pin 36
@@ -454,6 +457,5 @@ except KeyboardInterrupt:
     HEIGHT = disp.height
     img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
     draw = ImageDraw.Draw(img)
-    GPIO.cleanup()
     #disp.display(img)
     disp.ShowImage(img) # for 2 inch
