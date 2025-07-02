@@ -300,10 +300,15 @@ def seek_stream(direction):
 current_volume = 90 
 volume_step = 5  
 volume_timer = None 
+original_image_before_volume = None  # Add this to store original image
 
 def change_volume(direction):
-
-    global current_volume
+    global current_volume, original_image_before_volume
+    
+    # Store the original image before showing volume overlay (only on first volume change)
+    if original_image_before_volume is None and current_image:
+        original_image_before_volume = current_image.copy()
+    
     if direction == 1: 
         current_volume = min(100, current_volume + volume_step)
     else: 
@@ -311,13 +316,13 @@ def change_volume(direction):
 
     send_mpv_command({"command": ["set_property", "volume", current_volume]})
     show_volume_overlay(current_volume)
-    safe_display(current_image)
 
 def show_volume_overlay(volume):
-    global current_image
+    global current_image, original_image_before_volume
 
-    if current_image:
-        img = current_image.copy()
+    # Use the original image before volume overlay was shown
+    if original_image_before_volume:
+        img = original_image_before_volume.copy()
         draw = ImageDraw.Draw(img)
         
         bar_width = 100
@@ -330,6 +335,9 @@ def show_volume_overlay(volume):
         
         volume_width = int((volume / 100) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
+        
+        # Update current_image to the image with volume overlay
+        current_image = img.copy()
         safe_display(img)
 
 def handle_rotation(direction):
@@ -339,8 +347,13 @@ def handle_rotation(direction):
         seek_stream(direction)
 
 def on_button_released():
-    global current_image
-    safe_display(current_image)
+    global current_image, original_image_before_volume
+    
+    # Restore the original image without volume overlay
+    if original_image_before_volume:
+        current_image = original_image_before_volume.copy()
+        safe_display(current_image)
+        original_image_before_volume = None
 
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
