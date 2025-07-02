@@ -15,11 +15,6 @@ import platform
 import driver as LCD_2inch
 import spidev as SPI
 
-current_volume = 90 
-volume_step = 5  
-button_press_time = 0
-volume_adjusted = False
-
 SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 240
 FONT_SIZE = 6
@@ -143,6 +138,10 @@ saved_image_while_paused = None
 play_status = 'pause'
 last_input_time = time.time()
 first_display = True
+current_volume = 90 
+volume_step = 5  
+button_press_time = 0
+rotated = False
 
 def x(string, font):
     text_width, _ = font.getsize(string)
@@ -321,24 +320,23 @@ def show_volume_overlay(volume):
         safe_display(img)
 
 def on_button_pressed():
-    global button_press_time, volume_adjusted
+    global button_press_time, rotated
     button_press_time = time.time()
-    volume_adjusted = False
+    rorated = False
 
 def on_button_released():
-    global button_press_time, volume_adjusted
+    global button_press_time, rotated
     
-    if (time.time() - button_press_time < 0.1) and not volume_adjusted:
+    if (time.time() - button_press_time < 0.2) and not rotated:
         if not wake_screen():
             toggle_stream(stream)
 
 
 def handle_rotation(direction):
-
-    global volume_adjusted, current_volume, button_press_time
+    global rotated, current_volume, button_press_time
+    rotated = True
 
     if click_button.is_pressed:
-        volume_adjusted = True
 
         if direction == 1: 
             current_volume = min(100, current_volume + volume_step)
