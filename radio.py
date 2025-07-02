@@ -335,7 +335,7 @@ def on_button_released():
 
 def handle_rotation(direction):
 
-    global volume_adjusted, current_volume, notch_count
+    global volume_adjusted, current_volume, button_press_time
 
     if click_button.is_pressed:
         volume_adjusted = True
@@ -349,7 +349,7 @@ def handle_rotation(direction):
         show_volume_overlay(current_volume)
 
     else:
-        if (time.time() - button_press_time < 0.5):
+        if button_press_time == 0 or (time.time() - button_press_time < 0.5):
             seek_stream(direction)
 
 def shutdown():
