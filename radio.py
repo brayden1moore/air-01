@@ -349,7 +349,7 @@ def handle_rotation(direction):
         show_volume_overlay(current_volume)
 
     else:
-        if button_press_time == 0 or (time.time() - button_press_time < 0.5):
+        if (time.time() - button_press_time > 0.5):
             seek_stream(direction)
 
 def shutdown():
