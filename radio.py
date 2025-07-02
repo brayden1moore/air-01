@@ -332,6 +332,8 @@ def on_button_released():
         if not wake_screen():
             toggle_stream(stream)
 
+
+notch_count = 0
 def handle_rotation(direction):
     global volume_adjusted, current_volume
 
@@ -347,7 +349,11 @@ def handle_rotation(direction):
         show_volume_overlay(current_volume)
 
     else:
-        seek_stream(direction)
+        if notch_count==0:
+            notch_count += 1:
+        elif notch_count==1:
+            seek_stream(direction)
+            notch_count = 0
 
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
