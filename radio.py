@@ -375,10 +375,10 @@ click_button = Button(26, hold_time=5)
 click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 click_button.when_held = restart
 
-#GPIO.setmode(GPIO.BCM)
 CLK_PIN = 5 
 DT_PIN = 6   
 rotor = RotaryEncoder(CLK_PIN, DT_PIN)
+rotor.when_rotated_counterclockwise = wrapped_action(lambda: seek_stream(-1))
 rotor.when_rotated_clockwise = wrapped_action(lambda: seek_stream(1))
 
 #button_x = Button(16, hold_time=5)
