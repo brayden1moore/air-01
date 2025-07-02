@@ -363,10 +363,11 @@ def dialTurned(value, direction):
     elif direction == 'L':
         seek_stream(-1)
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 #GPIO.setup(38, GPIO.IN)
 #GPIO.setup(32, GPIO.IN)
-dial = Encoder(leftPin=38, rightPin=32, callback=dialTurned)
+#dial = Encoder(leftPin=38, rightPin=32, callback=dialTurned)
+dial = Encoder(leftPin=12, rightPin=20, callback=dialTurned)
 
 #button_x = Button(16, hold_time=5)
 #button_y = Button(24, hold_time=5)
