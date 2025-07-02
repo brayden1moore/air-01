@@ -364,7 +364,9 @@ def dialTurned(value, direction):
         seek_stream(-1)
 
 GPIO.setmode(GPIO.BOARD)
-dial = Encoder(38, 32, dialTurned)
+GPIO.setup(38, GPIO.OUT)
+
+#dial = Encoder(38, 32, dialTurned)
 
 #button_x = Button(16, hold_time=5)
 #button_y = Button(24, hold_time=5)
