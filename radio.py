@@ -81,7 +81,6 @@ def backlight_on():
     #GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
-    print("backlight off")
     if disp:
         display_scud()
         #disp.bl_DutyCycle(0)
@@ -168,6 +167,7 @@ def display_scud():
     image.paste(img, (0, 0))
     draw = ImageDraw.Draw(image)
     safe_display(image)
+    time.sleep(3)
 
 display_scud()
 
