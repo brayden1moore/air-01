@@ -260,11 +260,12 @@ def display_everything(name, update=False):
 
 def toggle_stream(name):
     global play_status
-    if name:
-        if play_status == 'play':
-            pause(show_icon=True)
-        else:
-            play(name, toggled=True)
+    if not rotated:
+        if name:
+            if play_status == 'play':
+                pause(show_icon=True)
+            else:
+                play(name, toggled=True)
 
     
 def play_random():
@@ -323,11 +324,9 @@ def show_volume_overlay(volume):
 def on_button_pressed():
     global button_press_time, rotated
     button_press_time = time.time()
-    rorated = False
 
 def on_button_released():
     global button_press_time, rotated
-    
     if (time.time() - button_press_time < 0.2) and not rotated:
         if not wake_screen():
             toggle_stream(stream)
@@ -350,6 +349,7 @@ def handle_rotation(direction):
     else:
         if (time.time() - button_press_time > 0.5):
             seek_stream(direction)
+    rotated = False
 
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
@@ -408,7 +408,7 @@ def restart():
 
 from gpiozero import RotaryEncoder, Button
 
-click_button = Button(26, hold_time=2)
+click_button = Button(26, hold_time=0.5)
 click_button.when_held = wrapped_action(lambda: toggle_stream(stream))
 click_button.when_pressed = wake_screen
 #click_button.when_released = on_button_released
