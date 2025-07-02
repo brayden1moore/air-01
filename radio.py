@@ -327,14 +327,14 @@ def show_volume_overlay(volume):
         
         bar_width = 10
         bar_height = 100
-        bar_x = 30 #(SCREEN_WIDTH - bar_width) // 2
-        bar_y = 30 #SCREEN_HEIGHT - 30
+        bar_x = 20 #(SCREEN_WIDTH - bar_width) // 2
+        bar_y = 20 #SCREEN_HEIGHT - 30
         
         draw.rectangle([bar_x-2, bar_y-2, bar_x+bar_width+2, bar_y+bar_height+2], fill=BORDER_COLOR)
         draw.rectangle([bar_x, bar_y, bar_x+bar_width, bar_y+bar_height], fill=BACKGROUND_COLOR)
         
-        volume_width = int((volume / 100) * bar_width)
-        draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
+        volume_height = int((volume / 100) * bar_height)
+        draw.rectangle([bar_x, bar_y, bar_x+bar_width, bar_y+volume_height], fill=TEXT_COLOR)
         
         safe_display(img)
 
