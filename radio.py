@@ -77,13 +77,13 @@ def backlight_on():
             safe_display(current_image)
         else:
             display_scud()
-        #disp.bl_DutyCycle(MAX_BL)
+        disp.bl_DutyCycle(MAX_BL)
     #GPIO.output(BACKLIGHT_PIN, GPIO.HIGH)
 
 def backlight_off():
     if disp:
-        display_scud()
-        #disp.bl_DutyCycle(0)
+        #display_scud()
+        disp.bl_DutyCycle(0)
     #GPIO.output(BACKLIGHT_PIN, GPIO.LOW)
 
 mpv_process = Popen([
