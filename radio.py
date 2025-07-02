@@ -411,7 +411,7 @@ def restart():
 from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26)
-click_button.when_released = on_button_released
+#click_button.when_released = on_button_released
 click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
 CLK_PIN = 5 
