@@ -351,7 +351,7 @@ def handle_rotation(direction):
 
     else:
         if notch_count==0:
-            notch_count += 1:
+            notch_count += 1
         elif notch_count==1:
             seek_stream(direction)
             notch_count = 0
