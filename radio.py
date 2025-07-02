@@ -17,6 +17,8 @@ import spidev as SPI
 
 current_volume = 90 
 volume_step = 5  
+button_press_time = 0
+volume_adjusted = False
 
 SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 240
@@ -192,6 +194,7 @@ def play(name, toggled=False):
 
     if toggled:
         safe_display(saved_image_while_paused)
+        send_mpv_command({"command": ["set_property", "volume", current_volume]})
     else:
         stream_url = streams[name]['streamLink']
         send_mpv_command({"command": ["loadfile", stream_url, "replace"]})
@@ -297,17 +300,6 @@ def seek_stream(direction):
     display_everything(stream)
     play(stream)
 
-def change_volume(direction):
-    global current_volume
-    
-    if direction == 1: 
-        current_volume = min(100, current_volume + volume_step)
-    else: 
-        current_volume = max(0, current_volume - volume_step)
-
-    send_mpv_command({"command": ["set_property", "volume", current_volume]})
-    show_volume_overlay(current_volume)
-
 def show_volume_overlay(volume):
     global current_image
 
@@ -317,8 +309,8 @@ def show_volume_overlay(volume):
         
         bar_width = 320
         bar_height = 5
-        bar_x = 0 #(SCREEN_WIDTH - bar_width) // 2
-        bar_y = 0 #SCREEN_HEIGHT - 30
+        bar_x = 0
+        bar_y = 0 
         
         draw.rectangle([bar_x-2, bar_y-2, bar_x+bar_width+2, bar_y+bar_height+2], fill=BORDER_COLOR)
         draw.rectangle([bar_x, bar_y, bar_x+bar_width, bar_y+bar_height], fill=TEXT_COLOR)
@@ -328,9 +320,32 @@ def show_volume_overlay(volume):
         
         safe_display(img)
 
+def on_button_pressed():
+    global button_press_time, volume_adjusted
+    button_press_time = time.time()
+    volume_adjusted = False
+
+def on_button_released():
+    global button_press_time, volume_adjusted
+    
+    if (time.time() - button_press_time < 0.5) and not volume_adjusted:
+        if not wake_screen():
+            toggle_stream(stream)
+
 def handle_rotation(direction):
+    global volume_adjusted, current_volume
+
     if click_button.is_pressed:
-        change_volume(direction)
+        volume_adjusted = True
+
+        if direction == 1: 
+            current_volume = min(100, current_volume + volume_step)
+        else: 
+            current_volume = max(0, current_volume - volume_step)
+
+        send_mpv_command({"command": ["set_property", "volume", current_volume]})
+        show_volume_overlay(current_volume)
+
     else:
         seek_stream(direction)
 
@@ -392,8 +407,8 @@ def restart():
 from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26)
-#click_button.when_released = on_button_released
-#click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
+click_button.when_pressed = on_button_pressed
+click_button.when_released = on_button_released
 
 CLK_PIN = 5 
 DT_PIN = 6   
