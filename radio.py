@@ -15,9 +15,8 @@ import platform
 import driver as LCD_2inch
 import spidev as SPI
 
-#BACKLIGHT_PIN = 13 for HAT
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(BACKLIGHT_PIN, GPIO.OUT)
+current_volume = 90 
+volume_step = 5  
 
 SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 240
@@ -297,12 +296,6 @@ def seek_stream(direction):
 
     display_everything(stream)
     play(stream)
-
-
-current_volume = 90 
-volume_step = 5  
-volume_timer = None 
-original_image_before_volume = None 
 
 def change_volume(direction):
     global current_volume
