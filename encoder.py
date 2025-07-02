@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 class Encoder:
 
     def __init__(self, leftPin, rightPin, callback=None):
+        GPIO.setmode(GPIO.BOARD)
         self.leftPin = leftPin
         self.rightPin = rightPin
         self.value = 0
@@ -11,8 +12,8 @@ class Encoder:
         self.callback = callback
         GPIO.setup(self.leftPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.rightPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.add_event_detect(self.rightPin, callback=self.transitionOccurred)  
-        GPIO.add_event_detect(self.leftPin, callback=self.transitionOccurred)  
+        GPIO.add_event_detect(self.rightPin, GPIO.BOTH, callback=self.transitionOccurred)  
+        GPIO.add_event_detect(self.leftPin, GPIO.BOTH, callback=self.transitionOccurred)  
 
     def transitionOccurred(self, channel):
         p1 = GPIO.input(self.leftPin)
