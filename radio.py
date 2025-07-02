@@ -325,8 +325,8 @@ def show_volume_overlay(volume):
         img = original_image_before_volume.copy()
         draw = ImageDraw.Draw(img)
         
-        bar_width = 100
-        bar_height = 10
+        bar_width = 10
+        bar_height = 100
         bar_x = (SCREEN_WIDTH - bar_width) // 2
         bar_y = SCREEN_HEIGHT - 30
         
@@ -336,7 +336,6 @@ def show_volume_overlay(volume):
         volume_width = int((volume / 100) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=TEXT_COLOR)
         
-        current_image = img.copy()
         safe_display(img)
 
 def handle_rotation(direction):
@@ -344,14 +343,6 @@ def handle_rotation(direction):
         change_volume(direction)
     else:
         seek_stream(direction)
-
-def on_button_released():
-    global current_image, original_image_before_volume
-    
-    if original_image_before_volume:
-        current_image = original_image_before_volume.copy()
-        safe_display(current_image)
-        original_image_before_volume = None
 
 def shutdown():
     run(['sudo', 'shutdown', 'now'])
@@ -412,7 +403,7 @@ from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26)
 #click_button.when_released = on_button_released
-click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
+#click_button.when_pressed = wrapped_action(lambda: toggle_stream(stream))
 
 CLK_PIN = 5 
 DT_PIN = 6   
