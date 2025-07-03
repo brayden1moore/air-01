@@ -175,7 +175,7 @@ def display_scud():
             if i==1 and rotations==max_rotations-1:
                 time.sleep(2)
             else:
-                time.sleep(0.1)
+                time.sleep(0.05)
 
         rotations += 1
 
@@ -500,7 +500,7 @@ except KeyboardInterrupt:
 
     WIDTH = disp.width
     HEIGHT = disp.height
-    img = Image.new("RGB", (WIDTH, HEIGHT), color="black")
+    img = Image.new("RGB", (320, 240), color="black")
     draw = ImageDraw.Draw(img)
     #disp.display(img)
     disp.ShowImage(img) # for 2 inch
