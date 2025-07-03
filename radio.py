@@ -165,13 +165,13 @@ def display_scud():
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
     rotations = 0
     while rotations <2:
-        for i in [1,2,3,4,5,6,7]:
+        for i in [2,3,4,5,6,7,1]:
              
             bg = Image.open(f'assets/gif/{i}.png') 
             image.paste(bg, (0, 0))
             safe_display(image)  
 
-            if i==1 and rotations==0:
+            if i==1 and rotations==2:
                 time.sleep(1)
 
         rotations += 1
