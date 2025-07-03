@@ -174,6 +174,8 @@ def display_scud():
 
             if i==1 and rotations==max_rotations-1:
                 time.sleep(2)
+            else:
+                time.sleep(0.1)
 
         rotations += 1
 
