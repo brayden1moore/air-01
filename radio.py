@@ -170,12 +170,13 @@ def display_scud():
             bg = Image.open(f'assets/gif/{i}.png') 
             image.paste(bg, (0, 0))
             safe_display(image)  
-            rotations += 1
 
             if i==1 and rotations==0:
                 time.sleep(2)
             else:
                 time.sleep(0.2)
+                
+            rotations += 1
             
 
     '''
