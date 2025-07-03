@@ -172,7 +172,7 @@ def display_scud():
             image.paste(bg, (0, 0))
             safe_display(image)  
 
-            if i==1 and rotations==max_rotations:
+            if i==1 and rotations==max_rotations-1:
                 time.sleep(3)
 
         rotations += 1
