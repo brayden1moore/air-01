@@ -361,7 +361,7 @@ def on_button_pressed():
 def on_button_released():
     global button_press_time, rotated
     
-    if (time.time() - button_press_time < 0.2) and not rotated:
+    if (time.time() - button_press_time < 0.2) and (time.time() - button_press_time > 0.05) and not rotated:
         if not wake_screen():
             toggle_stream(stream)
 
