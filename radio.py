@@ -166,7 +166,7 @@ def display_scud():
     frames = 20
 
     bg = Image.open(f'assets/scudgif/background.png') 
-    image.paste(img, (0, 0))
+    image.paste(bg, (0, 0))
     draw = ImageDraw.Draw(image)
     safe_display(image)
 
