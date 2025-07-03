@@ -163,8 +163,15 @@ def safe_display(image):
 
 def display_scud():
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
-    frames = 20
 
+    for i in [1,2,3,4,5,6,7,1]:
+        bg = Image.open(f'assets/gif/{i}.png') 
+        image.paste(bg, (0, 0))
+        safe_display(image)  
+        if i==1:
+            time.sleep(2)
+
+    '''
     bg = Image.open(f'assets/scudgif/background.png') 
     image.paste(bg, (0, 0))
     draw = ImageDraw.Draw(image)
@@ -176,6 +183,7 @@ def display_scud():
         image.paste(img.resize((180,180)), (140, 0))
         draw = ImageDraw.Draw(image)
         safe_display(image)
+    '''
 
 display_scud()
 
