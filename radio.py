@@ -173,7 +173,7 @@ def display_scud():
     img = Image.open(f'assets/scudgif/dancergifgif.gif')
 
     for frame in ImageSequence.Iterator(img):
-        image.paste(img.resize((180,180)), (120, 0))
+        image.paste(img.resize((180,180)), (140, 0))
         draw = ImageDraw.Draw(image)
         safe_display(image)
 
