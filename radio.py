@@ -170,10 +170,10 @@ def display_scud():
     draw = ImageDraw.Draw(image)
     safe_display(image)
 
-    img = Image.open(f'assets/scudgif/dancergifgif.gif') 
+    img = Image.open(f'assets/scudgif/dancergifgif.gif')
 
     for frame in ImageSequence.Iterator(img):
-        image.paste(img, (100, 0))
+        image.paste(img.resize(120,120), (100, 0))
         draw = ImageDraw.Draw(image)
         safe_display(image)
 
