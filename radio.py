@@ -174,7 +174,7 @@ def display_scud():
             if i==1 and rotations==0:
                 time.sleep(2)
 
-            rotations += 1
+        rotations += 1
             
 
     '''
