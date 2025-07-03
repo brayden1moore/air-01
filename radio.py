@@ -35,7 +35,7 @@ saved_image_while_paused = None
 play_status = 'pause'
 last_input_time = time.time()
 first_display = True
-current_volume = 90 
+current_volume = 50 
 volume_step = 5  
 button_press_time = 0
 rotated = False
@@ -381,7 +381,7 @@ def handle_rotation(direction):
         show_volume_overlay(current_volume)
 
     else:
-        if (time.time() - button_press_time > 0.5):
+        if (time.time() - button_press_time > 1):
             seek_stream(direction)
 
 def shutdown():
