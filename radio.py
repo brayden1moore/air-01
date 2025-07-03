@@ -165,17 +165,12 @@ def display_scud():
     image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT))
     frames = 20
 
-    for i in range(1,frames):
-        img = Image.open(f'assets/scudgif/{i}.png') 
+    img = Image.open(f'assets/scudgif/dancergifgif.gif') 
+
+    for frame in ImageSequence.Iterator(img):
         image.paste(img, (0, 0))
         draw = ImageDraw.Draw(image)
         safe_display(image)
-
-    img = Image.open(f'assets/scudgif/1.png') 
-    image.paste(img, (0, 0))
-    draw = ImageDraw.Draw(image)
-    safe_display(image)
-    time.sleep(2)
 
 display_scud()
 
