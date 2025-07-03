@@ -172,7 +172,7 @@ def display_scud():
             safe_display(image)  
 
             if i==1 and rotations==2:
-                time.sleep(1)
+                time.sleep(2)
 
         rotations += 1
 
