@@ -348,7 +348,6 @@ def play_random():
 
 def seek_stream(direction):
     global readied_stream 
-    pause()
 
     if (readied_stream == None) & (direction==1):
         readied_stream = stream_list[stream_list.index(stream)+1]
@@ -368,6 +367,7 @@ def seek_stream(direction):
     display_everything(readied_stream, readied=True)
 
 def confirm_seek():
+    pause()
     global readied_stream, stream
     if readied_stream:
         stream = readied_stream
