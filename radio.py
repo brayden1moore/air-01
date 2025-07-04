@@ -135,6 +135,7 @@ def get_streams():
 
             img = Image.open(buf).convert('RGB')
             active[name]['logo_full']  = img.resize((LOGO_SIZE,  LOGO_SIZE))
+            active[name]['logo_readied']  = img.resize((READIED_LOGO_SIZE,  READIED_LOGO_SIZE))
             active[name]['logo_small'] = img.resize((SMALL_LOGO_SIZE, SMALL_LOGO_SIZE))
 
     return active
@@ -277,6 +278,7 @@ def display_everything(name, update=False, readied=False):
     draw = ImageDraw.Draw(image)
 
     logo = streams[name]['logo_full']
+    readied_logo = streams[name]['logo_readied']
     prev = streams[prev_stream]['logo_small']
     next = streams[next_stream]['logo_small']
 
@@ -289,7 +291,7 @@ def display_everything(name, update=False, readied=False):
     if readied:
         border = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
         image.paste(border, (READIED_LOGO_X, READIED_LOGO_Y))
-        image.paste(logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
+        image.paste(readied_logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
     else:
         border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
         image.paste(border, (LOGO_X, LOGO_Y))
