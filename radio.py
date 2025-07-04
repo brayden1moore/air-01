@@ -372,8 +372,9 @@ def confirm_seek():
     pause()
     global readied_stream, stream
     if readied_stream:
-        stream = readied_stream
-        play(stream)
+        if stream != readied_stream:
+            stream = readied_stream
+            play(stream)
         display_everything(stream)
         readied_stream = None
 
