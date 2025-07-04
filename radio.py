@@ -51,7 +51,7 @@ TEXT_COLOR = (0,0,0)
 TEXT_COLOR_2 = (100,100,100)
 BACKGROUND_COLORS = []
 BACKGROUND_COLOR = (255,255,0)
-BORDER_SIZE = 4
+BORDER_SIZE = 2
 
 LOGO_SIZE = 140
 LOGO_Y = 20
@@ -282,29 +282,36 @@ def display_everything(name, update=False, readied=False):
     prev = streams[prev_stream]['logo_small']
     next = streams[next_stream]['logo_small']
 
-    border = Image.new('RGB', (SMALL_LOGO_SIZE+BORDER_SIZE*4, SMALL_LOGO_SIZE+BORDER_SIZE*4), color=BORDER_COLOR)
-    border2 = Image.new('RGB', (SMALL_LOGO_SIZE+BORDER_SIZE*2, SMALL_LOGO_SIZE+BORDER_SIZE*2), color=BACKGROUND_COLOR)
+    border = Image.new('RGB', (SMALL_LOGO_SIZE+BORDER_SIZE*6, SMALL_LOGO_SIZE+BORDER_SIZE*6), color=BORDER_COLOR)
+    border2 = Image.new('RGB', (SMALL_LOGO_SIZE+BORDER_SIZE*4, SMALL_LOGO_SIZE+BORDER_SIZE*4), color=BACKGROUND_COLOR)
+    border3 = Image.new('RGB', (SMALL_LOGO_SIZE+BORDER_SIZE*2, SMALL_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
 
-    image.paste(border, (PREV_LOGO_X-BORDER_SIZE, SMALL_LOGO_Y-BORDER_SIZE))
-    image.paste(border2, (PREV_LOGO_X, SMALL_LOGO_Y))
-    
-    image.paste(border, (NEXT_LOGO_X-BORDER_SIZE, SMALL_LOGO_Y-BORDER_SIZE))
-    image.paste(border2, (NEXT_LOGO_X, SMALL_LOGO_Y))
+    image.paste(border, (PREV_LOGO_X-BORDER_SIZE*2, SMALL_LOGO_Y-BORDER_SIZE*2))
+    image.paste(border2, (PREV_LOGO_X-BORDER_SIZE, SMALL_LOGO_Y-BORDER_SIZE))
+    image.paste(border3, (PREV_LOGO_X, SMALL_LOGO_Y))
+
+    image.paste(border, (NEXT_LOGO_X-BORDER_SIZE*2, SMALL_LOGO_Y-BORDER_SIZE*2))    
+    image.paste(border2, (NEXT_LOGO_X-BORDER_SIZE, SMALL_LOGO_Y-BORDER_SIZE))
+    image.paste(border3, (NEXT_LOGO_X, SMALL_LOGO_Y))
 
     image.paste(prev, (PREV_LOGO_X+BORDER_SIZE, SMALL_LOGO_Y+BORDER_SIZE))
     image.paste(next, (NEXT_LOGO_X+BORDER_SIZE, SMALL_LOGO_Y+BORDER_SIZE))
 
     if readied:
-        border = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*4, READIED_LOGO_SIZE+BORDER_SIZE*4), color=BORDER_COLOR)
-        border2 = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BACKGROUND_COLOR)
-        image.paste(border, (READIED_LOGO_X-BORDER_SIZE, READIED_LOGO_Y-BORDER_SIZE))
-        image.paste(border2, (READIED_LOGO_X, READIED_LOGO_Y))
+        border = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*6, READIED_LOGO_SIZE+BORDER_SIZE*6), color=BORDER_COLOR)
+        border2 = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*4, READIED_LOGO_SIZE+BORDER_SIZE*4), color=BACKGROUND_COLOR)
+        border3 = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
+        image.paste(border, (READIED_LOGO_X-BORDER_SIZE*2, READIED_LOGO_Y-BORDER_SIZE*2))
+        image.paste(border2, (READIED_LOGO_X-BORDER_SIZE, READIED_LOGO_Y-BORDER_SIZE))
+        image.paste(border3, (READIED_LOGO_X, READIED_LOGO_Y))
         image.paste(readied_logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
     else:
-        border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*4, LOGO_SIZE+BORDER_SIZE*4), color=BORDER_COLOR)
-        border2 = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BACKGROUND_COLOR)
-        image.paste(border, (LOGO_X-BORDER_SIZE, LOGO_Y-BORDER_SIZE))
-        image.paste(border2, (LOGO_X, LOGO_Y))
+        border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*6, LOGO_SIZE+BORDER_SIZE*6), color=BORDER_COLOR)
+        border2 = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*4, LOGO_SIZE+BORDER_SIZE*4), color=BACKGROUND_COLOR)
+        border3 = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
+        image.paste(border, (LOGO_X-BORDER_SIZE*2, LOGO_Y-BORDER_SIZE*2))
+        image.paste(border2, (LOGO_X-BORDER_SIZE, LOGO_Y-BORDER_SIZE))
+        image.paste(border3, (LOGO_X, LOGO_Y))
         image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
 
     title = f"{name}"
