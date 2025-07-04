@@ -385,6 +385,8 @@ def show_volume_overlay(volume):
 
 def on_button_pressed():
     global button_press_time, rotated
+    if readied_stream:
+        confirm_seek()
     button_press_time = time.time()
     rotated = False
 
@@ -474,7 +476,7 @@ from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26)
 click_button.when_pressed = on_button_pressed
-click_button.when_released = on_button_released
+#click_button.when_released = on_button_released
 
 CLK_PIN = 5 
 DT_PIN = 6   
