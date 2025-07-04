@@ -369,10 +369,10 @@ def seek_stream(direction):
     display_everything(readied_stream, readied=True)
 
 def confirm_seek():
-    pause()
     global readied_stream, stream
     if readied_stream:
         if stream != readied_stream:
+            pause()
             stream = readied_stream
             play(stream)
         display_everything(stream)
