@@ -401,7 +401,7 @@ def show_volume_overlay(volume):
         draw = ImageDraw.Draw(img)
         
         bar_width = 320
-        bar_height = 3
+        bar_height = BORDER_SIZE
         bar_x = 0
         bar_y = 0 
         
