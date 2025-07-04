@@ -290,14 +290,10 @@ def display_everything(name, update=False, readied=False):
 
     if readied:
         border = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
-        border2 = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*4, READIED_LOGO_SIZE+BORDER_SIZE*4), color=BACKGROUND_COLOR)
-        image.paste(border2, (READIED_LOGO_X, READIED_LOGO_Y))
         image.paste(border, (READIED_LOGO_X, READIED_LOGO_Y))
         image.paste(readied_logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
     else:
         border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
-        border2 = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*4, LOGO_SIZE+BORDER_SIZE*4), color=BACKGROUND_COLOR)
-        image.paste(border2, (LOGO_X, LOGO_Y))
         image.paste(border, (LOGO_X, LOGO_Y))
         image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
 
