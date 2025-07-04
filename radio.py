@@ -57,6 +57,10 @@ LOGO_SIZE = 140
 LOGO_Y = 20
 LOGO_X = round(SCREEN_WIDTH/2) - round(LOGO_SIZE/2)
 
+READIED_LOGO_SIZE = 100
+READIED_LOGO_Y = 40
+READIED_LOGO_X = round(SCREEN_WIDTH/2) - round(LOGO_SIZE/2)
+
 SMALL_LOGO_SIZE = 60
 SMALL_LOGO_Y = LOGO_Y + round(LOGO_SIZE/2) - round(SMALL_LOGO_SIZE/2)
 PREV_LOGO_X = LOGO_X - round(SMALL_LOGO_SIZE) + 15 - BORDER_SIZE
@@ -258,7 +262,7 @@ def play(name, toggled=False):
     write_to_tmp_os_path(name)
 
 
-def display_everything(name, update=False):
+def display_everything(name, update=False, readied=False):
     global streams, play_status, first_display
 
     first_display = False
@@ -282,9 +286,14 @@ def display_everything(name, update=False):
     image.paste(prev, (PREV_LOGO_X+BORDER_SIZE, SMALL_LOGO_Y+BORDER_SIZE))
     image.paste(next, (NEXT_LOGO_X+BORDER_SIZE, SMALL_LOGO_Y+BORDER_SIZE))
 
-    border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
-    image.paste(border, (LOGO_X, LOGO_Y))
-    image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
+    if readied:
+        border = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
+        image.paste(border, (READIED_LOGO_X, READIED_LOGO_Y))
+        image.paste(logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
+    else:
+        border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
+        image.paste(border, (LOGO_X, LOGO_Y))
+        image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
 
     title = f"{name}"
     parts = [
@@ -354,13 +363,14 @@ def seek_stream(direction):
         else:
             readied_stream = stream_list[idx + direction]
 
-    display_everything(readied_stream)
+    display_everything(readied_stream, readied=True)
 
 def confirm_seek():
     global readied_stream, stream
     if readied_stream:
         stream = readied_stream
         play(stream)
+        display_everything(stream)
         readied_stream = None
 
 def show_volume_overlay(volume):
