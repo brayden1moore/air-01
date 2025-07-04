@@ -54,7 +54,7 @@ BACKGROUND_COLOR = (255,255,0)
 BORDER_SIZE = 3
 
 LOGO_SIZE = 120
-LOGO_Y = 20
+LOGO_Y = 25
 LOGO_X = round(SCREEN_WIDTH/2) - round(LOGO_SIZE/2)
 
 READIED_LOGO_SIZE = 90
@@ -401,7 +401,7 @@ def show_volume_overlay(volume):
         draw = ImageDraw.Draw(img)
         
         bar_width = 320
-        bar_height = 5
+        bar_height = 3
         bar_x = 0
         bar_y = 0 
         
