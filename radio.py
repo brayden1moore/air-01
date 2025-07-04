@@ -293,8 +293,8 @@ def display_everything(name, update=False, readied=False):
         image.paste(border, (READIED_LOGO_X, READIED_LOGO_Y))
         image.paste(readied_logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
     else:
-        border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
-        border2 = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*4, LOGO_SIZE+BORDER_SIZE*4), color=BACKGROUND_COLOR)
+        border = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*2, LOGO_SIZE+BORDER_SIZE*2), color=BACKGROUND_COLOR)
+        border2 = Image.new('RGB', (LOGO_SIZE+BORDER_SIZE*4, LOGO_SIZE+BORDER_SIZE*4), color=BORDER_COLOR)
         image.paste(border2, (LOGO_X-BORDER_SIZE, LOGO_Y-BORDER_SIZE))
         image.paste(border, (LOGO_X, LOGO_Y))
         image.paste(logo, (LOGO_X+BORDER_SIZE, LOGO_Y+BORDER_SIZE))
