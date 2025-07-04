@@ -29,6 +29,8 @@ disp.bl_DutyCycle(MAX_BL)
 
 mpv_process = None
 stream = None
+readied_stream = None
+last_rotation = None
 screen_on = True
 current_image = None
 saved_image_while_paused = None
@@ -334,26 +336,32 @@ def play_random():
 
 
 def seek_stream(direction):
-    global stream 
+    global readied_stream 
     pause()
 
-    if (stream == None) & (direction==1):
-        stream = stream_list[0]       
+    if (readied_stream == None) & (direction==1):
+        readied_stream = stream_list[stream_list.index(stream)+1]
 
-    elif (stream == None) & (direction==-1):
-        stream = stream_list[-1]
+    elif (readied_stream == None) & (direction==-1):
+        readied_stream = stream_list[stream_list.index(stream)-1]
 
     else:
-        idx = stream_list.index(stream)
+        idx = stream_list.index(readied_stream)
         if (direction == 1) and (idx==len(stream_list)-1):
-            stream = stream_list[0]
+            readied_stream = stream_list[0]
         elif (direction == -1) and (idx==0):
-            stream = stream_list[-1]
+            readied_stream = stream_list[-1]
         else:
-            stream = stream_list[idx + direction]
+            readied_stream = stream_list[idx + direction]
 
-    display_everything(stream)
-    play(stream)
+    display_everything(readied_stream)
+
+def confirm_seek():
+    global readied_stream, stream
+    if readied_stream:
+        stream = readied_stream
+        play(stream)
+        readied_stream = None
 
 def show_volume_overlay(volume):
     global current_image
@@ -383,13 +391,13 @@ def on_button_pressed():
 def on_button_released():
     global button_press_time, rotated
     
-    if (time.time() - button_press_time < 0.2) and (time.time() - button_press_time > 0.05) and not rotated:
-        if not wake_screen():
-            toggle_stream(stream)
+    if (time.time() - button_press_time < 0.2) and not rotated:
+        if not wake_screen() and readied_stream:
+            confirm_seek()
 
 
 def handle_rotation(direction):
-    global rotated, current_volume, button_press_time
+    global rotated, current_volume, button_press_time, last_rotation
     rotated = True
 
     if click_button.is_pressed:
@@ -404,6 +412,7 @@ def handle_rotation(direction):
 
     else:
         if (time.time() - button_press_time > 1):
+            last_rotation = time.time()
             seek_stream(direction)
 
 def shutdown():
@@ -494,6 +503,10 @@ periodic_update()
 
 try:
     while True:
+        if readied_stream and last_rotation and (time.time() - last_rotation > 5):
+            readied_stream = None
+            if screen_on and stream:
+                display_everything(stream)
         time.sleep(0.5)
 except KeyboardInterrupt:
     if mpv_process:
