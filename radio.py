@@ -51,7 +51,7 @@ TEXT_COLOR = (0,0,0)
 TEXT_COLOR_2 = (100,100,100)
 BACKGROUND_COLORS = []
 BACKGROUND_COLOR = (255,255,0)
-BORDER_SIZE = 2
+BORDER_SIZE = 4
 
 LOGO_SIZE = 140
 LOGO_Y = 20
@@ -296,7 +296,7 @@ def display_everything(name, update=False, readied=False):
 
     if readied:
         border = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*4, READIED_LOGO_SIZE+BORDER_SIZE*4), color=BORDER_COLOR)
-        border2 = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BORDER_COLOR)
+        border2 = Image.new('RGB', (READIED_LOGO_SIZE+BORDER_SIZE*2, READIED_LOGO_SIZE+BORDER_SIZE*2), color=BACKGROUND_COLOR)
         image.paste(border, (READIED_LOGO_X-BORDER_SIZE, READIED_LOGO_Y-BORDER_SIZE))
         image.paste(border2, (READIED_LOGO_X, READIED_LOGO_Y))
         image.paste(readied_logo, (READIED_LOGO_X+BORDER_SIZE, READIED_LOGO_Y+BORDER_SIZE))
