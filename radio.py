@@ -405,7 +405,8 @@ def show_volume_overlay(volume):
         bar_x = 0
         bar_y = 0 
         
-        draw.rectangle([bar_x-BORDER_SIZE, bar_y-BORDER_SIZE, bar_x+bar_width+BORDER_SIZE, bar_y+bar_height+BORDER_SIZE], fill=BORDER_COLOR)
+        this_border_size = round(BORDER_SIZE/2)
+        draw.rectangle([bar_x-this_border_size, bar_y-this_border_size, bar_x+bar_width+this_border_size, bar_y+bar_height+this_border_size], fill=BORDER_COLOR)
         draw.rectangle([bar_x, bar_y, bar_x+bar_width, bar_y+bar_height], fill=TEXT_COLOR)
         
         volume_width = int((volume / 100) * bar_width)
