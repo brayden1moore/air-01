@@ -365,9 +365,9 @@ def play_random():
 
 def seek_stream(direction):
     global readied_stream 
-
+    
+    idx = stream_list.index(stream)
     if (readied_stream == None) & (direction==1):
-        idx = stream_list.index(stream)
         if idx == len(stream_list)-1:
             readied_stream = stream_list[0]
         else:
