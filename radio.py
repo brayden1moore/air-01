@@ -367,10 +367,17 @@ def seek_stream(direction):
     global readied_stream 
 
     if (readied_stream == None) & (direction==1):
-        readied_stream = stream_list[stream_list.index(stream)+1]
+        idx = stream_list.index(stream)
+        if idx == len(stream_list)-1:
+            readied_stream = stream_list[0]
+        else:
+            readied_stream = stream_list[stream_list.index(stream)+1]
 
     elif (readied_stream == None) & (direction==-1):
-        readied_stream = stream_list[stream_list.index(stream)-1]
+        if idx == 0:
+            readied_stream = stream_list[-1]
+        else:
+            readied_stream = stream_list[stream_list.index(stream)-1]
 
     else:
         idx = stream_list.index(readied_stream)
