@@ -100,7 +100,7 @@ mpv_process = Popen([
     "--ao=alsa",
     "--audio-device=alsa/hw:1,0",
     f"--volume={current_volume}",
-    "--volume-max=125"
+    "--volume-max=125",
     "--input-ipc-server=/tmp/mpvsocket"
 ])
 
@@ -417,7 +417,7 @@ def show_volume_overlay(volume):
         draw.rectangle([bar_x-this_border_size, bar_y-this_border_size, bar_x+bar_width+this_border_size, bar_y+bar_height+this_border_size], fill=BORDER_COLOR)
         draw.rectangle([bar_x, bar_y, bar_x+bar_width, bar_y+bar_height], fill=TEXT_COLOR)
         
-        volume_width = int((volume / 100) * bar_width)
+        volume_width = int((volume / 125) * bar_width)
         draw.rectangle([bar_x, bar_y, bar_x+volume_width, bar_y+bar_height], fill=BACKGROUND_COLOR)
         
         safe_display(img)
