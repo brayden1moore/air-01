@@ -37,7 +37,7 @@ saved_image_while_paused = None
 play_status = 'pause'
 last_input_time = time.time()
 first_display = True
-current_volume = 50 
+current_volume = 65
 volume_step = 5  
 button_press_time = 0
 rotated = False
@@ -444,7 +444,7 @@ def handle_rotation(direction):
     if click_button.is_pressed:
 
         if direction == 1: 
-            current_volume = min(100, current_volume + volume_step)
+            current_volume = min(125, current_volume + volume_step)
         else: 
             current_volume = max(0, current_volume - volume_step)
 
