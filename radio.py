@@ -538,8 +538,10 @@ def periodic_update():
         
         if airplay_is_active and not airplay_active:
             # AirPlay just started
-            print("AirPlay session detected - pausing radio")
+            print("AirPlay session detected - stopping MPV and pausing radio")
             airplay_active = True
+            # Stop MPV completely to free up the audio device
+            send_mpv_command({"command": ["stop"]})
             pause()
             display_airplay_active()
         elif not airplay_is_active and airplay_active:
@@ -548,7 +550,9 @@ def periodic_update():
             airplay_active = False
             if stream:
                 display_everything(stream)
-                # Don't auto-resume playback, let user control it
+                # Restart playback since we stopped MPV
+                if play_status == 'play':
+                    play(stream)
     
     # Handle screen timeout
     if screen_on and (time.time() - last_input_time > 60):
