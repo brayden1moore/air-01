@@ -19,4 +19,8 @@ for idx, i in enumerate(options):
 ssid = options[int(input())]
 print("Password?")
 password = input()
-subprocess.run(['sudo','nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password])
+result = subprocess.run(['sudo','nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
+               stdout=subprocess.PIPE,
+               text=True, check=True)
+resultoutput = result.stdout.strip()
+print(resultoutput)
