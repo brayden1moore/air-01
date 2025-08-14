@@ -24,4 +24,4 @@ result = subprocess.run(['sudo','nmcli', 'dev','wifi' ,'connect' ,ssid ,'passwor
                stdout=subprocess.PIPE,
                text=True, check=True)
 resultoutput = result.stdout.strip()
-print(resultoutput)
+print('ok',resultoutput)
