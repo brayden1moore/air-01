@@ -18,5 +18,5 @@ for idx, i in enumerate(options):
     print(idx, ' -- ', i)
 ssid = options[input()]
 print("Password?")
-password = input()
+password = input(int)
 subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password])
