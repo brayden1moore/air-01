@@ -46,6 +46,7 @@ while not connected:
                     stdout=subprocess.PIPE,
                     text=True, check=True)
 
+        print("Success")
         connected = internet()
     except:
         print("That didn't work")
