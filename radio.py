@@ -16,70 +16,6 @@ import driver as LCD_2inch
 import spidev as SPI
 
 
-## shairport
-
-import psutil
-import subprocess
-
-# Add these globals
-airplay_active = False
-last_airplay_check = 0
-
-def is_airplay_active():
-    """Check if Shairport Sync is actively playing"""
-    try:
-        # Method 1: Check if shairport-sync process is using audio
-        for proc in psutil.process_iter(['pid', 'name', 'connections']):
-            if 'shairport-sync' in proc.info['name']:
-                # Check if it has network connections (indicating active session)
-                connections = proc.connections()
-                if any(conn.status == 'ESTABLISHED' for conn in connections):
-                    return True
-        
-        # Method 2: Check ALSA/audio activity from shairport
-        result = subprocess.run(['fuser', '/dev/snd/pcmC1D0p'], 
-                              capture_output=True, text=True)
-        if result.returncode == 0 and 'shairport' in result.stdout:
-            return True
-            
-        return False
-        
-    except Exception as e:
-        print(f"Error checking AirPlay: {e}")
-        return False
-
-def display_airplay_active():
-    """Show simple AirPlay active screen"""
-    image = Image.new('RGB', (SCREEN_WIDTH, SCREEN_HEIGHT), color=BACKGROUND_COLOR)
-    draw = ImageDraw.Draw(image)
-    
-    # Simple AirPlay indicator
-    airplay_text = "AirPlay Active"
-    draw.text((x(airplay_text, LARGE_FONT), LOGO_Y + LOGO_SIZE//2), 
-              airplay_text, font=LARGE_FONT, fill=TEXT_COLOR)
-    
-    # Add AirPlay icon area
-    icon_size = 80
-    icon_x = (SCREEN_WIDTH - icon_size) // 2
-    icon_y = LOGO_Y
-    
-    # Draw simple AirPlay triangle icon
-    points = [
-        (icon_x + 20, icon_y + 20),           # Top left
-        (icon_x + icon_size - 20, icon_y + icon_size//2),  # Right middle  
-        (icon_x + 20, icon_y + icon_size - 20)  # Bottom left
-    ]
-    draw.polygon(points, fill=TEXT_COLOR)
-    
-    # Draw broadcast lines
-    for i in range(3):
-        offset = (i + 1) * 8
-        draw.arc([icon_x + icon_size - 10 - offset, icon_y + 30 - offset//2,
-                  icon_x + icon_size + 10 + offset, icon_y + 50 + offset//2], 
-                 -30, 30, fill=TEXT_COLOR, width=2)
-    
-    safe_display(image)
-
 ## scud
 
 # 2 inch
@@ -491,7 +427,7 @@ def show_volume_overlay(volume):
 
 def on_button_pressed():
     global button_press_time, rotated
-    if not airplay_active and readied_stream:
+    if readied_stream:
         confirm_seek()
     button_press_time = time.time()
     rotated = False
@@ -515,9 +451,8 @@ def handle_rotation(direction):
         else: 
             current_volume = max(0, current_volume - volume_step)
 
-        if not airplay_active:
-            send_mpv_command({"command": ["set_property", "volume", current_volume]})
-            show_volume_overlay(current_volume)
+        send_mpv_command({"command": ["set_property", "volume", current_volume]})
+        show_volume_overlay(current_volume)
 
     else:
         if (time.time() - button_press_time > 1):
@@ -528,51 +463,21 @@ def shutdown():
     run(['sudo', 'shutdown', 'now'])
 
 def periodic_update():
-    global screen_on, last_input_time, streams, stream_list, airplay_active, last_airplay_check
-    
-    # Check AirPlay status every 5 seconds
-    current_time = time.time()
-    if current_time - last_airplay_check > 5:
-        last_airplay_check = current_time
-        airplay_is_active = is_airplay_active()
-        
-        if airplay_is_active and not airplay_active:
-            # AirPlay just started
-            print("AirPlay session detected - stopping MPV and pausing radio")
-            airplay_active = True
-            # Stop MPV completely to free up the audio device
-            send_mpv_command({"command": ["stop"]})
-            pause()
-            display_airplay_active()
-        elif not airplay_is_active and airplay_active:
-            # AirPlay just stopped
-            print("AirPlay session ended - resuming radio")
-            airplay_active = False
-            if stream:
-                display_everything(stream)
-                # Restart playback since we stopped MPV
-                if play_status == 'play':
-                    play(stream)
-    
-    # Handle screen timeout
+    global screen_on, last_input_time, streams, stream_list
+
     if screen_on and (time.time() - last_input_time > 60):
         screen_on = False
         backlight_off()
     else:
         try:
-            # Only update radio if AirPlay is not active
-            if not airplay_active:
-                info = requests.get('https://internetradioprotocol.org/info').json()
-                for name, v in info.items():
-                    if name in streams:
-                        streams[name].update(v)
-                stream_list = list(streams.keys())
+            info = requests.get('https://internetradioprotocol.org/info').json()
+            for name, v in info.items():
+                if name in streams:
+                    streams[name].update(v)
+            stream_list = list(streams.keys())
 
-                if play_status != 'pause':
-                    display_everything(stream, update=True)
-            else:
-                # Refresh AirPlay display
-                display_airplay_active()
+            if play_status != 'pause':
+                display_everything(stream, update=True)
                 
         except Exception as e:
             print(e)
@@ -615,24 +520,12 @@ from gpiozero import RotaryEncoder, Button
 
 click_button = Button(26)
 click_button.when_pressed = on_button_pressed
-#click_button.when_released = on_button_released
 
 CLK_PIN = 5 
 DT_PIN = 6   
 rotor = RotaryEncoder(CLK_PIN, DT_PIN)
 rotor.when_rotated_counter_clockwise = wrapped_action(lambda: handle_rotation(-1))
 rotor.when_rotated_clockwise = wrapped_action(lambda: handle_rotation(1))
-
-#button_x = Button(16, hold_time=5)
-#button_y = Button(24, hold_time=5)
-#button_a = Button(5, hold_time=5)
-#button_b = Button(6, hold_time=5)
-
-#button_b.when_pressed = wrapped_action(lambda: toggle_stream(stream))
-#button_a.when_pressed = wrapped_action(play_random)
-#button_y.when_pressed = wrapped_action(lambda: seek_stream(-1))
-#button_x.when_pressed = wrapped_action(lambda: seek_stream(1))
-#button_b.when_held = restart
 
 last_played = read_last_played()
 if last_played:
