@@ -20,7 +20,7 @@ ssid = options[int(input())]
 print("Password?")
 password = input()
 print('thx')
-result = subprocess.run(['sudo','nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
+result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
                stdout=subprocess.PIPE,
                text=True, check=True)
 resultoutput = result.stdout.strip()
