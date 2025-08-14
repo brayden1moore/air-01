@@ -16,7 +16,7 @@ options = scan_wifi()
 print("Which wifi?")
 for idx, i in enumerate(options):
     print(idx, ' -- ', i)
-ssid = options[input(int)]
+ssid = options[int(input())]
 print("Password?")
 password = input()
 subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password])
