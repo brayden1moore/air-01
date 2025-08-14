@@ -12,4 +12,11 @@ def scan_wifi():
             options.append(ssid)
     return options
 
-print(scan_wifi())
+options = scan_wifi()
+print("Which wifi?")
+for idx, i in enumerate(options):
+    print(idx, ' -- ', i)
+ssid = input()
+print("Password?")
+password = input()
+subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password])
