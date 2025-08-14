@@ -6,7 +6,7 @@ def scan_wifi():
                                     stdout=subprocess.PIPE,
                                     text=True, check=True)
     scanoutput = result.stdout.strip()
-    for line in scanoutput.split():
+    for line in scanoutput:
         print(line)
         if line[:5]  == "ESSID":
             ssid = line.split('ESSID:')[1].replace('"','')
