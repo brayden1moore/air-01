@@ -7,7 +7,6 @@ def scan_wifi():
                                     text=True, check=True)
     scanoutput = result.stdout.strip()
     for line in scanoutput.split():
-        line = line.decode("utf-8")
         print(line)
         if line[:5]  == "ESSID":
             ssid = line.split('ESSID:')[1].replace('"','')
