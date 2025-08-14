@@ -1,4 +1,5 @@
 import subprocess
+import socket
 
 def scan_wifi():
     options = []
@@ -11,20 +12,6 @@ def scan_wifi():
         if ssid != '--':
             options.append(ssid)
     return options
-
-options = scan_wifi()
-print("Which wifi?")
-for idx, i in enumerate(options):
-    print(idx, ' -- ', i)
-ssid = options[int(input())]
-print("Password?")
-password = input()
-print('thx')
-result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
-               stdout=subprocess.PIPE,
-               text=True, check=True)
- 
-import socket
 
 def internet(host="8.8.8.8", port=53, timeout=3):
     """
@@ -40,4 +27,21 @@ def internet(host="8.8.8.8", port=53, timeout=3):
         print(ex)
         return False
 
-internet()
+connected = False
+while not connected:
+
+    options = scan_wifi()
+    print("Which wifi?")
+
+    for idx, i in enumerate(options):
+        print(idx, ' -- ', i)
+
+    ssid = options[int(input())]
+    print("Password?")
+    password = input()
+    print('Thx')
+    result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
+                stdout=subprocess.PIPE,
+                text=True, check=True)
+
+    connected = internet()
