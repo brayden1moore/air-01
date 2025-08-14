@@ -7,8 +7,9 @@ def scan_wifi():
                                     text=True, check=True)
     scanoutput = result.stdout.strip()
     for line in scanoutput.split('\n')[1:]:
-        if line != '--':
-            options.append(line)
+        ssid = line.strip()
+        if ssid != '--':
+            options.append(ssid)
     return options
 
 print(scan_wifi())
