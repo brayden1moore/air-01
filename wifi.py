@@ -40,8 +40,12 @@ while not connected:
     print("Password?")
     password = input()
     print('Thx')
-    result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
-                stdout=subprocess.PIPE,
-                text=True, check=True)
 
-    connected = internet()
+    try:
+        result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],
+                    stdout=subprocess.PIPE,
+                    text=True, check=True)
+
+        connected = internet()
+    except:
+        print("That didn't work")
