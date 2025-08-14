@@ -1,8 +1,10 @@
-from subprocess import check_output
+import subprocess
 
 def scan_wifi():
     options = []
-    scanoutput = check_output(["iwlist", "wlan0", "scan"])
+    scanoutput = subprocess.run(["nmcli", "--fields", "SECURITY,SSID", "device", "wifi", "list"],
+                                    stdout=subprocess.PIPE,
+                                    text=True, check=True)
     for line in scanoutput.split():
         line = line.decode("utf-8")
         if line[:5]  == "ESSID":
