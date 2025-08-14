@@ -27,7 +27,7 @@ def internet(host="8.8.8.8", port=53, timeout=3):
         print(ex)
         return False
 
-connected = False
+connected = internet()
 while not connected:
 
     options = scan_wifi()
