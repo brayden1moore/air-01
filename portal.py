@@ -71,16 +71,11 @@ def connect():
         
         response = jsonify({'message': 'success', 'info': 'Device will switch networks in 3 seconds'})
         
-        def delayed_network_switch():
-            time.sleep(3)  
-            try:
-                subprocess.run(['sudo', 'systemctl', 'restart', 'radio'],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             text=True, check=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Couldn't start radio: {e}")
+        subprocess.run(['sudo', 'systemctl', 'restart', 'radio'],
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        text=True, check=True)
             
-            sys.exit(0)
+        sys.exit(0)
         
         threading.Thread(target=delayed_network_switch, daemon=True).start()
         return response

@@ -142,7 +142,7 @@ const connectionText = document.getElementById('connection-text');
 
 const connectTimeout = setTimeout(() => {
     header.textContent = 'SUCCESS!';
-    connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
+    connectionText.textContent = "It looks like your radio is connected. You can reconnect this device back to your home network.";
 }, 5000);
 
 fetch("/connect", { method: "POST" })
@@ -167,7 +167,7 @@ fetch("/connect", { method: "POST" })
     // Check if it's a network error (likely means we switched successfully)
     if (error.name === 'TypeError' || error.message.includes('Failed to fetch')) {
         header.textContent = 'SUCCESS!';
-        connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
+        connectionText.textContent = "It looks like your radio is connected. You can reconnect this device back to your home network.";
     } else {
         console.log(error);
         header.textContent = "THAT DIDN'T WORK";
