@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 wifi_device = "wlan0"
 
-subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'scud.local:8008', 'password', 'scudhouse'])
+subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'scud.local:8888', 'password', 'scudhouse'])
 
 def scan_wifi():
     options = []
@@ -56,7 +56,7 @@ def submit():
         print(*list(request.form.keys()), sep = ", ")
         ssid = request.form['ssid']
         password = request.form['password']
-        
+
         result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],stdout=subprocess.PIPE,text=True, check=True)
         if result.stderr:
             return "Error: failed to connect to wifi network: <i>%s</i>" % result.stderr.decode()
@@ -66,4 +66,4 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8008)
+    app.run(debug=True, host='0.0.0.0', port=8888)
