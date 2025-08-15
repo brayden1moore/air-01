@@ -78,9 +78,6 @@ def connect():
         
         time.sleep(2)
         print("Checking status of radio")
-        subprocess.run(['sudo', 'systemctl', 'status', 'radio'],
-                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                        text=True, check=True)
             
         sys.exit(0)
         
