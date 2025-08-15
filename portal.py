@@ -65,16 +65,14 @@ def success():
 @app.route('/connect', methods=['POST'])
 def connect():
     try:
-        # Validate credentials first without connecting
         result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password'], '--timeout', '10'],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                text=True, check=True)
         
-        # Send success response immediately
         response = jsonify({'message': 'success', 'info': 'Device will switch networks in 3 seconds'})
         
         def delayed_network_switch():
-            time.sleep(3)  # Give time for response to reach client
+            time.sleep(3)  
             try:
                 subprocess.run(['sudo', 'systemctl', 'restart', 'radio'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -82,7 +80,6 @@ def connect():
             except subprocess.CalledProcessError as e:
                 print(f"Couldn't start radio: {e}")
             
-            # Optional: shutdown the config server since it's no longer needed
             sys.exit(0)
         
         threading.Thread(target=delayed_network_switch, daemon=True).start()
