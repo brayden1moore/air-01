@@ -77,11 +77,10 @@ def connect():
             
         sys.exit(0)
         
-        threading.Thread(target=delayed_network_switch, daemon=True).start()
         return response
         
-    except subprocess.CalledProcessError as e:
-        print(f"WiFi connection failed: {e}")
+    except:
+        print(f"WiFi connection failed")
         return jsonify({'message': 'error', 'error': 'Connection failed'}), 400
 
 if __name__ == '__main__':
