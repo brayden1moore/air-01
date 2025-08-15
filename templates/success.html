@@ -140,10 +140,14 @@
 <script>
 const connectionText = document.getElementById('connection-text');
 
-fetch("/connect", {
-    method: "POST"
-})
+const connectTimeout = setTimeout(() => {
+    header.textContent = 'SUCCESS!';
+    connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
+}, 5000);
+
+fetch("/connect", { method: "POST" })
 .then(response => {
+    clearTimeout(connectTimeout);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -154,14 +158,21 @@ fetch("/connect", {
         header.textContent = 'SUCCESS!';
         connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
     } else {
-        header.textContent = 'CONNECTION FAILED';
-        connectionText.textContent = data['error'] || "Connection failed. Please try again.";
+        header.textContent = "THAT DIDN'T WORK";
+        connectionText.textContent = data['error'] || "There was a problem connecting.";
     }
 })
 .catch((error) => {
-    console.error('Error:', error);
-    header.textContent = 'ERROR';
-    connectionText.textContent = "Network error. Please check your connection and try again.";
+    clearTimeout(connectTimeout);
+    // Check if it's a network error (likely means we switched successfully)
+    if (error.name === 'TypeError' || error.message.includes('Failed to fetch')) {
+        header.textContent = 'SUCCESS!';
+        connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
+    } else {
+        console.log(error);
+        header.textContent = "THAT DIDN'T WORK";
+        connectionText.textContent = data['error'] || "There was a problem connecting.";
+    }
 });
 </script>
 </html>
