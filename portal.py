@@ -58,14 +58,18 @@ def submit():
             if internet():
                 print("Starting radio")
                 subprocess.run(['sudo','systemctl','restart','radio'])
-                return render_template('success.html')
+                return redirect(url_for('app.success'))
             else:
                 return redirect(url_for('app.index', wifi_networks=scan_wifi(), message="That didn't work."))
                 
         except subprocess.CalledProcessError as e:
-            return f"Error: Failed to connect to WiFi network <i>{ssid}</i>: {e.stderr}"
+            return redirect(url_for('app.index', wifi_networks=scan_wifi(), message="That didn't work."))
 
     return "Error: Invalid request method."
+
+@app.route('/success', methods=['GET'])
+def success():
+    render_template('success.html')
 
 if __name__ == '__main__':
     connected = internet()
