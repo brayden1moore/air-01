@@ -71,7 +71,14 @@ def connect():
         
         response = jsonify({'message': 'success', 'info': 'Device will switch networks in 3 seconds'})
         
+        print("Starting radio")
         subprocess.run(['sudo', 'systemctl', 'restart', 'radio'],
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                        text=True, check=True)
+        
+        time.sleep(2)
+        
+        subprocess.run(['sudo', 'systemctl', 'status', 'radio'],
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                         text=True, check=True)
             
