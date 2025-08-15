@@ -82,6 +82,6 @@ if __name__ == '__main__':
         app.run(debug=True, host='0.0.0.0', port=8888)
     else:
         print("Internet connection already available. No configuration needed.")
-        sys.exit(0)
         print("Starting radio")
         subprocess.run(['sudo','systemctl','restart','radio'])
+        sys.exit(0)
