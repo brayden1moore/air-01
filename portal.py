@@ -62,6 +62,7 @@ def submit():
             
             time.sleep(3)
             if internet():
+                print("Starting radio")
                 subprocess.run(['sudo','systemctl','restart','radio'])
                 shutdown_server()
                 return f"Success: Connected to <i>{ssid}</i>! Shutting down configuration server..."
@@ -82,4 +83,5 @@ if __name__ == '__main__':
     else:
         print("Internet connection already available. No configuration needed.")
         sys.exit(0)
+        print("Starting radio")
         subprocess.run(['sudo','systemctl','restart','radio'])
