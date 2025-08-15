@@ -54,7 +54,7 @@ def submit():
                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                   text=True, check=True)
             
-            time.sleep(3)
+            time.sleep(6)
             if internet():
                 print("Starting radio")
                 subprocess.run(['sudo','systemctl','restart','radio'])
