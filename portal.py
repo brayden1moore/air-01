@@ -24,7 +24,7 @@ def scan_wifi():
 @app.route('/')
 def index():
     wifi_networks = scan_wifi()
-    return render_template('wifi_setup.html', wifi_networks=wifi_networks)
+    return render_template('index.html', wifi_networks=wifi_networks)
 
 
 @app.route('/submit',methods=['POST'])
