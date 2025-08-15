@@ -8,7 +8,7 @@
     <link rel="manifest" href="/favicon/site.webmanifest"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Internet Radio Protocol</title>
+    <title>Scud Radio Setup</title>
     
     <style>
         body {
@@ -26,6 +26,10 @@
             font-family: "Arial Black";
             src: url("assets/Arial Black.ttf") format("truetype");
         }
+
+        @font-face {
+            font-family: "Andale Mono";
+            src: url("assets/andalemono.ttf") format("truetype");}
         
         #main-content {
             max-width: 600px;
@@ -37,26 +41,28 @@
             justify-content: center;
             margin-bottom: 20px;
         }
+
+        #main-logo {
+            height: 225px;
+            width: 225px;
+        }
         
         form {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255);
+            border: 1px solid white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
         }
         
         select, input[type="password"], input[type="submit"] {
-            width: 100%;
+            width: 90%;
             padding: 10px;
-            margin-bottom: 15px;
-            border: 2px solid #333;
-            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid black;
             font-family: inherit;
             font-size: 14px;
         }
@@ -65,11 +71,11 @@
             background-color: #333;
             color: white;
             cursor: pointer;
-            font-weight: bold;
         }
         
         input[type="submit"]:hover {
-            background-color: #555;
+            background-color: white;
+            color: black;
         }
     </style>
 </head>
@@ -82,7 +88,7 @@
         <h1>CONNECT SCUD RADIO TO WIFI</h1>
         
         <form action="/submit" method="post">
-            <label for="ssid">Choose a WiFi network:</label>
+            <label for="ssid">NETWORK</label>
             <select name="ssid" id="ssid" required>
                 <option value="">-- Select a network --</option>
                 {% for ssid in wifi_networks %}
@@ -90,10 +96,10 @@
                 {% endfor %}
             </select>
             
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" placeholder="Enter WiFi password"/>
+            <label for="password">PASSWORD</label>
+            <input name="password" id="password" placeholder="Enter WiFi password"/>
             
-            <input type="submit" value="Connect">
+            <input type="submit" value="CONNECT">
         </form>
     </div>
 </body>
