@@ -1,8 +1,9 @@
-from flask import Flask,request
+from flask import Flask,request, render_template
 import subprocess
 
 app = Flask(__name__,
-            static_folder='assets')
+            static_folder='assets',
+            template_folder='templates')
 
 wifi_device = "wlan0"
 
@@ -22,48 +23,8 @@ def scan_wifi():
 
 @app.route('/')
 def index():
-    dropdowndisplay = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
-            <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-            <link rel="shortcut icon" href="/favicon/favicon.ico" />
-            <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-            <link rel="manifest" href="/favicon/site.webmanifest"/>,
-            <meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="UTF-8"><title>Internet Radio Protocol</title></head><body style="font-family:Andale Mono; padding:10vw; padding-top:10px;"><div style="display:flex; justify-content:center"><img id="main-logo" src="assets/scudradiocenter.gif" alt="Loading" width="auto"></div>
-            <title>Set Up Your Scud Radio</title>
-        </head>
-        <body>
-            <h1>Connect Your Scud Radio to Your Wifi</h1>
-            <form action="/submit" method="post">
-                <label for="ssid">Choose a WiFi network:</label>
-                <select name="ssid" id="ssid">
-        """
-    for ssid in scan_wifi():
-        dropdowndisplay += f"""
-                <option value="{ssid}">{ssid}</option>
-            """
-    dropdowndisplay += """
-                </select>
-                <p/>
-                <label for="password">Password: <input type="password" name="password"/></label>
-                <p/>
-                <input type="submit" value="Connect">
-            </form>
-        <style>
-            body {
-                background-color: yellow;
-            }
-            h1 {
-                font-family: "Arial Black";
-            }
-            @font-face {font-family: "Arial Black";src: url("assets/Arial Black.ttf") format("truetype");}
-        </style>
-        </body>
-        </html>
-        """
-    return dropdowndisplay
+    wifi_networks = scan_wifi()
+    return render_template('wifi_setup.html', wifi_networks=wifi_networks)
 
 
 @app.route('/submit',methods=['POST'])
@@ -75,7 +36,7 @@ def submit():
 
         result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],stdout=subprocess.PIPE,text=True, check=True)
         if result.stderr:
-            return "Error: failed to connect to wifi network: <i>%s</i>" % result.stderr.decode()
+            return "Error: failed to connect to wifi network: <i>%s</i>"
         elif result.stdout:
             return "Success: <i>%s</i>"
         return "Error: failed to connect."
