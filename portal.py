@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 wifi_device = "wlan0"
 
-subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'scud.local:8888', 'password', 'scudhouse'])
+subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'Scud Radio', 'password', 'scudhouse'])
 
 def scan_wifi():
     options = []
@@ -34,7 +34,7 @@ def index():
             <title>Set Up Your Scud Radio</title>
         </head>
         <body>
-            <h1>Wifi Control</h1>
+            <h1>Connect Your Scud Radio to Your Wifi</h1>
             <form action="/submit" method="post">
                 <label for="ssid">Choose a WiFi network:</label>
                 <select name="ssid" id="ssid">
@@ -54,6 +54,10 @@ def index():
             body {
                 background-color: yellow;
             }
+            h1 {
+                font-family: "Arial Black";
+            }
+            @font-face {font-family: "Arial Black";src: url("assets/Arial Black.ttf") format("truetype");}
         </style>
         </body>
         </html>
