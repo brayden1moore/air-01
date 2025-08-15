@@ -1,7 +1,8 @@
 from flask import Flask,request
 import subprocess
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='assets')
 
 wifi_device = "wlan0"
 
