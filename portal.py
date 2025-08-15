@@ -7,9 +7,9 @@ import time
 
 app = Flask(__name__,
             static_folder='assets',
-            template_folder='templates')
-
-wifi_device = "wlan0"
+            template_folder='templates'
+            )
+app.secret_key = 'sticky-lemon'
 
 def internet(host="8.8.8.8", port=53, timeout=3):
     """
