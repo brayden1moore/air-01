@@ -8,7 +8,7 @@
     <link rel="manifest" href="/favicon/site.webmanifest"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Scud Radio Setup</title>
+    <title>Success!</title>
     
     <style>
         body {
@@ -130,32 +130,11 @@
             <img id="main-logo" src="assets/scudradiocenter.gif" alt="Scud Radio Center" width="auto">
         </div>
         
-        <h1>CONNECT<br>SCUD RADIO<br>TO WIFI</h1>
+        <h1>SUCCESS!</h1>
         
-        <form action="/submit" method="post">
-            <div class="input-div">
-                <div class="an-input">
-                    <label for="ssid">NETWORK</label>
-                    <select name="ssid" id="ssid" required>
-                        {% for ssid in wifi_networks %}
-                        <option value="{{ ssid }}">{{ ssid }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="an-input">
-                    <label for="password">PASSWORD</label>
-                    <input name="password" id="password" placeholder="Enter your password..."/>
-                </div>
-
-            </div>
-
-            <div id="submit-div">
-                <input type="submit" value="CONNECT">
-            </div>
-        </form>
-
-        <p>{{message}}</p>
+        <div>
+            Your radio is connected. You can reconnect this device back to your home network.
+        </div>
     </div>
 </body>
 </html>

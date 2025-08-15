@@ -1,8 +1,9 @@
-from flask import Flask,request, render_template
+from flask import Flask,request, render_template, session, redirect, url_for
 import subprocess
 import socket
 import sys
 import time
+
 
 app = Flask(__name__,
             static_folder='assets',
@@ -36,17 +37,10 @@ def scan_wifi():
             options.append(ssid)
     return options
 
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        print("Cannot shutdown server - not running in development mode")
-        return
-    func()
-
 @app.route('/')
 def index():
     wifi_networks = scan_wifi()
-    return render_template('index.html', wifi_networks=wifi_networks)
+    return render_template('index.html', wifi_networks=wifi_networks, message="")
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -64,10 +58,9 @@ def submit():
             if internet():
                 print("Starting radio")
                 subprocess.run(['sudo','systemctl','restart','radio'])
-                shutdown_server()
-                return f"Success: Connected to <i>{ssid}</i>! Shutting down configuration server..."
+                return render_template('success.html')
             else:
-                return f"Connected to <i>{ssid}</i> but no internet access detected."
+                return redirect(url_for('app.index', wifi_networks=scan_wifi(), message="That didn't work."))
                 
         except subprocess.CalledProcessError as e:
             return f"Error: Failed to connect to WiFi network <i>{ssid}</i>: {e.stderr}"
