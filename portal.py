@@ -1,4 +1,4 @@
-from flask import Flask,request, render_template, session, redirect, url_for
+from flask import Flask,request, render_template, session, redirect, url_for, jsonify
 import subprocess
 import socket
 import sys
@@ -42,7 +42,7 @@ def index():
     wifi_networks = scan_wifi()
     return render_template('index.html', wifi_networks=wifi_networks, message="")
 
-@app.route('/submit', methods=['POST'])
+@app.route('/submit', methods=['POST','GET'])
 def submit():
     if request.method == 'POST':
         print(*list(request.form.keys()), sep=", ")
@@ -52,19 +52,11 @@ def submit():
         session['ssid'] = ssid
         session['password'] = password
         
-        try:
-            subprocess.run(['nmcli', 'con', 'add', 'type', 'wifi', 'con-name', ssid, 'ifname', 'wlan0', 'ssid', ssid])
-            subprocess.run(['nmcli', 'con', 'modify', ssid, 'wifi-sec.key-mgmt', 'wpa-psk'])
-            subprocess.run(['nmcli', 'con', 'modify', ssid, 'wifi-sec.psk', password])
-            subprocess.run(['nmcli', 'con', 'up', ssid])
-            subprocess.run(['nmcli', 'con', 'down', ssid])
-            return redirect(url_for('success'))
-
-        except subprocess.CalledProcessError as e:
-            return redirect(url_for('index', wifi_networks=scan_wifi(), message="That didn't work."))
-
-    return "Error: Invalid request method."
-
+        return redirect(url_for('success'))
+    
+    else:
+        return redirect(url_for('index', wifi_networks=scan_wifi(), message=""))
+    
 @app.route('/success', methods=['GET'])
 def success():
     return render_template('success.html')
@@ -75,8 +67,14 @@ def connect():
         result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password']],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             text=True, check=True)
-        subprocess.run(['sudo','systemctl','restart','radio'])
-        sys.exit(0)
+        
+        try:
+            subprocess.run(['sudo','systemctl','restart','radio'])
+            return jsonify({'message':'success'})
+        except:
+            print("Couldn't start radio")
+        finally:
+            sys.exit(0)
     except:
         return redirect(url_for('index', wifi_networks=scan_wifi(), message="Sorry, the connection ended up failing. Try again."))
 

@@ -130,16 +130,26 @@
             <img id="main-logo" src="assets/scudradiocenter.gif" alt="Scud Radio Center" width="auto">
         </div>
         
-        <h1>SUCCESS!</h1>
+        <h1 id="header">CONNECTING...</h1>
         
-        <div>
-            Your radio is connected. You can reconnect this device back to your home network.
+        <div id="connection-text">
+            Attempting to connect...
         </div>
     </div>
 </body>
 <script>
+    const header = document.getElementById('header');
+    const connectionText = document.getElementById('connection-text');
     const response = await fetch("/connect", {
         method: "POST"
-    });
+    })
+    .then(response => response.json())
+    .then(() => {
+            if (response['message'] == 'success') {
+                header.textContent = 'SUCCESS!';
+                connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
+            }
+        }
+    );
 </script>
 </html>
