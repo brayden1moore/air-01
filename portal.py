@@ -12,6 +12,9 @@ app = Flask(__name__,
             )
 app.secret_key = 'sticky-lemon'
 
+def start_hotspot():
+    subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'Scud Radio', 'password', 'scudhouse'])
+
 def internet(host="8.8.8.8", port=53, timeout=3):
     """
     Host: 8.8.8.8 (google-public-dns-a.google.com)
@@ -69,17 +72,14 @@ def connect():
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                text=True, check=True)
         
+        assert internet()
+        start_hotspot()
         response = jsonify({'message': 'success', 'info': 'Device will switch networks in 3 seconds'})
         
         print("Starting radio")
         subprocess.run(['sudo', 'systemctl', 'restart', 'radio'],
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                         text=True, check=True)
-        
-        time.sleep(2)
-        print("Checking status of radio")
-            
-        sys.exit(0)
         
         return response
         
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     connected = internet()
 
     if not connected:
-        subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'Scud Radio', 'password', 'scudhouse'])
+        start_hotspot()
         app.run(debug=True, host='0.0.0.0', port=8888)
     else:
         print("Internet connection already available. No configuration needed.")
