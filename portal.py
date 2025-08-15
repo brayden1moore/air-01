@@ -65,7 +65,7 @@ def success():
 @app.route('/connect', methods=['POST'])
 def connect():
     try:
-        result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password'], '--timeout', '10'],
+        result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password']],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                text=True, check=True)
         
