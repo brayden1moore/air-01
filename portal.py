@@ -3,7 +3,7 @@ import subprocess
 
 app = Flask(__name__)
 
-wifi_device = "wlan1"
+wifi_device = "wlan0"
 
 subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'scud.local:8008', 'password', 'scudhouse'])
 
@@ -56,11 +56,8 @@ def submit():
         print(*list(request.form.keys()), sep = ", ")
         ssid = request.form['ssid']
         password = request.form['password']
-        connection_command = ["nmcli", "--colors", "no", "device", "wifi", "connect", ssid, "ifname", wifi_device]
-        if len(password) > 0:
-          connection_command.append("password")
-          connection_command.append(password)
-        result = subprocess.run(connection_command, capture_output=True)
+        
+        result = subprocess.run(['nmcli', 'dev','wifi' ,'connect' ,ssid ,'password' ,password],stdout=subprocess.PIPE,text=True, check=True)
         if result.stderr:
             return "Error: failed to connect to wifi network: <i>%s</i>" % result.stderr.decode()
         elif result.stdout:
