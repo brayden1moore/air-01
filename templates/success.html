@@ -138,18 +138,28 @@
     </div>
 </body>
 <script>
-    const header = document.getElementById('header');
-    const connectionText = document.getElementById('connection-text');
-
     fetch("/connect", {
         method: "POST"
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then((data) => {
         if (data['message'] == 'success') {
             header.textContent = 'SUCCESS!';
             connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
+        } else {
+            header.textContent = 'CONNECTION FAILED';
+            connectionText.textContent = data['error'] || "Connection failed. Please try again.";
         }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        header.textContent = 'ERROR';
+        connectionText.textContent = "Network error. Please check your connection and try again.";
     });
 </script>
 </html>

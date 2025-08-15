@@ -65,18 +65,36 @@ def success():
 def connect():
     try:
         result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password']],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            text=True, check=True)
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                              text=True, check=True)
         
         try:
-            subprocess.run(['sudo','systemctl','restart','radio'])
-            return jsonify({'message':'success'})
-        except:
-            print("Couldn't start radio")
-        finally:
-            sys.exit(0)
-    except:
-        return redirect(url_for('index', wifi_networks=scan_wifi(), message="Sorry, the connection ended up failing. Try again."))
+            subprocess.run(['sudo', 'systemctl', 'restart', 'radio'], 
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          text=True, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Couldn't start radio: {e}")
+        
+        response = jsonify({'message': 'success'})
+        
+        def shutdown():
+            import threading
+            import time
+            def delayed_exit():
+                time.sleep(2) 
+                import os
+                os._exit(0)
+            threading.Thread(target=delayed_exit).start()
+        
+        shutdown()
+        return response
+        
+    except subprocess.CalledProcessError as e:
+        print(f"WiFi connection failed: {e}")
+        return jsonify({'message': 'error', 'error': 'Connection failed'}), 400
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return jsonify({'message': 'error', 'error': 'Unexpected error occurred'}), 500
 
 if __name__ == '__main__':
     connected = internet()
