@@ -5,10 +5,22 @@ app = Flask(__name__)
 
 wifi_device = "wlan1"
 
+subprocess.run(['sudo', 'nmcli','device', 'wifi', 'hotspot', 'ssid', 'scud.local:8008', 'password', 'scudhouse'])
+
+def scan_wifi():
+    options = []
+    result = subprocess.run(["nmcli", "--fields", "SSID", "device", "wifi", "list"],
+                                    stdout=subprocess.PIPE,
+                                    text=True, check=True)
+    scanoutput = result.stdout.strip()
+    for line in scanoutput.split('\n')[1:]:
+        ssid = line.strip()
+        if ssid != '--':
+            options.append(ssid)
+    return options
+
 @app.route('/')
 def index():
-    result = subprocess.check_output(["nmcli", "--colors", "no", "-m", "multiline", "--get-value", "SSID", "dev", "wifi", "list", "ifname", wifi_device])
-    ssids_list = result.decode().split('\n')
     dropdowndisplay = f"""
         <!DOCTYPE html>
         <html>
@@ -21,11 +33,9 @@ def index():
                 <label for="ssid">Choose a WiFi network:</label>
                 <select name="ssid" id="ssid">
         """
-    for ssid in ssids_list:
-        only_ssid = ssid.removeprefix("SSID:")
-        if len(only_ssid) > 0:
-            dropdowndisplay += f"""
-                    <option value="{only_ssid}">{only_ssid}</option>
+    for ssid in scan_wifi():
+        dropdowndisplay += f"""
+                <option value="{ssid}">{ssid}</option>
             """
     dropdowndisplay += f"""
                 </select>
@@ -59,4 +69,4 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=1802)
+    app.run(debug=True, host='0.0.0.0', port=8008)
