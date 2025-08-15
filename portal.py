@@ -48,20 +48,18 @@ def submit():
         print(*list(request.form.keys()), sep=", ")
         ssid = request.form['ssid']
         password = request.form['password']
+
+        session['ssid'] = ssid
+        session['password'] = password
         
         try:
-            result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', ssid, 'password', password],
-                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                  text=True, check=True)
-            
-            time.sleep(6)
-            if internet():
-                print("Starting radio")
-                subprocess.run(['sudo','systemctl','restart','radio'])
-                return redirect(url_for('success'))
-            else:
-                return redirect(url_for('index', wifi_networks=scan_wifi(), message="That didn't work."))
-                
+            subprocess.run(['nmcli', 'con', 'add', 'type', 'wifi', 'con-name', ssid, 'ifname', 'wlan0', 'ssid', ssid])
+            subprocess.run(['nmcli', 'con', 'modify', ssid, 'wifi-sec.key-mgmt', 'wpa-psk'])
+            subprocess.run(['nmcli', 'con', 'modify', ssid, 'wifi-sec.psk', password])
+            subprocess.run(['nmcli', 'con', 'up', ssid])
+            subprocess.run(['nmcli', 'con', 'down', ssid])
+            return redirect(url_for('success'))
+
         except subprocess.CalledProcessError as e:
             return redirect(url_for('index', wifi_networks=scan_wifi(), message="That didn't work."))
 
@@ -70,6 +68,17 @@ def submit():
 @app.route('/success', methods=['GET'])
 def success():
     return render_template('success.html')
+
+@app.route('/connect', methods=['GET'])
+def connect():
+    try:
+        result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password']],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            text=True, check=True)
+        subprocess.run(['sudo','systemctl','restart','radio'])
+        sys.exit(0)
+    except:
+        return redirect(url_for('index', wifi_networks=scan_wifi(), message="Sorry, the connection ended up failing. Try again."))
 
 if __name__ == '__main__':
     connected = internet()
