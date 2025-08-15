@@ -61,7 +61,7 @@ def submit():
 def success():
     return render_template('success.html')
 
-@app.route('/connect', methods=['GET'])
+@app.route('/connect', methods=['POST'])
 def connect():
     try:
         result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', session['ssid'], 'password', session['password']],

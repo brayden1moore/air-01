@@ -140,16 +140,16 @@
 <script>
     const header = document.getElementById('header');
     const connectionText = document.getElementById('connection-text');
+
     const response = await fetch("/connect", {
         method: "POST"
     })
     .then(response => response.json())
-    .then(() => {
-            if (response['message'] == 'success') {
-                header.textContent = 'SUCCESS!';
-                connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
-            }
+    .then((data) => {
+        if (data['message'] == 'success') {
+            header.textContent = 'SUCCESS!';
+            connectionText.textContent = "Your radio is connected. You can reconnect this device back to your home network.";
         }
-    );
+    });
 </script>
 </html>
