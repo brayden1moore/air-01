@@ -25,7 +25,13 @@ def index():
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Wifi Control</title>
+            <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+            <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+            <link rel="shortcut icon" href="/favicon/favicon.ico" />
+            <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+            <link rel="manifest" href="/favicon/site.webmanifest"/>,
+            <meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="UTF-8"><title>Internet Radio Protocol</title></head><body style="font-family:Andale Mono; padding:10vw; padding-top:10px;"><div style="display:flex; justify-content:center"><img id="main-logo" src="assets/scudradiocenter.gif" alt="Loading" width="auto"></div>
+            <title>Set Up Your Scud Radio</title>
         </head>
         <body>
             <h1>Wifi Control</h1>
@@ -37,13 +43,18 @@ def index():
         dropdowndisplay += f"""
                 <option value="{ssid}">{ssid}</option>
             """
-    dropdowndisplay += f"""
+    dropdowndisplay += """
                 </select>
                 <p/>
                 <label for="password">Password: <input type="password" name="password"/></label>
                 <p/>
                 <input type="submit" value="Connect">
             </form>
+        <style>
+            body {
+                background-color: yellow;
+            }
+        </style>
         </body>
         </html>
         """
@@ -61,7 +72,7 @@ def submit():
         if result.stderr:
             return "Error: failed to connect to wifi network: <i>%s</i>" % result.stderr.decode()
         elif result.stdout:
-            return "Success: <i>%s</i>" % result.stdout.decode()
+            return "Success: <i>%s</i>"
         return "Error: failed to connect."
 
 
